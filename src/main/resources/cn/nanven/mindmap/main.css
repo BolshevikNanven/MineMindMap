@@ -1,0 +1,313 @@
+.base {
+    -fx-border-radius: 4;
+    -fx-border-color: #dedede;
+    -fx-border-width: 1;
+    -fx-background-color: #fff;
+    -fx-background-radius: 4;
+}
+
+Button {
+    -fx-background-insets: null
+}
+
+.context-menu {
+    -fx-effect: dropshadow(three-pass-box, #a4a4a4, 8, 0.01, 0, 3);
+    -fx-padding: 8 2 8 2;
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-border-color: #fff;
+}
+
+.menu-item {
+    -fx-border-width: 0;
+    -fx-padding: 4 8 4 8;
+    -fx-pref-height: 28;
+    -fx-background-radius: 4;
+}
+
+.menu-item .label {
+    -fx-text-fill: #212121;
+}
+
+.menu-item .description {
+    -fx-text-fill: #a1a1a1;
+}
+
+.menu-item:hover, .menu-item:focused {
+    -fx-background-color: rgb(228, 232, 234);
+}
+
+.sys-btn {
+    -fx-background-radius: 0;
+    -fx-background-color: null;
+}
+
+.sys-btn:hover {
+    -fx-background-color: rgb(232, 235, 238);
+}
+
+.sys-btn Region {
+    -fx-background-color: #696969;
+}
+
+#closeBtn:hover {
+    -fx-background-color: red;
+}
+
+#closeBtn:hover Region {
+    -fx-background-color: #fff;
+}
+
+.menu-bar {
+    -fx-background-color: null;
+}
+
+.menu-bar .menu-button {
+    -fx-pref-height: 30;
+    -fx-background-color: null;
+    -fx-background-radius: 4px;
+    -fx-text-fill: #212121;
+}
+
+.menu-bar .menu-button:hover .label, .menu-bar .menu-button:showing .label {
+    -fx-text-fill: #212121;
+}
+
+.menu-bar .menu-button:hover {
+    -fx-background-color: rgb(232, 235, 238);
+
+}
+
+.menu-bar .menu-button:showing {
+    -fx-background-color: rgb(232, 235, 238);
+}
+
+.menu-bar .menu-button:pressed {
+    -fx-background-color: rgb(228, 231, 234);
+}
+
+.toolbar {
+    -fx-background-color: rgb(237, 242, 250);
+    -fx-background-radius: 42;
+}
+
+.toolbar .icon {
+    -fx-background-color: #525252;
+}
+
+.toolbar .divider {
+    -fx-background-color: #b6b6b6;
+}
+
+.toolbar .toggle-button:selected {
+    -fx-background-color: rgb(211, 227, 253);
+}
+
+.toolbar .toggle-button:selected:hover {
+    -fx-background-color: rgb(191, 207, 236);
+}
+
+.toolbar .button, .toolbar .toggle-button {
+    -fx-background-color: null;
+    -fx-background-radius: 6;
+}
+
+.toolbar .button:hover, .toolbar .toggle-button:hover {
+    -fx-background-color: rgb(223, 229, 235);
+}
+
+.toolbar .button:pressed, .toolbar .toggle-button:pressed {
+    -fx-background-color: rgb(217, 220, 226);
+}
+
+.toolbar .menu-button, .toolbar .color-picker {
+    -fx-background-color: null;
+    -fx-padding: 0;
+    -fx-background-insets: null;
+    -fx-background-radius: 6;
+}
+
+.toolbar .menu-button:hover, .toolbar .color-picker:hover {
+    -fx-background-color: rgb(223, 229, 235);
+}
+
+.toolbar .menu-button:pressed, .toolbar .color-picker:pressed {
+    -fx-background-color: rgb(220, 224, 231);
+}
+
+.font-color-picker .picker-color-rect {
+    visibility: hidden;
+}
+
+.toolbar .menu-button > .label {
+    -fx-background-color: null;
+    -fx-padding: 0 0 0 8;
+}
+
+.toolbar-side {
+    -fx-border-radius: 42;
+    -fx-border-width: 1;
+    -fx-border-color: #ccc;
+}
+
+.toolbar-side Button {
+    -fx-background-color: null;
+    -fx-background-radius: 40;
+}
+
+.toolbar-side Button:hover {
+    -fx-background-color: rgb(232, 235, 238);
+}
+
+.canvas-container {
+    -fx-background-color: #fff;
+    -fx-border-radius: 0 16 0 0;
+    -fx-border-color: #dedede;
+    -fx-border-width: 1 1 0 0;
+    -fx-background-radius: 0 16 4 4;
+    -fx-effect: null;
+    -fx-padding: 0;
+    -fx-border-insets: null;
+    -fx-background-insets: null;
+}
+
+/*轨道样式*/
+.scroll-pane .scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: #ffffff;
+    -fx-padding: 28 0 0 0;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-border-radius: 2em;
+}
+/*横向滚动条增减按钮样式*/
+.scroll-pane .scroll-bar:horizontal .increment-button,
+.scroll-pane .scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-padding: 0 0 10 0;
+}
+
+/*竖向滚动条增减按钮样式*/
+.scroll-pane .scroll-bar:vertical .increment-button,
+.scroll-pane .scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0em;
+    -fx-padding: 0 10 0 0;
+}
+
+/*增减按钮中图标样式*/
+.scroll-pane .scroll-bar .increment-arrow,
+.scroll-pane .scroll-bar .decrement-arrow {
+    -fx-background-color: transparent;
+    -fx-shape: " ";
+    -fx-padding: 0;
+}
+
+/*滚动条滑块样式*/
+.scroll-pane .scroll-bar:horizontal .thumb,
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #e1e1e1;
+    -fx-background-insets: 2, 0, 0;
+    -fx-background-radius: 2;
+}
+.scroll-pane .scroll-bar:horizontal .thumb:hover,
+.scroll-pane .scroll-bar:vertical .thumb:hover{
+    -fx-background-color: #b6b6b6;
+}
+
+.mind-map-canvas {
+    -fx-background-color: #fff;
+}
+
+#sideBarContainer {
+    -fx-background-color: rgb(237, 242, 250);
+    -fx-background-radius: 16;
+}
+
+.node-box {
+    -fx-padding: 2 12 2 12;
+    -fx-border-radius: 8;
+    -fx-border-width: 2;
+    -fx-border-color: transparent;
+
+}
+
+.node-box:hover {
+    -fx-border-style: dashed;
+    -fx-border-color: #212121;
+}
+
+.node-selected, .node-box.node-selected:hover {
+    -fx-border-style: solid;
+    -fx-border-color: #212121;
+}
+.node-text{
+    -fx-background-color: null;
+    -fx-background-insets: 0;
+    -fx-border-width: 0;
+    -fx-padding: 0;
+}
+.node-text:disabled{
+    -fx-opacity: 1;
+}
+
+.mini-icon {
+    -fx-shape: "M6 19h12v2H6z";
+}
+
+.window-icon {
+    -fx-shape: "M19 4H5c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2m0 14H5V6h14z";
+}
+
+.close-icon {
+    -fx-shape: "M19 6.41L17.59 5L12 10.59L6.41 5L5 6.41L10.59 12L5 17.59L6.41 19L12 13.41L17.59 19L19 17.59L13.41 12z";
+}
+
+.plus-icon {
+    -fx-shape: "M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6z";
+}
+
+.undo-icon {
+    -fx-shape: "M8 19q-.425 0-.712-.288T7 18q0-.425.288-.712T8 17h6.1q1.575 0 2.738-1T18 13.5q0-1.5-1.162-2.5T14.1 10H7.8l1.9 1.9q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275L4.7 9.7q-.15-.15-.213-.325T4.426 9q0-.2.063-.375T4.7 8.3l3.6-3.6q.275-.275.7-.275t.7.275q.275.275.275.7t-.275.7L7.8 8h6.3q2.425 0 4.163 1.575T20 13.5q0 2.35-1.737 3.925T14.1 19z";
+}
+
+.redo-icon {
+    -fx-shape: "M16.2 10H9.9q-1.575 0-2.738 1T6 13.5Q6 15 7.163 16T9.9 17H16q.425 0 .713.288T17 18q0 .425-.288.713T16 19H9.9q-2.425 0-4.163-1.575T4 13.5q0-2.35 1.738-3.925T9.9 8h6.3l-1.9-1.9q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l3.6 3.6q.15.15.213.325t.062.375q0 .2-.062.375T19.3 9.7l-3.6 3.6q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7z";
+}
+
+.bold-icon {
+    -fx-shape: "M8.8 19q-.825 0-1.412-.587T6.8 17V7q0-.825.588-1.412T8.8 5h3.525q1.625 0 3 1T16.7 8.775q0 1.275-.575 1.963t-1.075.987q.625.275 1.388 1.025T17.2 15q0 2.225-1.625 3.113t-3.05.887zm1.025-2.8h2.6q1.2 0 1.463-.612t.262-.888q0-.275-.262-.887T12.35 13.2H9.825zm0-5.7h2.325q.825 0 1.2-.425t.375-.95q0-.6-.425-.975t-1.1-.375H9.825z";
+}
+
+.italic-icon {
+    -fx-shape: "M6.25 19q-.525 0-.888-.363T5 17.75q0-.525.363-.888t.887-.362H9l3-9H9.25q-.525 0-.888-.363T8 6.25q0-.525.363-.888T9.25 5h7.5q.525 0 .888.363T18 6.25q0 .525-.363.888t-.887.362H14.5l-3 9h2.25q.525 0 .888.363t.362.887q0 .525-.363.888T13.75 19z";
+}
+
+.underline-icon {
+    -fx-shape: "M6 21q-.425 0-.712-.288T5 20q0-.425.288-.712T6 19h12q.425 0 .713.288T19 20q0 .425-.288.713T18 21zm6-4q-2.525 0-3.925-1.575t-1.4-4.175V4.275q0-.525.388-.9T7.975 3q.525 0 .9.375t.375.9V11.4q0 1.4.7 2.275t2.05.875q1.35 0 2.05-.875t.7-2.275V4.275q0-.525.388-.9T16.05 3q.525 0 .9.375t.375.9v6.975q0 2.6-1.4 4.175T12 17";
+}
+
+.align-left-icon {
+    -fx-shape: "M4 21q-.425 0-.712-.288T3 20q0-.425.288-.712T4 19h16q.425 0 .713.288T21 20q0 .425-.288.713T20 21zm0-4q-.425 0-.712-.288T3 16q0-.425.288-.712T4 15h10q.425 0 .713.288T15 16q0 .425-.288.713T14 17zm0-4q-.425 0-.712-.288T3 12q0-.425.288-.712T4 11h16q.425 0 .713.288T21 12q0 .425-.288.713T20 13zm0-4q-.425 0-.712-.288T3 8q0-.425.288-.712T4 7h10q.425 0 .713.288T15 8q0 .425-.288.713T14 9zm0-4q-.425 0-.712-.288T3 4q0-.425.288-.712T4 3h16q.425 0 .713.288T21 4q0 .425-.288.713T20 5z";
+}
+
+.align-center-icon {
+    -fx-shape: "M4 21q-.425 0-.712-.288T3 20q0-.425.288-.712T4 19h16q.425 0 .713.288T21 20q0 .425-.288.713T20 21zm4-4q-.425 0-.712-.288T7 16q0-.425.288-.712T8 15h8q.425 0 .713.288T17 16q0 .425-.288.713T16 17zm-4-4q-.425 0-.712-.288T3 12q0-.425.288-.712T4 11h16q.425 0 .713.288T21 12q0 .425-.288.713T20 13zm4-4q-.425 0-.712-.288T7 8q0-.425.288-.712T8 7h8q.425 0 .713.288T17 8q0 .425-.288.713T16 9zM4 5q-.425 0-.712-.288T3 4q0-.425.288-.712T4 3h16q.425 0 .713.288T21 4q0 .425-.288.713T20 5z";
+}
+
+.align-right-icon {
+    -fx-shape: "M4 5q-.425 0-.712-.288T3 4q0-.425.288-.712T4 3h16q.425 0 .713.288T21 4q0 .425-.288.713T20 5zm6 4q-.425 0-.712-.288T9 8q0-.425.288-.712T10 7h10q.425 0 .713.288T21 8q0 .425-.288.713T20 9zm-6 4q-.425 0-.712-.288T3 12q0-.425.288-.712T4 11h16q.425 0 .713.288T21 12q0 .425-.288.713T20 13zm6 4q-.425 0-.712-.288T9 16q0-.425.288-.712T10 15h10q.425 0 .713.288T21 16q0 .425-.288.713T20 17zm-6 4q-.425 0-.712-.288T3 20q0-.425.288-.712T4 19h16q.425 0 .713.288T21 20q0 .425-.288.713T20 21z";
+}
+
+.text-color-icon {
+    -fx-shape: "M3 24q-.425 0-.712-.288T2 23v-2q0-.425.288-.712T3 20h18q.425 0 .713.288T22 21v2q0 .425-.288.713T21 24zm4.125-7q-.575 0-.913-.488t-.137-1.037l4.4-11.725q.125-.35.425-.55t.65-.2h.9q.375 0 .663.2t.412.55L17.95 15.5q.2.55-.137 1.025T16.9 17q-.35 0-.65-.2t-.425-.55l-.975-2.85H9.2l-1.025 2.875q-.125.35-.413.538T7.126 17M9.9 11.4h4.2l-2.05-5.8h-.1z";
+}
+
+.delete-icon {
+    -fx-shape: "M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5q0-.425.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8q-.425 0-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8q-.425 0-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z";
+}
+
+.icon.disabled, text-color-icon.disabled {
+    -fx-background-color: rgb(175, 178, 183);
+}

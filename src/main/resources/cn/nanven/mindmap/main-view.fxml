@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane prefHeight="640.0" prefWidth="939.0" styleClass="base" stylesheets="@main.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
+   <top>
+      <VBox style="-fx-background-color: null;" BorderPane.alignment="CENTER">
+         <children>
+            <BorderPane prefHeight="38.0" prefWidth="200.0">
+               <center>
+                  <VBox alignment="CENTER" prefHeight="38.0" prefWidth="107.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="javafx思维导图" textAlignment="CENTER" />
+                     </children>
+                     <padding>
+                        <Insets top="8.0" />
+                     </padding>
+                  </VBox>
+               </center>
+               <left>
+                  <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="247.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Region prefHeight="30.0" prefWidth="30.0" style="-fx-background-color: #0078d4; -fx-background-radius: 4;">
+                           <HBox.margin>
+                              <Insets right="4.0" />
+                           </HBox.margin>
+                        </Region>
+                        <MenuBar prefHeight="30.0" prefWidth="188.0">
+                          <menus>
+                            <Menu mnemonicParsing="false" styleClass="menu-bar-btn" text="文件">
+                              <items>
+                                <MenuItem mnemonicParsing="false" text="新建" />
+                                    <MenuItem mnemonicParsing="false" text="保存" />
+                                    <MenuItem mnemonicParsing="false" text="保存到..." />
+                                    <MenuItem mnemonicParsing="false" text="打开" />
+                              </items>
+                            </Menu>
+                            <Menu mnemonicParsing="false" styleClass="menu-bar-btn" text="编辑">
+                              <items>
+                                <MenuItem mnemonicParsing="false" text="Delete" />
+                              </items>
+                            </Menu>
+                            <Menu mnemonicParsing="false" styleClass="menu-bar-btn" text="查看">
+                              <items>
+                                <MenuItem mnemonicParsing="false" text="About" />
+                              </items>
+                            </Menu>
+                              <Menu mnemonicParsing="false" styleClass="menu-bar-btn" text="帮助">
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="About" />
+                                 </items>
+                              </Menu>
+                          </menus>
+                        </MenuBar>
+                     </children>
+                     <padding>
+                        <Insets left="16.0" top="8.0" />
+                     </padding>
+                  </HBox>
+               </left>
+               <right>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="38.0" prefWidth="136.0" style="-fx-background-color: null;" BorderPane.alignment="CENTER_LEFT">
+                     <children>
+                        <Button fx:id="miniBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="42.0" styleClass="sys-btn">
+                           <graphic>
+                              <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1.0" prefWidth="8.0" styleClass="mini-icon" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="wideBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="42.0" styleClass="sys-btn">
+                           <graphic>
+                              <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="10.0" styleClass="window-icon" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="closeBtn" alignment="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="42.0" styleClass="sys-btn">
+                           <graphic>
+                              <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="10.0" prefWidth="10.0" styleClass="close-icon" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+               </right>
+            </BorderPane>
+            <BorderPane prefHeight="66.0" prefWidth="750.0">
+               <padding>
+                  <Insets bottom="12.0" left="8.0" right="8.0" top="12.0" />
+               </padding>
+               <center>
+                  <BorderPane fx:id="toolbar" styleClass="toolbar" BorderPane.alignment="CENTER">
+                     <BorderPane.margin>
+                        <Insets right="8.0" />
+                     </BorderPane.margin>
+                     <center>
+                        <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="609.0">
+                           <padding>
+                              <Insets bottom="4.0" left="16.0" right="16.0" top="4.0" />
+                           </padding>
+                           <children>
+                              <Button id="undo-btn" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <graphic>
+                                    <Region maxHeight="12.0" maxWidth="12.0" prefHeight="12.0" prefWidth="12.0">
+                                       <styleClass>
+                                          <String fx:value="undo-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                                 <tooltip>
+                                    <Tooltip text="撤回(Ctrl+z)" />
+                                 </tooltip>
+                              </Button>
+                              <Button id="redo-btn" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+                                 <graphic>
+                                    <Region maxHeight="12.0" maxWidth="12.0" prefHeight="12.0" prefWidth="12.0">
+                                       <styleClass>
+                                          <String fx:value="redo-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </Button>
+                              <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
+                                 <HBox.margin>
+                                    <Insets left="4.0" right="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <ToggleButton id="bold-btn" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+                                 <graphic>
+                                    <Region maxHeight="13.0" maxWidth="10.0" prefHeight="13.0" prefWidth="10.0">
+                                       <styleClass>
+                                          <String fx:value="bold-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="2.0" />
+                                 </HBox.margin>
+                              </ToggleButton>
+                              <ToggleButton id="italic-btn" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+                                 <graphic>
+                                    <Region maxHeight="12.0" maxWidth="12.0" prefHeight="12.0" prefWidth="12.0">
+                                       <styleClass>
+                                          <String fx:value="italic-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets right="2.0" />
+                                 </HBox.margin>
+                              </ToggleButton>
+                              <ToggleButton id="underline-btn" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
+                                 <graphic>
+                                    <Region maxHeight="14.0" maxWidth="12.0" prefHeight="14.0" prefWidth="12.0">
+                                       <styleClass>
+                                          <String fx:value="underline-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </ToggleButton>
+                              <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
+                                 <HBox.margin>
+                                    <Insets left="4.0" right="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <Button id="dec-font-size-btn" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0">
+                                 <graphic>
+                                    <Region maxHeight="2.0" maxWidth="10.0" prefHeight="2.0" prefWidth="10.0">
+                                       <styleClass>
+                                          <String fx:value="mini-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                              </Button>
+                              <Label id="font-size-label" alignment="CENTER" maxHeight="28.0" maxWidth="28.0" prefHeight="28.0" prefWidth="28.0" style="-fx-border-color: #b6b6b6; -fx-border-radius: 4;" text="14" />
+                              <Button id="inc-font-size-btn" mnemonicParsing="false" prefHeight="28.0" prefWidth="32.0">
+                                 <graphic>
+                                    <Region maxHeight="12.0" maxWidth="12.0" prefHeight="12.0" prefWidth="12.0">
+                                       <styleClass>
+                                          <String fx:value="plus-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                              </Button>
+                              <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
+                                 <HBox.margin>
+                                    <Insets left="4.0" right="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <Region id="align-menu-icon" maxHeight="13.0" maxWidth="13.0" prefHeight="13.0" prefWidth="13.0">
+                                 <styleClass>
+                                    <String fx:value="align-left-icon" />
+                                    <String fx:value="icon" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets left="8.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <MenuButton id="align-menu-btn" mnemonicParsing="false" prefHeight="32.0" prefWidth="24.0">
+                                 <items>
+                                    <MenuItem id="align-center-menu-item" mnemonicParsing="false" text="居中对齐">
+                                       <graphic>
+                                          <VBox>
+                                             <children>
+                                                <Region maxHeight="13.0" maxWidth="13.0" prefHeight="13.0" prefWidth="13.0">
+                                                   <VBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </VBox.margin>
+                                                   <styleClass>
+                                                      <String fx:value="align-center-icon" />
+                                                      <String fx:value="icon" />
+                                                   </styleClass>
+                                                </Region>
+                                             </children>
+                                          </VBox>
+                                       </graphic>
+                                    </MenuItem>
+                                    <MenuItem id="align-left-menu-item" mnemonicParsing="false" text="靠左对齐">
+                                       <graphic>
+                                          <VBox>
+                                             <children>
+                                                <Region maxHeight="13.0" maxWidth="13.0" prefHeight="13.0" prefWidth="13.0">
+                                                   <VBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </VBox.margin>
+                                                   <styleClass>
+                                                      <String fx:value="align-left-icon" />
+                                                      <String fx:value="icon" />
+                                                   </styleClass>
+                                                </Region>
+                                             </children>
+                                          </VBox>
+                                       </graphic>
+                                    </MenuItem>
+                                    <MenuItem id="align-right-menu-item" mnemonicParsing="false" text="靠右对齐">
+                                       <graphic>
+                                          <VBox>
+                                             <children>
+                                                <Region maxHeight="13.0" maxWidth="13.0" prefHeight="13.0" prefWidth="13.0">
+                                                   <VBox.margin>
+                                                      <Insets right="10.0" />
+                                                   </VBox.margin>
+                                                   <styleClass>
+                                                      <String fx:value="align-right-icon" />
+                                                      <String fx:value="icon" />
+                                                   </styleClass>
+                                                </Region>
+                                             </children>
+                                          </VBox>
+                                       </graphic>
+                                    </MenuItem>
+                                 </items>
+                              </MenuButton>
+                              <Region id="font-color-icon" maxHeight="15.0" maxWidth="15.0" prefHeight="15.0" prefWidth="15.0" styleClass="text-color-icon">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <ColorPicker id="font-color-picker" prefHeight="32.0" prefWidth="24.0" styleClass="font-color-picker" />
+                              <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
+                                 <HBox.margin>
+                                    <Insets left="4.0" right="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <ColorPicker id="background-color-picker" prefHeight="32.0" prefWidth="43.0" />
+                              <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
+                                 <HBox.margin>
+                                    <Insets left="4.0" right="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                           </children>
+                        </HBox>
+                     </center>
+                     <right>
+                        <HBox alignment="CENTER_RIGHT" prefHeight="42.0" prefWidth="173.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Button id="delete-btn" maxHeight="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="64.0" text="删除">
+                                 <graphic>
+                                    <Region prefHeight="14.0" prefWidth="14.0">
+                                       <styleClass>
+                                          <String fx:value="delete-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass>
+                                    </Region>
+                                 </graphic>
+                              </Button>
+                              <MenuButton id="add-menu-btn" mnemonicParsing="false" prefHeight="32.0" prefWidth="71.0" text="添加">
+                                 <items>
+                                  <MenuItem id="add-sub-menu-item" mnemonicParsing="false">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <Label prefWidth="68.0" text="子节点" />
+                                                <Label styleClass="description" text="Tab" textAlignment="RIGHT" />
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                    </MenuItem>
+                                  <MenuItem id="add-bro-menu-item" mnemonicParsing="false">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <Label prefWidth="68.0" text="兄弟节点" />
+                                                <Label contentDisplay="RIGHT" styleClass="description" text="Enter" textAlignment="RIGHT" />
+                                             </children>
+                                          </HBox>
+                                       </graphic>
+                                    </MenuItem>
+                                 </items>
+                                 <graphic>
+                                    <Region prefHeight="12.0" prefWidth="12.0">
+                                       <styleClass>
+                                          <String fx:value="plus-icon" />
+                                          <String fx:value="icon" />
+                                       </styleClass></Region>
+                                 </graphic>
+                              </MenuButton>
+                           </children>
+                           <padding>
+                              <Insets right="16.0" />
+                           </padding>
+                        </HBox>
+                     </right>
+                  </BorderPane>
+               </center>
+               <right>
+                  <HBox alignment="CENTER" prefHeight="42.0" prefWidth="100.0" styleClass="toolbar-side" BorderPane.alignment="CENTER">
+                     <children>
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" text="大纲" textAlignment="CENTER" />
+                        <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="60.0" text="设计" textAlignment="CENTER" />
+                     </children>
+                  </HBox>
+               </right>
+            </BorderPane>
+         </children>
+      </VBox>
+   </top>
+   <center>
+      <BorderPane BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+         <center>
+            <ScrollPane fx:id="canvasContainer" styleClass="canvas-container">
+               <content>
+                  <Pane fx:id="canvas" prefHeight="620.0" prefWidth="984.0" styleClass="mind-map-canvas" />
+               </content>
+            </ScrollPane>
+         </center>
+         <right>
+            <BorderPane id="sideBarContainer" prefHeight="534.0" prefWidth="286.0" BorderPane.alignment="CENTER">
+               <BorderPane.margin>
+                  <Insets bottom="12.0" left="12.0" right="12.0" />
+               </BorderPane.margin>
+            </BorderPane>
+         </right>
+      </BorderPane>
+   </center>
+</BorderPane>
