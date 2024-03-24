@@ -1,9 +1,14 @@
-.base {
+#base {
     -fx-border-radius: 4;
     -fx-border-color: #dedede;
     -fx-border-width: 1;
-    -fx-background-color: #fff;
+    -fx-background-color: #ffffff;
     -fx-background-radius: 4;
+}
+
+#base.max {
+    -fx-border-radius: 0;
+    -fx-background-radius: 0;
 }
 
 Button {
@@ -50,11 +55,11 @@ Button {
     -fx-background-color: #696969;
 }
 
-#closeBtn:hover {
+#window-close-btn:hover {
     -fx-background-color: red;
 }
 
-#closeBtn:hover Region {
+#window-close-btn:hover Region {
     -fx-background-color: #fff;
 }
 
@@ -144,42 +149,53 @@ Button {
     -fx-padding: 0 0 0 8;
 }
 
-.toolbar-side {
+#sidebar-tab {
     -fx-border-radius: 42;
     -fx-border-width: 1;
     -fx-border-color: #ccc;
 }
 
-.toolbar-side Button {
+#sidebar-tab Button {
     -fx-background-color: null;
     -fx-background-radius: 40;
 }
 
-.toolbar-side Button:hover {
+#sidebar-tab Button.active, #sidebar-tab Button:hover {
     -fx-background-color: rgb(232, 235, 238);
 }
 
 .canvas-container {
-    -fx-background-color: #fff;
+    -fx-background-color: #ffffff;
     -fx-border-radius: 0 16 0 0;
     -fx-border-color: #dedede;
     -fx-border-width: 1 1 0 0;
-    -fx-background-radius: 0 16 4 4;
+    -fx-background-radius: 0 16 0 0;
     -fx-effect: null;
     -fx-padding: 0;
     -fx-border-insets: null;
     -fx-background-insets: null;
 }
 
+.canvas-container .viewport {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 0 16 0 0;
+}
+
+.scroll-pane .scroll-bar {
+    -fx-background-color: null;
+    -fx-border-color: null;
+}
+
 /*轨道样式*/
 .scroll-pane .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track {
-    -fx-background-color: #ffffff;
+    -fx-background-color: null;
     -fx-padding: 28 0 0 0;
     -fx-border-color: transparent;
-    -fx-background-radius: 0em;
-    -fx-border-radius: 2em;
+    -fx-background-radius: 0;
+    -fx-border-radius: 2;
 }
+
 /*横向滚动条增减按钮样式*/
 .scroll-pane .scroll-bar:horizontal .increment-button,
 .scroll-pane .scroll-bar:horizontal .decrement-button {
@@ -211,8 +227,9 @@ Button {
     -fx-background-insets: 2, 0, 0;
     -fx-background-radius: 2;
 }
+
 .scroll-pane .scroll-bar:horizontal .thumb:hover,
-.scroll-pane .scroll-bar:vertical .thumb:hover{
+.scroll-pane .scroll-bar:vertical .thumb:hover {
     -fx-background-color: #b6b6b6;
 }
 
@@ -220,9 +237,35 @@ Button {
     -fx-background-color: #fff;
 }
 
-#sideBarContainer {
+#sidebar-container {
     -fx-background-color: rgb(237, 242, 250);
     -fx-background-radius: 16;
+}
+
+#sidebar-content {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+}
+
+#sidebar-title {
+    -fx-text-fill: #3f3f3f;
+}
+
+#sidebar-fold-btn {
+    -fx-background-color: null;
+    -fx-background-radius: 24;
+}
+
+#sidebar-fold-btn Region {
+    -fx-background-color: #8f8f8f;
+}
+
+#sidebar-fold-btn:hover {
+    -fx-background-color: rgb(223, 229, 235);
+}
+
+#sidebar-fold-btn:pressed {
+    -fx-background-color: rgb(217, 220, 226);
 }
 
 .node-box {
@@ -242,14 +285,20 @@ Button {
     -fx-border-style: solid;
     -fx-border-color: #212121;
 }
-.node-text{
+
+.node-text {
     -fx-background-color: null;
     -fx-background-insets: 0;
     -fx-border-width: 0;
     -fx-padding: 0;
 }
-.node-text:disabled{
+
+.node-text:disabled {
     -fx-opacity: 1;
+}
+
+.node-text.underline .text {
+    -fx-underline: true;
 }
 
 .mini-icon {
@@ -306,6 +355,10 @@ Button {
 
 .delete-icon {
     -fx-shape: "M7 21q-.825 0-1.412-.587T5 19V6q-.425 0-.712-.288T4 5q0-.425.288-.712T5 4h4q0-.425.288-.712T10 3h4q.425 0 .713.288T15 4h4q.425 0 .713.288T20 5q0 .425-.288.713T19 6v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zm-7 11q.425 0 .713-.288T11 16V9q0-.425-.288-.712T10 8q-.425 0-.712.288T9 9v7q0 .425.288.713T10 17m4 0q.425 0 .713-.288T15 16V9q0-.425-.288-.712T14 8q-.425 0-.712.288T13 9v7q0 .425.288.713T14 17M7 6v13z";
+}
+
+.chevron-right-icon {
+    -fx-shape: "M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375q0 .2-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7z";
 }
 
 .icon.disabled, text-color-icon.disabled {

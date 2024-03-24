@@ -41,9 +41,13 @@ public class NodeView extends AnchorPane {
         textField.textProperty().bindBidirectional(nodeEntity.contentProperty());
         textField.alignmentProperty().bind(nodeEntity.alignmentProperty());
         textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
-        //textField.underlineProperty().bind(nodeEntity.fontUnderlineProperty());
         textField.fontProperty().bind(nodeEntity.fontProperty());
         textField.disableProperty().bind(nodeEntity.disabledProperty());
+        nodeEntity.fontUnderlineProperty().addListener((e, prev, value) -> {
+            if(value){
+                textField.getStyleClass().add("underline");
+            }else textField.getStyleClass().remove("underline");
+        });
 
         this.getChildren().add(textField);
         addListener();
@@ -56,7 +60,7 @@ public class NodeView extends AnchorPane {
         nodeEntity.deleteSymbolProperty().addListener(e -> {
             NodeService.getInstance().removeNode(this);
         });
-        nodeEntity.colorProperty().addListener(e->{
+        nodeEntity.colorProperty().addListener(e -> {
             textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
         });
         this.setOnMouseClicked(e -> {
@@ -74,11 +78,11 @@ public class NodeView extends AnchorPane {
                 case TAB -> NodeService.getInstance().addSubNode();
                 case DELETE -> NodeDao.deleteNode(this.getNodeEntity());
                 case ESCAPE -> NodeService.getInstance().selectNode(null);
-                default -> System.out.println(e.getCode());
+                default -> focusText();
             }
         });
-        textField.setOnKeyPressed(e->{
-            switch (e.getCode()){
+        textField.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
                 case TAB -> {
                     NodeService.getInstance().addSubNode();
                     e.consume();
@@ -108,7 +112,8 @@ public class NodeView extends AnchorPane {
     public NodeEntity getNodeEntity() {
         return nodeEntity;
     }
-    public void focusText(){
+
+    public void focusText() {
         this.nodeEntity.setDisabled(false);
         this.textField.requestFocus();
     }

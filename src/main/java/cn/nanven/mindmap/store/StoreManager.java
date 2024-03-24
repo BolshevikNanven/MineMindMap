@@ -9,7 +9,6 @@ import java.util.List;
 public class StoreManager {
     private static final List<NodeEntity> rootNodeList = new ArrayList<>();
     private static NodeView selectedNode;
-
     public static List<NodeEntity> getRootNodeList() {
         return rootNodeList;
     }
