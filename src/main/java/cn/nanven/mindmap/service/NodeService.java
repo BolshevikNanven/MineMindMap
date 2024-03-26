@@ -141,8 +141,9 @@ public class NodeService {
             node.getNodeEntity().xProperty().set(offsetX);
             node.getNodeEntity().yProperty().set(offsetY);
         }
+    }
+    public void dragDoneNode(NodeView nodeView, MouseEvent e){
         layoutService.layout();
-
     }
 
     public void removeNode(NodeView node) {

@@ -3,19 +3,12 @@ package cn.nanven.mindmap.service.layout;
 import cn.nanven.mindmap.modal.NodeEntity;
 import cn.nanven.mindmap.service.LayoutService;
 import cn.nanven.mindmap.store.StoreManager;
-import javafx.application.Platform;
-import javafx.scene.layout.Pane;
 
 import java.util.List;
 
 public class MindMapLayout implements LayoutService {
-    private final Pane canvas;
     private final Double MARGIN_V = 16.0;
     private final Double MARGIN_H = 64.0;
-
-    public MindMapLayout(Pane canvas) {
-        this.canvas = canvas;
-    }
 
     private void doBounds(NodeEntity node) {
         double bounds = 0.0;

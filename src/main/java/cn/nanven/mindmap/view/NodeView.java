@@ -44,9 +44,9 @@ public class NodeView extends AnchorPane {
         textField.fontProperty().bind(nodeEntity.fontProperty());
         textField.disableProperty().bind(nodeEntity.disabledProperty());
         nodeEntity.fontUnderlineProperty().addListener((e, prev, value) -> {
-            if(value){
+            if (value) {
                 textField.getStyleClass().add("underline");
-            }else textField.getStyleClass().remove("underline");
+            } else textField.getStyleClass().remove("underline");
         });
 
         this.getChildren().add(textField);
@@ -106,6 +106,9 @@ public class NodeView extends AnchorPane {
         });
         this.setOnMouseDragged(e -> {
             NodeService.getInstance().dragNode(this, mouseAnchor[0], mouseAnchor[1], e);
+        });
+        this.setOnMouseReleased(e -> {
+            NodeService.getInstance().dragDoneNode(this, e);
         });
     }
 

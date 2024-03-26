@@ -406,7 +406,7 @@
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </padding>
                <center>
-                  <Pane id="sidebar-content" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                  <Pane id="sidebar-content" fx:id="sidebarContent" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </right>

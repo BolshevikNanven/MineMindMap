@@ -1,15 +1,18 @@
 package cn.nanven.mindmap.controller;
 
+import cn.nanven.mindmap.service.sidebar.SidebarFactory;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class SidebarController {
     private SimpleIntegerProperty selectedTab = new SimpleIntegerProperty(0);
     private HBox sideBarTab;
     private BorderPane sidebar;
+    private Pane sidebarContent;
     private Button foldBtn;
     private Label title;
 
@@ -18,6 +21,7 @@ public class SidebarController {
         this.sidebar = sidebar;
         this.foldBtn = (Button) sidebar.lookup("#sidebar-fold-btn");
         this.title = (Label) sidebar.lookup("#sidebar-title");
+        this.sidebarContent = (Pane) sidebar.lookup("#sidebar-content");
 
         addListener();
         updateState(selectedTab.get());
@@ -48,7 +52,9 @@ public class SidebarController {
     private void updateState(int index) {
         for (int i = 0; i < sideBarTab.getChildren().size(); i++) {
             if (index == i) {
+                Button btn = (Button) sideBarTab.getChildren().get(i);
                 sideBarTab.getChildren().get(i).getStyleClass().add("active");
+                SidebarFactory.getInstance().getService(btn.getText()).render();
             } else sideBarTab.getChildren().get(i).getStyleClass().remove("active");
         }
     }

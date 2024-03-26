@@ -1,7 +1,6 @@
 package cn.nanven.mindmap.service.sidebar;
 
-import cn.nanven.mindmap.service.LayoutService;
-import cn.nanven.mindmap.service.layout.MindMapLayout;
+import cn.nanven.mindmap.service.SidebarService;
 import javafx.scene.layout.Pane;
 
 public class SidebarFactory {
@@ -26,10 +25,10 @@ public class SidebarFactory {
         return instance;
     }
 
-    public LayoutService getService(String type) {
+    public SidebarService getService(String type) {
         switch (type) {
             default -> {
-                return new MindMapLayout(canvas);
+                return new OverviewService();
             }
         }
     }

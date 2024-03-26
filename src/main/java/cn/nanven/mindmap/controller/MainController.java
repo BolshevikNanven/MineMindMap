@@ -4,6 +4,7 @@ import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.service.NodeService;
 import cn.nanven.mindmap.service.ToolbarService;
 import cn.nanven.mindmap.service.layout.LayoutFactory;
+import cn.nanven.mindmap.service.sidebar.SidebarFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
@@ -16,23 +17,27 @@ import java.util.ResourceBundle;
 
 public class MainController implements Initializable {
     @FXML
-    protected ScrollPane canvasContainer;
+    private ScrollPane canvasContainer;
     @FXML
-    protected Pane canvas;
+    private Pane canvas;
     @FXML
-    protected BorderPane toolbar;
+    private BorderPane toolbar;
     @FXML
-    protected HBox sideBarTab;
+    private HBox sideBarTab;
     @FXML
-    protected BorderPane sidebar;
+    private BorderPane sidebar;
+    @FXML
+    private Pane sidebarContent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        new SidebarController(sideBarTab, sidebar);
-
+        SidebarFactory.init(sidebarContent);
         LayoutFactory.init(canvas);
+
         LineService.init(canvas);
         NodeService.init(canvasContainer, canvas);
         ToolbarService.init(toolbar);
+
+        new SidebarController(sideBarTab, sidebar);
     }
 }
