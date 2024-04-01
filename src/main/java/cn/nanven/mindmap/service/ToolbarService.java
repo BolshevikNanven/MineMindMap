@@ -133,6 +133,14 @@ public class ToolbarService {
             NodeEntity node=StoreManager.getSelectedNode().getNodeEntity();
             NodeDao.deleteNode(node);
         });
+        this.undoBtn.setOnAction(e -> {
+            NodeEntity prevState = UndoAndRedo.getInstance().undo();
+
+        });
+        this.redoBtn.setOnAction(e -> {
+            NodeEntity nextState = UndoAndRedo.getInstance().redo();
+
+        });
     }
 
     private void setDisable(Boolean state) {

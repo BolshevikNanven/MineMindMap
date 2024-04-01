@@ -1,5 +1,6 @@
 package cn.nanven.mindmap.modal;
 
+import com.google.gson.Gson;
 import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
@@ -8,7 +9,7 @@ import javafx.scene.text.Font;
 
 import java.util.List;
 
-public class NodeEntity {
+public class NodeEntity implements Cloneable{
     private NodeEntity parent;
     private List<NodeEntity> children;
     private Double bounds;
@@ -206,5 +207,14 @@ public class NodeEntity {
 
     public void setFontUnderline(boolean fontUnderline) {
         this.fontUnderline.set(fontUnderline);
+    }
+
+
+    @Override
+    public NodeEntity clone() {
+        Gson gson = new Gson();
+        String json = gson.toJson(this);
+        NodeEntity node = gson.fromJson(json, NodeEntity.class);
+        return node;
     }
 }

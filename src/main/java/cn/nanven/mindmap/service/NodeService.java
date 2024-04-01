@@ -3,6 +3,7 @@ package cn.nanven.mindmap.service;
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.modal.NodeEntity;
 import cn.nanven.mindmap.service.layout.LayoutFactory;
+import cn.nanven.mindmap.service.sidebar.OutlineService;
 import cn.nanven.mindmap.store.StoreManager;
 import cn.nanven.mindmap.view.NodeView;
 import javafx.beans.value.ChangeListener;
@@ -10,6 +11,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -19,14 +21,16 @@ public class NodeService {
     private Pane canvas;
     private ScrollPane container;
     private LayoutService layoutService;
+    private OutlineService outline;
 
     private NodeService() {
 
     }
 
-    private NodeService(ScrollPane container, Pane canvas) {
+    private NodeService(ScrollPane container, Pane canvas,TreeView<String> outlineTreeView) {
         this.canvas = canvas;
         this.container = container;
+        this.outline = new OutlineService(outlineTreeView);
         canvas.setFocusTraversable(true);
         canvas.setOnMouseClicked(e -> {
             canvas.requestFocus();
@@ -41,9 +45,9 @@ public class NodeService {
         return instance;
     }
 
-    public static void init(ScrollPane container, Pane canvas) {
+    public static void init(ScrollPane container, Pane canvas, TreeView<String> outlineTreeView) {
         if (null == instance) {
-            instance = new NodeService(container, canvas);
+            instance = new NodeService(container, canvas,outlineTreeView);
         }
     }
 
@@ -72,6 +76,8 @@ public class NodeService {
                 selectNode(nodeView);
                 nodeView.focusText();
                 newNode.actualHeightProperty().removeListener(this);
+                outline.buildOutlineFromNode(newNode);
+
             }
         });
 
@@ -106,6 +112,7 @@ public class NodeService {
         }
         if (newNode != null) {
             newNode.getStyleClass().addAll("node-selected");
+            outline.buildOutlineFromNode(newNode.getNodeEntity());
         }
         StoreManager.setSelectedNode(newNode);
         ToolbarService.getInstance().syncState();
@@ -148,6 +155,7 @@ public class NodeService {
 
     public void removeNode(NodeView node) {
         canvas.getChildren().remove(node);
+        outline.buildOutlineFromNode(node.getNodeEntity());
         layoutService.layout();
     }
 

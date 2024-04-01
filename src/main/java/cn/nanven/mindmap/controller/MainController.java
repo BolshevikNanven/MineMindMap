@@ -8,6 +8,7 @@ import cn.nanven.mindmap.service.sidebar.SidebarFactory;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TreeView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -28,6 +29,9 @@ public class MainController implements Initializable {
     private BorderPane sidebar;
     @FXML
     private Pane sidebarContent;
+    @FXML
+    private TreeView<String> outlineTreeView;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -35,7 +39,7 @@ public class MainController implements Initializable {
         LayoutFactory.init(canvas);
 
         LineService.init(canvas);
-        NodeService.init(canvasContainer, canvas);
+        NodeService.init(canvasContainer, canvas,outlineTreeView);
         ToolbarService.init(toolbar);
 
         new SidebarController(sideBarTab, sidebar);

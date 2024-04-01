@@ -1,0 +1,60 @@
+/* 背景和框架 */
+.tree-view {
+    -fx-background-color: #f2f2f2;
+    -fx-border-color: #b6b6b6;
+    -fx-border-insets: 5;
+    -fx-border-width: 2;
+}
+
+/* 单元格背景、边框及填充 */
+.tree-cell {
+    -fx-padding: 5px;
+    -fx-background-color: white;
+    -fx-border-color: transparent;
+}
+
+.tree-cell:filled:selected, .tree-cell:focused:selected {
+    -fx-background-color: #0096c9;
+    -fx-text-fill: white;
+}
+
+/* 鼠标悬停样式 */
+.tree-cell:hover {
+    -fx-background-color: #ececec;
+}
+
+/* 展开器（折叠按钮）样式 */
+.tree-view .tree-disclosure-node {
+    -fx-background-color: transparent;
+}
+
+.tree-view .arrow {
+    -fx-background-color: #999;
+}
+
+.tree-view .arrow:hover {
+    -fx-background-color: #666;
+}
+
+/* 分支线条颜色 */
+.tree-view .branch-line {
+    -fx-stroke: #a0a0a0;
+}
+
+/* 聚焦与非聚焦状态 */
+.tree-cell:focused {
+    -fx-background-color: #b6d7a8;
+}
+
+.tree-cell:filled {
+    -fx-background-color: #f9cb9c;
+}
+
+/* 滚动条样式 */
+.tree-view *.scroll-bar:vertical *.thumb {
+    -fx-background-color: derive(#939393, 50%);
+}
+
+.tree-view *.scroll-bar:horizontal *.thumb {
+    -fx-background-color: derive(#939393, 50%);
+}
