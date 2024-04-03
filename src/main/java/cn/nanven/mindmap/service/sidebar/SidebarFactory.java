@@ -1,21 +1,22 @@
 package cn.nanven.mindmap.service.sidebar;
 
 import cn.nanven.mindmap.service.SidebarService;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 
 public class SidebarFactory {
     private static SidebarFactory instance;
-    private Pane canvas;
+    private AnchorPane canvas;
 
     private SidebarFactory() {
 
     }
 
-    private SidebarFactory(Pane canvas) {
+    private SidebarFactory(AnchorPane canvas) {
         this.canvas = canvas;
     }
 
-    public static void init(Pane canvas) {
+    public static void init(AnchorPane canvas) {
         if (null == instance) {
             instance = new SidebarFactory(canvas);
         }
@@ -27,8 +28,11 @@ public class SidebarFactory {
 
     public SidebarService getService(String type) {
         switch (type) {
+            case "outline"-> {
+                return new OutlineService();
+            }
             default -> {
-                return new OverviewService();
+                return null;
             }
         }
     }

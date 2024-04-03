@@ -1,10 +1,12 @@
 package cn.nanven.mindmap.service;
 
+import cn.nanven.mindmap.controller.SidebarController;
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.modal.NodeEntity;
 import cn.nanven.mindmap.service.layout.LayoutFactory;
-import cn.nanven.mindmap.service.sidebar.OutlineService;
 import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.util.AlgorithmUtil;
+import cn.nanven.mindmap.view.AuxiliaryNodeView;
 import cn.nanven.mindmap.view.NodeView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -16,21 +18,21 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 public class NodeService {
     private static NodeService instance;
     private Pane canvas;
     private ScrollPane container;
     private LayoutService layoutService;
-    private OutlineService outline;
 
     private NodeService() {
 
     }
 
-    private NodeService(ScrollPane container, Pane canvas,TreeView<String> outlineTreeView) {
+    private NodeService(ScrollPane container, Pane canvas) {
         this.canvas = canvas;
         this.container = container;
-        this.outline = new OutlineService(outlineTreeView);
         canvas.setFocusTraversable(true);
         canvas.setOnMouseClicked(e -> {
             canvas.requestFocus();
@@ -39,15 +41,16 @@ public class NodeService {
             }
         });
         layoutService = LayoutFactory.getInstance().getService("mindMap");
+        StoreManager.setAuxiliaryNode(new AuxiliaryNodeView(canvas));
     }
 
     public static NodeService getInstance() {
         return instance;
     }
 
-    public static void init(ScrollPane container, Pane canvas, TreeView<String> outlineTreeView) {
+    public static void init(ScrollPane container, Pane canvas) {
         if (null == instance) {
-            instance = new NodeService(container, canvas,outlineTreeView);
+            instance = new NodeService(container, canvas);
         }
     }
 
@@ -72,12 +75,12 @@ public class NodeService {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 LineService.getInstance().addLine(newNode.getParent(), newNode);
+                SidebarController.getInstance().sync();
                 layoutService.layout();
                 selectNode(nodeView);
                 nodeView.focusText();
-                newNode.actualHeightProperty().removeListener(this);
-                outline.buildOutlineFromNode(newNode);
 
+                newNode.actualHeightProperty().removeListener(this);
             }
         });
 
@@ -112,25 +115,31 @@ public class NodeService {
         }
         if (newNode != null) {
             newNode.getStyleClass().addAll("node-selected");
-            outline.buildOutlineFromNode(newNode.getNodeEntity());
         }
         StoreManager.setSelectedNode(newNode);
         ToolbarService.getInstance().syncState();
+        SidebarController.getInstance().sync();
     }
 
     public void dragNode(NodeView node, double prevX, double prevY, MouseEvent e) {
         if (node.getCursor() == Cursor.SE_RESIZE) {
+            //右下角拉伸
             node.getNodeEntity().widthProperty().set(e.getSceneX() - node.getLayoutX());
             node.getNodeEntity().heightProperty().set(e.getSceneY() - node.getLayoutY() - 100);
         } else if (node.getCursor() == Cursor.E_RESIZE) {
+            //右边拉伸
             node.getNodeEntity().widthProperty().set(e.getSceneX() - node.getLayoutX());
         } else if (node.getCursor() == Cursor.S_RESIZE) {
+            //下边拉伸
             node.getNodeEntity().heightProperty().set(e.getSceneY() - node.getLayoutY() - 100);
         } else {
+            //拖拽节点
             Bounds viewportBounds = container.getViewportBounds();
-            double offsetY, offsetX;
-            offsetX = e.getSceneX() - prevX;
-            offsetY = e.getSceneY() - prevY;
+            double offsetX = e.getSceneX() - prevX;
+            double offsetY = e.getSceneY() - prevY;
+
+            final NodeEntity[] nearby = {null};
+            final double[] distance = {0.0};
 
             //container跟随滚动
             if (e.getSceneX() > container.getLayoutX() + viewportBounds.getWidth()) {
@@ -145,18 +154,46 @@ public class NodeService {
                 container.setVvalue(container.getVvalue() + (container.getLayoutY() + e.getSceneY() - 100) / viewportBounds.getHeight());
             }
 
-            node.getNodeEntity().xProperty().set(offsetX);
-            node.getNodeEntity().yProperty().set(offsetY);
+            //吸附遍历
+            StoreManager.getAuxiliaryNode().move(offsetX, offsetY);
+            node.setDisable(true);
+            for (NodeEntity root : StoreManager.getRootNodeList()) {
+                AlgorithmUtil.headMapNode(root, n -> {
+                    double centerX = n.getX() + n.getActualWidth() / 2;
+                    double centerY = n.getY() + n.getActualHeight() / 2;
+
+                    double currentDistance = Math.hypot(e.getSceneX() - centerX, e.getSceneY() - 100 - centerY);
+                    if (currentDistance <= distance[0] || distance[0] == 0.0) {
+                        distance[0] = currentDistance;
+                        nearby[0] = n;
+                    }
+
+                });
+            }
+            layoutService.indicate(nearby[0], e.getSceneX(), e.getSceneY() - 100);
+
         }
     }
-    public void dragDoneNode(NodeView nodeView, MouseEvent e){
+
+    public void dragDoneNode(NodeView node, double prevX, double prevY, MouseEvent e) {
+        //如果为拖拽节点
+        if (node.getCursor() == Cursor.DEFAULT) {
+            if (node.getNodeEntity().getParent() == null) {
+                node.getNodeEntity().setX(e.getSceneX() - prevX);
+                node.getNodeEntity().setY(e.getSceneY() - prevY);
+            }
+            StoreManager.getAuxiliaryNode().hide();
+            layoutService.snap(node.getNodeEntity());
+        }
+        node.setDisable(false);
         layoutService.layout();
+        SidebarController.getInstance().sync();
     }
 
     public void removeNode(NodeView node) {
         canvas.getChildren().remove(node);
-        outline.buildOutlineFromNode(node.getNodeEntity());
         layoutService.layout();
+        SidebarController.getInstance().sync();
     }
 
 }

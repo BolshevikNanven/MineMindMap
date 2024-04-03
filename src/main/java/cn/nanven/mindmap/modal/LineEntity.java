@@ -1,15 +1,21 @@
 package cn.nanven.mindmap.modal;
 
+import javafx.beans.property.SimpleObjectProperty;
+
 public class LineEntity {
-    private NodeEntity head;
+    private final SimpleObjectProperty<NodeEntity> head = new SimpleObjectProperty<>();
     private NodeEntity tail;
 
     public NodeEntity getHead() {
+        return head.get();
+    }
+
+    public SimpleObjectProperty<NodeEntity> headProperty() {
         return head;
     }
 
     public void setHead(NodeEntity head) {
-        this.head = head;
+        this.head.set(head);
     }
 
     public NodeEntity getTail() {

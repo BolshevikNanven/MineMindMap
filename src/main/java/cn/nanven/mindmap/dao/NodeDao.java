@@ -27,6 +27,25 @@ public class NodeDao {
         node.delete();
     }
 
+    public static void moveNode(NodeEntity node, NodeEntity parent, int index) {
+
+        if (node.getParent() == parent) {
+            int prevIndex = parent.getChildren().indexOf(node);
+            parent.getChildren().remove(prevIndex);
+            if (index > prevIndex) {
+                parent.getChildren().add(index - 1, node);
+            } else parent.getChildren().add(index, node);
+        } else {
+            if (node.getParent() != null) {
+                node.getParent().getChildren().remove(node);
+            }
+            parent.getChildren().add(index, node);
+            node.setParent(parent);
+            node.getLine().setHead(parent);
+        }
+
+    }
+
     public static void deleteNode(NodeEntity node) {
         if (node.getParent() == null) {
             StoreManager.getRootNodeList().remove(node);

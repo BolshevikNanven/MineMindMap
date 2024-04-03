@@ -30,15 +30,15 @@ public class LineService {
     }
 
     public void addLine(NodeEntity head, NodeEntity tail) {
-        if (head != null) {
             LineEntity lineEntity = new LineEntity();
             lineEntity.setHead(head);
             lineEntity.setTail(tail);
 
+            tail.setLine(lineEntity);
+
             LineView lineView = new StraightLine(lineEntity);
 
             canvas.getChildren().add(lineView.render());
-        }
 
     }
     public void deleteLine(Node line,LineEntity lineEntity){

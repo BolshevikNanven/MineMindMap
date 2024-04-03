@@ -3,9 +3,12 @@ package cn.nanven.mindmap.view;
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.modal.NodeEntity;
 import cn.nanven.mindmap.service.NodeService;
+import cn.nanven.mindmap.store.StoreManager;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class NodeView extends AnchorPane {
     private static final String BASE_CLASS = "node-box";
@@ -56,13 +59,16 @@ public class NodeView extends AnchorPane {
     private void addListener() {
         //定义偏移量
         final double[] mouseAnchor = new double[2];
+        AtomicReference<Boolean> isDrag = new AtomicReference<>(false);
 
         nodeEntity.deleteSymbolProperty().addListener(e -> {
+            this.nodeEntity = null;
             NodeService.getInstance().removeNode(this);
         });
         nodeEntity.colorProperty().addListener(e -> {
             textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
         });
+
         this.setOnMouseClicked(e -> {
             this.requestFocus();
             if (e.getClickCount() == 2) {
@@ -101,14 +107,19 @@ public class NodeView extends AnchorPane {
             }
         });
         this.setOnMousePressed(e -> {
+            StoreManager.getAuxiliaryNode().render(nodeEntity);
             mouseAnchor[0] = e.getSceneX() - this.getLayoutX();
             mouseAnchor[1] = e.getSceneY() - this.getLayoutY();
         });
         this.setOnMouseDragged(e -> {
+            isDrag.set(true);
             NodeService.getInstance().dragNode(this, mouseAnchor[0], mouseAnchor[1], e);
         });
         this.setOnMouseReleased(e -> {
-            NodeService.getInstance().dragDoneNode(this, e);
+            if (isDrag.get()) {
+                NodeService.getInstance().dragDoneNode(this, mouseAnchor[0], mouseAnchor[1], e);
+            }
+            isDrag.set(false);
         });
     }
 

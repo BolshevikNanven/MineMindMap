@@ -19,8 +19,14 @@ public class StraightLine extends LineView {
     public StraightLine(LineEntity lineEntity) {
         this.lineEntity = lineEntity;
         line = new Line();
-        line.startXProperty().bind(lineEntity.getHead().xProperty().add(lineEntity.getHead().actualWidthProperty()));
-        line.startYProperty().bind(lineEntity.getHead().yProperty().add(lineEntity.getHead().actualHeightProperty().divide(2)));
+
+        if (lineEntity.getHead() != null) {
+            line.startXProperty().bind(lineEntity.getHead().xProperty().add(lineEntity.getHead().actualWidthProperty()));
+            line.startYProperty().bind(lineEntity.getHead().yProperty().add(lineEntity.getHead().actualHeightProperty().divide(2)));
+        } else {
+            line.setVisible(false);
+        }
+
         line.endXProperty().bind(lineEntity.getTail().xProperty());
         line.endYProperty().bind(lineEntity.getTail().yProperty().add(lineEntity.getTail().actualHeightProperty().divide(2)));
 
@@ -31,11 +37,22 @@ public class StraightLine extends LineView {
     }
 
     private void addListener() {
-        this.lineEntity.getTail().backgroundProperty().addListener((observableValue, background, t1) -> {
-            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(t1)));
+        this.lineEntity.getTail().backgroundProperty().addListener((observableValue, prev, background) -> {
+            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(background)));
         });
         this.lineEntity.getTail().deleteSymbolProperty().addListener(e -> {
-            LineService.getInstance().deleteLine(line,lineEntity);
+            LineService.getInstance().deleteLine(line, lineEntity);
+        });
+        this.lineEntity.headProperty().addListener((observableValue, prev, nodeEntity) -> {
+            if (nodeEntity != null) {
+                line.setVisible(true);
+                line.startXProperty().unbind();
+                line.startYProperty().unbind();
+                line.startXProperty().bind(lineEntity.getHead().xProperty().add(lineEntity.getHead().actualWidthProperty()));
+                line.startYProperty().bind(lineEntity.getHead().yProperty().add(lineEntity.getHead().actualHeightProperty().divide(2)));
+            } else {
+                line.setVisible(false);
+            }
         });
     }
 

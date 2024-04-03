@@ -273,7 +273,9 @@ Button {
     -fx-border-radius: 8;
     -fx-border-width: 2;
     -fx-border-color: transparent;
-
+}
+.node-box:disabled{
+    -fx-opacity: 0.6;
 }
 
 .node-box:hover {

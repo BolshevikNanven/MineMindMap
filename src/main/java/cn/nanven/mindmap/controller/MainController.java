@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeView;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -28,10 +29,7 @@ public class MainController implements Initializable {
     @FXML
     private BorderPane sidebar;
     @FXML
-    private Pane sidebarContent;
-    @FXML
-    private TreeView<String> outlineTreeView;
-
+    private AnchorPane sidebarContent;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -39,9 +37,9 @@ public class MainController implements Initializable {
         LayoutFactory.init(canvas);
 
         LineService.init(canvas);
-        NodeService.init(canvasContainer, canvas,outlineTreeView);
+        NodeService.init(canvasContainer, canvas);
         ToolbarService.init(toolbar);
 
-        new SidebarController(sideBarTab, sidebar);
+        SidebarController.init(sideBarTab, sidebar,sidebarContent);
     }
 }

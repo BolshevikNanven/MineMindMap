@@ -13,7 +13,7 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.Tooltip?>
-<?import javafx.scene.control.TreeView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="base" prefHeight="640.0" prefWidth="939.0" stylesheets="@main.css,@outline.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
+<BorderPane id="base" prefHeight="640.0" prefWidth="939.0" stylesheets="@main.css,@outline.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
    <top>
       <VBox style="-fx-background-color: null;" BorderPane.alignment="CENTER">
          <children>
@@ -421,10 +421,7 @@
                   <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                </padding>
                <center>
-                  <Pane id="sidebar-content" fx:id="sidebarContent" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-                     <children>
-                        <TreeView fx:id="outlineTreeView" layoutX="1.0" layoutY="-1.0" prefHeight="474.0" prefWidth="277.0" />
-                     </children></Pane>
+                  <AnchorPane id="sidebar-content" fx:id="sidebarContent" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                </center>
             </BorderPane>
          </right>

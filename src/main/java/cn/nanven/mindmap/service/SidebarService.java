@@ -1,5 +1,8 @@
 package cn.nanven.mindmap.service;
 
+import javafx.scene.Node;
+
 public interface SidebarService {
-    void render();
+    Node render();
+    void sync();
 }

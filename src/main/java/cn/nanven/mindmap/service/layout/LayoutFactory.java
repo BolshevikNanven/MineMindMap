@@ -28,7 +28,7 @@ public class LayoutFactory {
     public LayoutService getService(String type) {
         switch (type) {
             default -> {
-                return new MindMapLayout();
+                return new MindMapLayout(canvas);
             }
         }
     }

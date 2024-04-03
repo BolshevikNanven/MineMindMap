@@ -12,6 +12,7 @@ import java.util.List;
 public class NodeEntity implements Cloneable{
     private NodeEntity parent;
     private List<NodeEntity> children;
+    private LineEntity line;
     private Double bounds;
     private final SimpleBooleanProperty deleteSymbol = new SimpleBooleanProperty();
     private final SimpleBooleanProperty disabled = new SimpleBooleanProperty();
@@ -30,7 +31,14 @@ public class NodeEntity implements Cloneable{
 
     public void delete() {
         this.deleteSymbol.set(true);
+    }
 
+    public LineEntity getLine() {
+        return line;
+    }
+
+    public void setLine(LineEntity line) {
+        this.line = line;
     }
 
     public boolean getDisabled() {

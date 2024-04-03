@@ -1,43 +1,25 @@
 package cn.nanven.mindmap.service.sidebar;
 
 import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.service.SidebarService;
+import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.util.AlgorithmUtil;
+import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.util.List;
 
-public class OutlineService {
-    private TreeView<String> outlineTreeView;
+public class OutlineService implements SidebarService {
+    private final TreeView<String> outlineTreeView;
 
-
-    public OutlineService()
-    {
-
-    }
-    public OutlineService(TreeView<String> outlineTreeView)
-    {
-        this.outlineTreeView = outlineTreeView;
-    }
-
-    public TreeView<String> getOutlineTreeView() {
-        return outlineTreeView;
-    }
-
-    public void setOutlineTreeView(TreeView<String> outlineTreeView) {
-        this.outlineTreeView = outlineTreeView;
-    }
-
-    private NodeEntity findRootNode(NodeEntity node) {
-        NodeEntity current = node;
-        while (current != null && current.getParent() != null) {
-            current = current.getParent();
-        }
-        return current;
+    public OutlineService() {
+        outlineTreeView = new TreeView<>();
     }
 
     // 构建大纲
-    public  void buildOutlineFromNode(NodeEntity node) {
-        NodeEntity rootNode = findRootNode(node);
+    private void buildOutlineFromNode(NodeEntity node) {
+        NodeEntity rootNode = AlgorithmUtil.findRoot(node);
         if (rootNode != null) {
             TreeItem<String> rootItem = new TreeItem<>(rootNode.getContent());
             outlineTreeView.setRoot(rootItem);
@@ -60,11 +42,21 @@ public class OutlineService {
     }
 
 
-    public void updateOutline(NodeEntity node) {
-        NodeEntity rootNode = findRootNode(node); // 寻找根节点
-        outlineTreeView.getRoot().getChildren().clear();
-        if (rootNode != null) {
-            addTreeItems(outlineTreeView.getRoot(), rootNode.getChildren()); // 根据新的根节点重建大纲
+    private void updateOutline() {
+        for (NodeEntity node : StoreManager.getRootNodeList()) {
+            outlineTreeView.setRoot(new TreeItem<>(node.getContent()));
+            addTreeItems(outlineTreeView.getRoot(), node.getChildren()); // 根据新的根节点重建大纲
         }
+    }
+
+    @Override
+    public Node render() {
+        updateOutline();
+        return outlineTreeView;
+    }
+
+    @Override
+    public void sync() {
+        updateOutline();
     }
 }

@@ -4,21 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/UndoAndRedo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/outline.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+    <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="侧栏接口">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/AlgorithmUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/MapEventHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/AuxiliaryNodeView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/SidebarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/SidebarController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/dao/NodeDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/dao/NodeDao.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/LineEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/LineEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/NodeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/NodeEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LayoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LayoutService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LineService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/SidebarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/SidebarService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LayoutFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LayoutFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/MindMapLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/MindMapLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OverviewService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/SidebarFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/SidebarFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/store/StoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/store/StoreManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/Line/StraightLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/Line/StraightLine.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +37,18 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="4f8b0fb5-f1c7-4723-aa5e-03efeac947f9" />
+        <option name="url" value="https://github.com/BolshevikNanven/MineMindMap.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="true" />
@@ -53,26 +75,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.Application.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="mindmap" />
@@ -93,6 +118,19 @@
       <framework value="gotest" />
       <method v="2" />
     </configuration>
+    <configuration name="Application" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="cn.nanven.mindmap.Application" />
+      <module name="Mindmap" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="cn.nanven.mindmap.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="MineMindMap" />
       <method v="2">
@@ -106,6 +144,18 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="应用程序.Application" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+      </set>
+    </attachedChunks>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="应用程序级" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -117,11 +167,17 @@
       <updated>1711969120936</updated>
       <workItem from="1711969124057" duration="24000" />
       <workItem from="1711969154757" duration="1235000" />
+      <workItem from="1712030023159" duration="10192000" />
+      <workItem from="1712110001893" duration="14897000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="侧栏接口" />
+    <option name="LAST_COMMIT_MESSAGE" value="侧栏接口" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>
