@@ -134,11 +134,11 @@ public class ToolbarService {
             NodeDao.deleteNode(node);
         });
         this.undoBtn.setOnAction(e -> {
-            NodeEntity prevState = UndoAndRedo.getInstance().undo();
+
 
         });
         this.redoBtn.setOnAction(e -> {
-            NodeEntity nextState = UndoAndRedo.getInstance().redo();
+
 
         });
     }

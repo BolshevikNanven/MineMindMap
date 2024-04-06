@@ -21,6 +21,9 @@ public class WindowService {
     private double windowHeight;
     private boolean isMax;
 
+    private double dragOffsetX;
+    private double dragOffsetY;
+
     private WindowService() {
     }
 
@@ -75,6 +78,22 @@ public class WindowService {
         });
         this.closeBtn.setOnAction(e -> {
             stage.close();
+        });
+        root.setOnMousePressed(event -> {
+
+            if (!isMax) {
+                dragOffsetX = event.getSceneX();
+                dragOffsetY = event.getSceneY();
+            }
+        });
+
+        // 添加鼠标拖动时的事件处理
+        root.setOnMouseDragged(event -> {
+
+            if (!isMax) {
+                stage.setX(event.getScreenX() - dragOffsetX);
+                stage.setY(event.getScreenY() - dragOffsetY);
+            }
         });
     }
 

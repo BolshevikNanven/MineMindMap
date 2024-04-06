@@ -1,16 +1,27 @@
 package cn.nanven.mindmap.store;
 
+import cn.nanven.mindmap.modal.Command;
 import cn.nanven.mindmap.modal.NodeEntity;
 import cn.nanven.mindmap.view.AuxiliaryNodeView;
 import cn.nanven.mindmap.view.NodeView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Stack;
 
 public class StoreManager {
     private static final List<NodeEntity> rootNodeList = new ArrayList<>();
     private static NodeView selectedNode;
     private static AuxiliaryNodeView auxiliaryNode;
+    private static Stack<Command> undoStack = new Stack<>();
+    private static Stack<Command> redoStack = new Stack<>();
+
+    public static Stack<Command> getUndoStack() {
+        return undoStack;
+    }
+    public static Stack<Command> getRedoStack() {
+        return redoStack;
+    }
 
     public static List<NodeEntity> getRootNodeList() {
         return rootNodeList;

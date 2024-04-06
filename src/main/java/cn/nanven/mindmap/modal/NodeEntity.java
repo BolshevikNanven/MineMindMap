@@ -225,4 +225,9 @@ public class NodeEntity implements Cloneable{
         NodeEntity node = gson.fromJson(json, NodeEntity.class);
         return node;
     }
+
+    public boolean hasParent()
+    {
+        return this.parent != null;
+    }
 }
