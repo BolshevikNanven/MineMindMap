@@ -9,7 +9,7 @@ import javafx.scene.layout.Pane;
 
 import java.util.List;
 
-public class MindMapLayout implements LayoutService {
+public class LogicMapLayout implements LayoutService {
     private final Double MARGIN_V = 16.0;
     private final Double MARGIN_H = 64.0;
     private final Pane canvas;
@@ -18,7 +18,7 @@ public class MindMapLayout implements LayoutService {
     private NodeEntity brother;
     private int direction;
 
-    public MindMapLayout(Pane canvas) {
+    public LogicMapLayout(Pane canvas) {
         this.canvas = canvas;
         this.indicator = new Pane();
         this.indicator.setPrefHeight(4);
@@ -35,9 +35,9 @@ public class MindMapLayout implements LayoutService {
         } else {
             for (NodeEntity child : node.getChildren()) {
                 doBounds(child);
-                if (bounds<=0.0){
+                if (bounds <= 0.0) {
                     bounds += child.getBounds();
-                }else bounds += child.getBounds() + MARGIN_V;
+                } else bounds += child.getBounds() + MARGIN_V;
 
             }
         }
@@ -129,8 +129,8 @@ public class MindMapLayout implements LayoutService {
     public void snap(NodeEntity node, double x, double y, double prevX, double prevY) {
         //节点不吸附直接移动
         if (parent == null || parent == node || brother == node || node.getParent() == null) {
-            node.setX(x - prevX);
-            node.setY(y - prevY);
+            node.setX(x/ (StoreManager.getCanvasScale() / 100.0) - prevX);
+            node.setY(y/ (StoreManager.getCanvasScale() / 100.0) - prevY);
         }
 
         ///节点吸附自身，结束

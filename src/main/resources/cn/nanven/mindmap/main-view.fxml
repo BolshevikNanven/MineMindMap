@@ -11,6 +11,7 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -144,6 +145,25 @@
                               <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
                                  <HBox.margin>
                                     <Insets left="4.0" right="4.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <Region maxHeight="14.0" maxWidth="14.0" prefHeight="14.0" prefWidth="14.0">
+                                 <styleClass>
+                                    <String fx:value="search-icon" />
+                                    <String fx:value="icon" />
+                                 </styleClass>
+                                 <HBox.margin>
+                                    <Insets left="6.0" right="8.0" />
+                                 </HBox.margin>
+                              </Region>
+                              <Slider id="scale-slider" max="150.0" min="50.0" prefHeight="14.0" prefWidth="73.0" value="100.0">
+                                 <HBox.margin>
+                                    <Insets right="4.0" />
+                                 </HBox.margin>
+                              </Slider>
+                              <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
+                                 <HBox.margin>
+                                    <Insets left="4.0" />
                                  </HBox.margin>
                               </Region>
                               <ToggleButton id="bold-btn" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">

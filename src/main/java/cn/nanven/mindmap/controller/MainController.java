@@ -1,9 +1,6 @@
 package cn.nanven.mindmap.controller;
 
-import cn.nanven.mindmap.service.LineService;
-import cn.nanven.mindmap.service.NodeService;
-import cn.nanven.mindmap.service.ToolbarService;
-import cn.nanven.mindmap.service.UndoAndRedoService;
+import cn.nanven.mindmap.service.*;
 import cn.nanven.mindmap.service.layout.LayoutFactory;
 import cn.nanven.mindmap.service.sidebar.SidebarFactory;
 import javafx.fxml.FXML;
@@ -37,6 +34,7 @@ public class MainController implements Initializable {
         SidebarFactory.init(sidebarContent);
         LayoutFactory.init(canvas);
 
+        CanvasService.init(canvas);
         UndoAndRedoService.init();
         LineService.init(canvas);
         NodeService.init(canvasContainer, canvas);

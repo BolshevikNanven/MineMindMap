@@ -5,31 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="重命名">
-      <changelist_data name="nanven" email="icedeerwanna@outlook.com" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/dao/NodeDao.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/dao/NodeDao.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/Command.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/Command.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/LineEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/LineEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/modal/NodeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LayoutService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LayoutService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/LineService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/UndoAndRedoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/UndoAndRedoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/MindMapLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/MindMapLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LayoutFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LayoutFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/MindMapLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LogicMapLayout.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/store/StoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/store/StoreManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/AlgorithmUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/AlgorithmUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/MapEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/MapEventHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/AuxiliaryNodeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/AuxiliaryNodeView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/Line/StraightLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/Line/StraightLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/LineView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/LineView.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/outline.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/outline.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,6 +171,15 @@
       <workItem from="1712110001893" duration="14897000" />
       <workItem from="1712368066785" duration="3210000" />
     </task>
+    <task id="LOCAL-00001" summary="重命名">
+      <option name="closed" value="true" />
+      <created>1712392174640</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1712392174640</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -18,6 +18,7 @@ public class ToolbarService {
     private NodeEntity node;
     private Button undoBtn;
     private Button redoBtn;
+    private Slider scaleSlider;
     private ToggleButton boldBtn;
     private ToggleButton italicBtn;
     private ToggleButton underlineBtn;
@@ -38,6 +39,7 @@ public class ToolbarService {
     private ToolbarService(BorderPane toolbar) {
         this.undoBtn = (Button) toolbar.lookup("#undo-btn");
         this.redoBtn = (Button) toolbar.lookup("#redo-btn");
+        this.scaleSlider = (Slider) toolbar.lookup("#scale-slider");
         this.boldBtn = (ToggleButton) toolbar.lookup("#bold-btn");
         this.italicBtn = (ToggleButton) toolbar.lookup("#italic-btn");
         this.underlineBtn = (ToggleButton) toolbar.lookup("#underline-btn");
@@ -129,8 +131,8 @@ public class ToolbarService {
             node.setBackground(StyleUtil.newBackground(t1.toString().substring(2)));
             syncState();
         });
-        this.deleteBtn.setOnAction(e->{
-            NodeEntity node=StoreManager.getSelectedNode().getNodeEntity();
+        this.deleteBtn.setOnAction(e -> {
+            NodeEntity node = StoreManager.getSelectedNode().getNodeEntity();
             NodeDao.deleteNode(node);
         });
         this.undoBtn.setOnAction(e -> {
@@ -140,6 +142,9 @@ public class ToolbarService {
         this.redoBtn.setOnAction(e -> {
 
 
+        });
+        this.scaleSlider.valueProperty().addListener((observableValue, number, t1) -> {
+            CanvasService.getInstance().scale(t1.intValue());
         });
     }
 
@@ -194,6 +199,8 @@ public class ToolbarService {
         String backgroundColor = StyleUtil.getBackgroundColor(node.getBackground());
         String fontColor = node.getColor().toString();
         Pos alignment = node.getAlignment();
+
+        this.scaleSlider.setValue(StoreManager.getCanvasScale());
 
         this.boldBtn.setSelected(bold);
         this.underlineBtn.setSelected(underline);

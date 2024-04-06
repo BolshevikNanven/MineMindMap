@@ -14,6 +14,7 @@ public class NodeEntity implements Cloneable{
     private List<NodeEntity> children;
     private LineEntity line;
     private Double bounds;
+    private Object param;
     private final SimpleBooleanProperty deleteSymbol = new SimpleBooleanProperty();
     private final SimpleBooleanProperty disabled = new SimpleBooleanProperty();
     private final SimpleObjectProperty<Pos> alignment = new SimpleObjectProperty<>();
@@ -31,6 +32,14 @@ public class NodeEntity implements Cloneable{
 
     public void delete() {
         this.deleteSymbol.set(true);
+    }
+
+    public Object getParam() {
+        return param;
+    }
+
+    public void setParam(Object param) {
+        this.param = param;
     }
 
     public LineEntity getLine() {

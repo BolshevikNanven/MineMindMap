@@ -148,6 +148,23 @@ Button {
     -fx-background-color: null;
     -fx-padding: 0 0 0 8;
 }
+.slider > .track{
+    -fx-background-color: #dedede;
+    -fx-background-insets: 0;
+    -fx-padding: 2;
+}
+.slider > .thumb{
+    -fx-background-color: #525252;
+    -fx-border-width: 3.5;
+    -fx-border-color: rgb(237, 242, 250);
+    -fx-padding: 8.5 1.5 8.5 1.5;
+    -fx-background-insets: 2;
+    -fx-border-radius: 8;
+    -fx-effect: null;
+}
+.slider > .thumb:pressed{
+    -fx-padding: 8.5 2 8.5 2;
+}
 
 #sidebar-tab {
     -fx-border-radius: 42;
@@ -361,6 +378,9 @@ Button {
 
 .chevron-right-icon {
     -fx-shape: "M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375q0 .2-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7z";
+}
+.search-icon{
+    -fx-shape: "M9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5q0-1.875-1.312-3.187T9.5 5Q7.625 5 6.313 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14";
 }
 
 .icon.disabled, text-color-icon.disabled {
