@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.store;
 
-import cn.nanven.mindmap.modal.Command;
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.Command;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.view.AuxiliaryNodeView;
 import cn.nanven.mindmap.view.NodeView;
 

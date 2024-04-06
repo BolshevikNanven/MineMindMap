@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.dao.NodeDao;
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.store.StoreManager;
 import cn.nanven.mindmap.util.StyleUtil;
 import cn.nanven.mindmap.view.NodeView;

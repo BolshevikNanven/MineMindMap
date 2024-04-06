@@ -1,4 +1,4 @@
-package cn.nanven.mindmap.modal;
+package cn.nanven.mindmap.entity;
 
 import javafx.beans.property.SimpleObjectProperty;
 

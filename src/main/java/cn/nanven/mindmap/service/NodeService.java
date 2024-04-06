@@ -2,7 +2,7 @@ package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.controller.SidebarController;
 import cn.nanven.mindmap.dao.NodeDao;
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.layout.LayoutFactory;
 import cn.nanven.mindmap.store.StoreManager;
 import cn.nanven.mindmap.util.AlgorithmUtil;
@@ -13,12 +13,9 @@ import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TreeView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 public class NodeService {
     private static NodeService instance;
@@ -178,12 +175,8 @@ public class NodeService {
     public void dragDoneNode(NodeView node, double prevX, double prevY, MouseEvent e) {
         //如果为拖拽节点
         if (node.getCursor() == Cursor.DEFAULT) {
-            if (node.getNodeEntity().getParent() == null) {
-                node.getNodeEntity().setX(e.getSceneX() - prevX);
-                node.getNodeEntity().setY(e.getSceneY() - prevY);
-            }
             StoreManager.getAuxiliaryNode().hide();
-            layoutService.snap(node.getNodeEntity());
+            layoutService.snap(node.getNodeEntity(), e.getSceneX(), e.getSceneY(), prevX, prevY);
         }
         node.setDisable(false);
         layoutService.layout();

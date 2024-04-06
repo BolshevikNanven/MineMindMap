@@ -1,6 +1,6 @@
 package cn.nanven.mindmap.service.sidebar;
 
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.SidebarService;
 import cn.nanven.mindmap.store.StoreManager;
 import cn.nanven.mindmap.util.AlgorithmUtil;

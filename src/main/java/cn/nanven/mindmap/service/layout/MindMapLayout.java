@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.service.layout;
 
 import cn.nanven.mindmap.dao.NodeDao;
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.LayoutService;
 import cn.nanven.mindmap.store.StoreManager;
 import cn.nanven.mindmap.util.AlgorithmUtil;
@@ -35,7 +35,10 @@ public class MindMapLayout implements LayoutService {
         } else {
             for (NodeEntity child : node.getChildren()) {
                 doBounds(child);
-                bounds += child.getBounds() + MARGIN_V;
+                if (bounds<=0.0){
+                    bounds += child.getBounds();
+                }else bounds += child.getBounds() + MARGIN_V;
+
             }
         }
 
@@ -57,12 +60,12 @@ public class MindMapLayout implements LayoutService {
                 top += broNodeList.get(i).getBounds() + MARGIN_V;
             }
 
-            top += node.getBounds() / 2 - node.getActualHeight() / 2 + MARGIN_V / 2;
+            top += node.getBounds() / 2 - node.getActualHeight() / 2;
             node.setY(top);
             node.setX(parent.getX() + parent.getActualWidth() + MARGIN_H);
 
         }
-        if(node.getChildren()!=null){
+        if (node.getChildren() != null) {
             for (NodeEntity child : node.getChildren()) {
                 doLayout(child);
             }
@@ -123,28 +126,37 @@ public class MindMapLayout implements LayoutService {
 
     //TODO:优化逻辑
     @Override
-    public void snap(NodeEntity node) {
+    public void snap(NodeEntity node, double x, double y, double prevX, double prevY) {
+        //节点不吸附直接移动
+        if (parent == null || parent == node || brother == node || node.getParent() == null) {
+            node.setX(x - prevX);
+            node.setY(y - prevY);
+        }
+
+        ///节点吸附自身，结束
         if (parent == node || brother == node) {
             indicator.setVisible(false);
             return;
         }
 
-        if (parent == null && node.getParent() != null) {
+        if (parent == null && node.getParent() != null) {   //节点取消吸附
             node.getParent().getChildren().remove(node);
             node.setParent(null);
             node.getLine().setHead(null);
+
             StoreManager.getRootNodeList().add(node);
-        } else if (parent != null && brother == null) {
+        } else if (parent != null && brother == null) {  //节点右吸附
             if (AlgorithmUtil.checkExistParent(parent, node)) {
                 indicator.setVisible(false);
                 return;
             }
             NodeDao.moveNode(node, parent, 0);
-        } else if (parent != null && brother != null) {
+        } else if (parent != null && brother != null) {   //节点上下吸附
             int broIndex = brother.getParent().getChildren().indexOf(brother);
             NodeDao.moveNode(node, parent, direction == 0 ? broIndex : broIndex + 1);
         }
         indicator.setVisible(false);
+
     }
 
 }

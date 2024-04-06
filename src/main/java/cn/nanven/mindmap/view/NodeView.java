@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.view;
 
 import cn.nanven.mindmap.dao.NodeDao;
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.NodeService;
 import cn.nanven.mindmap.store.StoreManager;
 import javafx.scene.Cursor;
@@ -79,6 +79,10 @@ public class NodeView extends AnchorPane {
             e.consume();
         });
         this.setOnKeyPressed(e -> {
+            if (e.isControlDown()){
+
+                return;
+            }
             switch (e.getCode()) {
                 case ENTER -> NodeService.getInstance().addBroNode();
                 case TAB -> NodeService.getInstance().addSubNode();

@@ -1,6 +1,6 @@
 package cn.nanven.mindmap.view;
 
-import cn.nanven.mindmap.modal.LineEntity;
+import cn.nanven.mindmap.entity.LineEntity;
 import javafx.scene.Node;
 
 public abstract class LineView {

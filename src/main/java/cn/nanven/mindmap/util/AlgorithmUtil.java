@@ -1,7 +1,6 @@
 package cn.nanven.mindmap.util;
 
-import cn.nanven.mindmap.modal.NodeEntity;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.entity.NodeEntity;
 
 public class AlgorithmUtil {
     public static void headMapNode(NodeEntity node, MapEventHandler handler) {

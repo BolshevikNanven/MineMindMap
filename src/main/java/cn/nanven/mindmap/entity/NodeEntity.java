@@ -1,4 +1,4 @@
-package cn.nanven.mindmap.modal;
+package cn.nanven.mindmap.entity;
 
 import com.google.gson.Gson;
 import javafx.beans.property.*;

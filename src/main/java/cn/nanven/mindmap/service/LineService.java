@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.service;
 
-import cn.nanven.mindmap.modal.LineEntity;
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.LineEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.view.Line.StraightLine;
 import cn.nanven.mindmap.view.LineView;
 import javafx.scene.Node;

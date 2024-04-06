@@ -1,6 +1,6 @@
 package cn.nanven.mindmap.dao;
 
-import cn.nanven.mindmap.modal.NodeEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.ToolbarService;
 import cn.nanven.mindmap.store.StoreManager;
 import cn.nanven.mindmap.util.StyleUtil;

@@ -1,6 +1,6 @@
 package cn.nanven.mindmap.service;
 
-import cn.nanven.mindmap.modal.Command;
+import cn.nanven.mindmap.entity.Command;
 import cn.nanven.mindmap.store.StoreManager;
 
 public class UndoAndRedoService {
@@ -8,10 +8,12 @@ public class UndoAndRedoService {
     private static UndoAndRedoService instance;
     private static boolean flagOfRedo = false;
 
-    public static synchronized UndoAndRedoService getInstance() {
+    public static UndoAndRedoService getInstance() {
+        return instance;
+    }
+    public static void init(){
         if (instance == null)
             instance = new UndoAndRedoService();
-        return instance;
     }
 
     public void pushUndoStack(Command command) {

@@ -1,6 +1,6 @@
 package cn.nanven.mindmap.view.Line;
 
-import cn.nanven.mindmap.modal.LineEntity;
+import cn.nanven.mindmap.entity.LineEntity;
 import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.util.StyleUtil;
 import cn.nanven.mindmap.view.LineView;
