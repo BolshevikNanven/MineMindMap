@@ -83,8 +83,9 @@ public class LogicMapLayout implements LayoutService {
 
     @Override
     public void indicate(NodeEntity node, double x, double y) {
-        double bottom = y - (node.getY() + node.getActualHeight() / 2);
-        double right = x - (node.getX() + node.getActualWidth() / 2);
+        double bottom = y - node.getY();
+        double right = x - node.getX();
+
 
         if (Math.abs(bottom) > node.getActualHeight() + 64 || Math.abs(right) > node.getActualWidth() + 64) {
             parent = null;
@@ -129,8 +130,8 @@ public class LogicMapLayout implements LayoutService {
     public void snap(NodeEntity node, double x, double y, double prevX, double prevY) {
         //节点不吸附直接移动
         if (parent == null || parent == node || brother == node || node.getParent() == null) {
-            node.setX(x/ (StoreManager.getCanvasScale() / 100.0) - prevX);
-            node.setY(y/ (StoreManager.getCanvasScale() / 100.0) - prevY);
+            node.setX(x - prevX + node.getX());
+            node.setY(y - prevY + node.getY());
         }
 
         ///节点吸附自身，结束

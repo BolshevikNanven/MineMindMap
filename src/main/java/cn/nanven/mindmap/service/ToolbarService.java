@@ -143,9 +143,7 @@ public class ToolbarService {
 
 
         });
-        this.scaleSlider.valueProperty().addListener((observableValue, number, t1) -> {
-            CanvasService.getInstance().scale(t1.intValue());
-        });
+        this.scaleSlider.valueProperty().bindBidirectional(StoreManager.canvasScaleProperty());
     }
 
     private void setDisable(Boolean state) {
@@ -199,8 +197,6 @@ public class ToolbarService {
         String backgroundColor = StyleUtil.getBackgroundColor(node.getBackground());
         String fontColor = node.getColor().toString();
         Pos alignment = node.getAlignment();
-
-        this.scaleSlider.setValue(StoreManager.getCanvasScale());
 
         this.boldBtn.setSelected(bold);
         this.underlineBtn.setSelected(underline);

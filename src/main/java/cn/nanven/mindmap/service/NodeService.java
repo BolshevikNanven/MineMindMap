@@ -11,6 +11,7 @@ import cn.nanven.mindmap.view.NodeView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
@@ -119,22 +120,26 @@ public class NodeService {
     }
 
     public void dragNode(NodeView node, double prevX, double prevY, MouseEvent e) {
+        Point2D prevLocalCoords = canvas.sceneToLocal(prevX, prevY);
+        Point2D localCoords = canvas.sceneToLocal(e.getSceneX(), e.getSceneY());
+
         if (node.getCursor() == Cursor.SE_RESIZE) {
             //右下角拉伸
-            node.getNodeEntity().widthProperty().set(e.getSceneX() - node.getLayoutX());
-            node.getNodeEntity().heightProperty().set(e.getSceneY() - node.getLayoutY() - 100);
+            node.getNodeEntity().widthProperty().set(localCoords.getX() - node.getLayoutX());
+            node.getNodeEntity().heightProperty().set(localCoords.getY() - node.getLayoutY());
         } else if (node.getCursor() == Cursor.E_RESIZE) {
             //右边拉伸
-            node.getNodeEntity().widthProperty().set(e.getSceneX() - node.getLayoutX());
+            node.getNodeEntity().widthProperty().set(localCoords.getX() - node.getLayoutX());
         } else if (node.getCursor() == Cursor.S_RESIZE) {
             //下边拉伸
-            node.getNodeEntity().heightProperty().set(e.getSceneY() - node.getLayoutY() - 100);
+            node.getNodeEntity().heightProperty().set(localCoords.getY() - node.getLayoutY());
         } else {
             //拖拽节点
             Bounds viewportBounds = container.getViewportBounds();
-            double offsetX = e.getSceneX() - prevX;
-            double offsetY = e.getSceneY() - prevY;
+            double offsetX = localCoords.getX() - prevLocalCoords.getX() + node.getLayoutX();
+            double offsetY = localCoords.getY() - prevLocalCoords.getY() + node.getLayoutY();
 
+            //lambda变量
             final NodeEntity[] nearby = {null};
             final double[] distance = {0.0};
 
@@ -151,9 +156,11 @@ public class NodeService {
                 container.setVvalue(container.getVvalue() + (container.getLayoutY() + e.getSceneY() - 100) / viewportBounds.getHeight());
             }
 
-            //吸附遍历
+            //拖拽辅助节点
             StoreManager.getAuxiliaryNode().move(offsetX, offsetY);
             node.setDisable(true);
+
+            //遍历寻找吸附节点
             for (NodeEntity root : StoreManager.getRootNodeList()) {
                 AlgorithmUtil.headMapNode(root, n -> {
                     double centerX = n.getX() + n.getActualWidth() / 2;
@@ -167,7 +174,7 @@ public class NodeService {
 
                 });
             }
-            layoutService.indicate(nearby[0], e.getSceneX(), e.getSceneY() - 100);
+            layoutService.indicate(nearby[0], localCoords.getX(), localCoords.getY());
 
         }
     }
@@ -175,15 +182,21 @@ public class NodeService {
     public void dragDoneNode(NodeView node, double prevX, double prevY, MouseEvent e) {
         //如果为拖拽节点
         if (node.getCursor() == Cursor.DEFAULT) {
+            Point2D orgLocalCoords = canvas.sceneToLocal(prevX, prevY);
+            Point2D localCoords = canvas.sceneToLocal(e.getSceneX(), e.getSceneY());
+
             StoreManager.getAuxiliaryNode().hide();
-            layoutService.snap(node.getNodeEntity(), e.getSceneX(), e.getSceneY(), prevX, prevY);
+            layoutService.snap(node.getNodeEntity(), localCoords.getX(), localCoords.getY(), orgLocalCoords.getX(), orgLocalCoords.getY());
         }
-        node.setDisable(false);
+
         layoutService.layout();
         SidebarController.getInstance().sync();
+
+        node.setDisable(false);
     }
 
     public void removeNode(NodeView node) {
+        //移除node视图
         canvas.getChildren().remove(node);
         layoutService.layout();
         SidebarController.getInstance().sync();

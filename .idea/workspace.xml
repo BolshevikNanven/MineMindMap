@@ -4,15 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="重命名">
+    <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="缩放功能">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/Application.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LayoutFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LayoutFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/MindMapLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LogicMapLayout.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/store/StoreManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/store/StoreManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LogicMapLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LogicMapLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" afterDir="false" />
     </list>
@@ -73,31 +72,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.go.formatter.settings.were.checked": "true",
-    "RunOnceActivity.go.migrated.go.modules.settings": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "go.import.settings.migrated": "true",
-    "jdk.selected.JAVA_MODULE": "17",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "模块",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "MavenSettings",
-    "vue.rearranger.settings.migration": "true",
-    "应用程序.Application.executor": "Run"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.formatter.settings.were.checked&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.go.migrated.go.modules.settings&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;go.import.settings.migrated&quot;: &quot;true&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;模块&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;MavenSettings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;,
+    &quot;应用程序.Application.executor&quot;: &quot;Run&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration default="true" type="GoApplicationRunConfiguration" factoryName="Go Application">
       <module name="mindmap" />
@@ -170,6 +169,7 @@
       <workItem from="1712030023159" duration="10192000" />
       <workItem from="1712110001893" duration="14897000" />
       <workItem from="1712368066785" duration="3210000" />
+      <workItem from="1712458942650" duration="18641000" />
     </task>
     <task id="LOCAL-00001" summary="重命名">
       <option name="closed" value="true" />
@@ -179,7 +179,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712392174640</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="缩放功能">
+      <option name="closed" value="true" />
+      <created>1712417288245</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1712417288245</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -200,7 +208,8 @@
     <MESSAGE value="侧栏接口" />
     <MESSAGE value="feature:拖拽功能 fix:大纲逻辑" />
     <MESSAGE value="重命名" />
-    <option name="LAST_COMMIT_MESSAGE" value="重命名" />
+    <MESSAGE value="缩放功能" />
+    <option name="LAST_COMMIT_MESSAGE" value="缩放功能" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

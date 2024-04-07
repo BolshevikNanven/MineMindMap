@@ -156,14 +156,14 @@
                                     <Insets left="6.0" right="8.0" />
                                  </HBox.margin>
                               </Region>
-                              <Slider id="scale-slider" max="150.0" min="50.0" prefHeight="14.0" prefWidth="73.0" value="100.0">
+                              <Slider id="scale-slider" max="175.0" min="50.0" prefHeight="14.0" prefWidth="73.0" value="100.0">
                                  <HBox.margin>
                                     <Insets right="4.0" />
                                  </HBox.margin>
                               </Slider>
                               <Region maxHeight="18.0" maxWidth="1.0" prefHeight="18.0" prefWidth="1.0" styleClass="divider">
                                  <HBox.margin>
-                                    <Insets left="4.0" />
+                                    <Insets left="4.0" right="4.0" />
                                  </HBox.margin>
                               </Region>
                               <ToggleButton id="bold-btn" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">

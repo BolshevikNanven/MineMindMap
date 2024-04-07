@@ -15,7 +15,7 @@ public class Application extends javafx.application.Application {
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("main-view.fxml"));
         Parent root = fxmlLoader.load();
-        root.setStyle("-fx-background-radius: 4");
+        root.setStyle("-fx-background-radius: 6");
 
         Scene scene = new Scene(root, 1080, 680);
         scene.getStylesheets().add(getClass().getResource("main.css").toExternalForm());

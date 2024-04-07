@@ -112,8 +112,8 @@ public class NodeView extends AnchorPane {
         });
         this.setOnMousePressed(e -> {
             StoreManager.getAuxiliaryNode().render(nodeEntity);
-            mouseAnchor[0] = e.getSceneX() - this.getLayoutX();
-            mouseAnchor[1] = e.getSceneY() - this.getLayoutY();
+            mouseAnchor[0] = e.getSceneX();
+            mouseAnchor[1] = e.getSceneY();
         });
         this.setOnMouseDragged(e -> {
             isDrag.set(true);
