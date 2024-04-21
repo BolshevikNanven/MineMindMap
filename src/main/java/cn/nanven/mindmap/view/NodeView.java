@@ -80,7 +80,6 @@ public class NodeView extends AnchorPane {
         });
         this.setOnKeyPressed(e -> {
             if (e.isControlDown()){
-
                 return;
             }
             switch (e.getCode()) {
@@ -109,21 +108,26 @@ public class NodeView extends AnchorPane {
             } else {
                 this.setCursor(Cursor.DEFAULT);
             }
+            e.consume();
         });
         this.setOnMousePressed(e -> {
             StoreManager.getAuxiliaryNode().render(nodeEntity);
             mouseAnchor[0] = e.getSceneX();
             mouseAnchor[1] = e.getSceneY();
+
+            e.consume();
         });
         this.setOnMouseDragged(e -> {
             isDrag.set(true);
             NodeService.getInstance().dragNode(this, mouseAnchor[0], mouseAnchor[1], e);
+            e.consume();
         });
         this.setOnMouseReleased(e -> {
             if (isDrag.get()) {
                 NodeService.getInstance().dragDoneNode(this, mouseAnchor[0], mouseAnchor[1], e);
             }
             isDrag.set(false);
+            e.consume();
         });
     }
 

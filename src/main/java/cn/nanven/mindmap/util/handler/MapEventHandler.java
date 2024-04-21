@@ -1,4 +1,4 @@
-package cn.nanven.mindmap.util;
+package cn.nanven.mindmap.util.handler;
 
 import cn.nanven.mindmap.entity.NodeEntity;
 

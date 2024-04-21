@@ -13,7 +13,6 @@ public class StyleUtil {
         double finalSize = font.getSize();
         String style = font.getStyle().toLowerCase();
         FontPosture finalFontPosture = style.contains("italic") ? FontPosture.ITALIC : FontPosture.REGULAR;
-        ;
 
         return Font.font(font.getFamily(), fontWeight, finalFontPosture, finalSize);
     }
@@ -22,7 +21,6 @@ public class StyleUtil {
         String style = font.getStyle().toLowerCase();
         FontWeight finalFontWeight = style.contains("bold") ? FontWeight.BOLD : FontWeight.NORMAL;
         FontPosture finalFontPosture = style.contains("italic") ? FontPosture.ITALIC : FontPosture.REGULAR;
-        ;
 
         return Font.font(font.getFamily(), finalFontWeight, finalFontPosture, size);
     }

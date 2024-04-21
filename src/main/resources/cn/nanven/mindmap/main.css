@@ -195,9 +195,12 @@ Button {
 
 .canvas-container .viewport {
     -fx-background-color: #ffffff;
-    -fx-background-radius: 0 16 0 0;
+    -fx-background-radius: 0 16 0 6;
 }
-
+.mind-map-canvas {
+    -fx-background-radius: 0 16 0 6;
+    -fx-background-color: #fff;
+}
 .scroll-bar {
     -fx-background-color: null;
     -fx-border-color: null;
@@ -250,9 +253,7 @@ Button {
     -fx-background-color: #b6b6b6;
 }
 
-.mind-map-canvas {
-    -fx-background-color: #fff;
-}
+
 
 #sidebar-container {
     -fx-background-color: rgb(237, 242, 250);

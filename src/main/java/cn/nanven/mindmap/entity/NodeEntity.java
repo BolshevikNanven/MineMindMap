@@ -9,7 +9,7 @@ import javafx.scene.text.Font;
 
 import java.util.List;
 
-public class NodeEntity implements Cloneable{
+public class NodeEntity {
     private NodeEntity parent;
     private List<NodeEntity> children;
     private LineEntity line;
@@ -224,19 +224,5 @@ public class NodeEntity implements Cloneable{
 
     public void setFontUnderline(boolean fontUnderline) {
         this.fontUnderline.set(fontUnderline);
-    }
-
-
-    @Override
-    public NodeEntity clone() {
-        Gson gson = new Gson();
-        String json = gson.toJson(this);
-        NodeEntity node = gson.fromJson(json, NodeEntity.class);
-        return node;
-    }
-
-    public boolean hasParent()
-    {
-        return this.parent != null;
     }
 }

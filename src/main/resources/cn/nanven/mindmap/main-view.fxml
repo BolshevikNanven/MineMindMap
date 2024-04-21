@@ -394,9 +394,9 @@
             <Insets />
          </BorderPane.margin>
          <center>
-            <ScrollPane fx:id="canvasContainer" styleClass="canvas-container">
+            <ScrollPane fx:id="canvasContainer" pannable="true" styleClass="canvas-container">
                <content>
-                  <Pane fx:id="canvas" prefHeight="620.0" prefWidth="984.0" styleClass="mind-map-canvas" />
+                  <Pane fx:id="canvas" styleClass="mind-map-canvas" />
                </content>
             </ScrollPane>
          </center>

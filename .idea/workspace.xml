@@ -4,13 +4,24 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="缩放功能">
+    <list default="true" id="f42507d9-9354-4702-bfb8-aed38cab0388" name="更改" comment="缩放功能更新">
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/CommandUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/ThreadUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/handler/CommandEventHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/_2024_4_1_19_31____.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/在进行更新之前于_2024_4_1_19_31_取消提交了更改_[更改]/shelved.patch" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/Application.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/Application.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/controller/MainController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/entity/NodeEntity.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/CanvasService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/NodeService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/ToolbarService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/UndoAndRedoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/UndoAndRedoService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LogicMapLayout.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/layout/LogicMapLayout.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/service/sidebar/OutlineService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/AlgorithmUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/AlgorithmUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/MapEventHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/handler/MapEventHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/StyleUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/util/StyleUtil.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/cn/nanven/mindmap/view/NodeView.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main-view.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/cn/nanven/mindmap/main.css" afterDir="false" />
@@ -24,6 +35,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -169,7 +181,16 @@
       <workItem from="1712030023159" duration="10192000" />
       <workItem from="1712110001893" duration="14897000" />
       <workItem from="1712368066785" duration="3210000" />
-      <workItem from="1712458942650" duration="18641000" />
+      <workItem from="1712458942650" duration="19394000" />
+      <workItem from="1712634833298" duration="3988000" />
+      <workItem from="1712889228177" duration="595000" />
+      <workItem from="1712927653256" duration="618000" />
+      <workItem from="1713070633043" duration="596000" />
+      <workItem from="1713257219760" duration="597000" />
+      <workItem from="1713452797791" duration="1251000" />
+      <workItem from="1713497754701" duration="6989000" />
+      <workItem from="1713527103353" duration="646000" />
+      <workItem from="1713585865649" duration="35986000" />
     </task>
     <task id="LOCAL-00001" summary="重命名">
       <option name="closed" value="true" />
@@ -187,7 +208,15 @@
       <option name="project" value="LOCAL" />
       <updated>1712417288245</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="缩放功能更新">
+      <option name="closed" value="true" />
+      <created>1712502451259</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1712502451259</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -209,7 +238,8 @@
     <MESSAGE value="feature:拖拽功能 fix:大纲逻辑" />
     <MESSAGE value="重命名" />
     <MESSAGE value="缩放功能" />
-    <option name="LAST_COMMIT_MESSAGE" value="缩放功能" />
+    <MESSAGE value="缩放功能更新" />
+    <option name="LAST_COMMIT_MESSAGE" value="缩放功能更新" />
   </component>
   <component name="VgoProject">
     <integration-enabled>false</integration-enabled>

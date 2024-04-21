@@ -152,9 +152,13 @@ public class LogicMapLayout implements LayoutService {
                 return;
             }
             NodeDao.moveNode(node, parent, 0);
+
+            StoreManager.getRootNodeList().remove(node);
         } else if (parent != null && brother != null) {   //节点上下吸附
             int broIndex = brother.getParent().getChildren().indexOf(brother);
             NodeDao.moveNode(node, parent, direction == 0 ? broIndex : broIndex + 1);
+
+            StoreManager.getRootNodeList().remove(node);
         }
         indicator.setVisible(false);
 

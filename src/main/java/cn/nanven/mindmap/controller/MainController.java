@@ -34,12 +34,12 @@ public class MainController implements Initializable {
         SidebarFactory.init(sidebarContent);
         LayoutFactory.init(canvas);
 
-        CanvasService.init(canvas);
+        CanvasService.init(canvasContainer, canvas);
         UndoAndRedoService.init();
         LineService.init(canvas);
         NodeService.init(canvasContainer, canvas);
         ToolbarService.init(toolbar);
 
-        SidebarController.init(sideBarTab, sidebar,sidebarContent);
+        SidebarController.init(sideBarTab, sidebar, sidebarContent);
     }
 }

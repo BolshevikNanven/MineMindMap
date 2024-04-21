@@ -74,7 +74,9 @@ public class NodeService {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 LineService.getInstance().addLine(newNode.getParent(), newNode);
                 SidebarController.getInstance().sync();
+                CanvasService.getInstance().resize();
                 layoutService.layout();
+
                 selectNode(nodeView);
                 nodeView.focusText();
 
@@ -166,7 +168,7 @@ public class NodeService {
                     double centerX = n.getX() + n.getActualWidth() / 2;
                     double centerY = n.getY() + n.getActualHeight() / 2;
 
-                    double currentDistance = Math.hypot(e.getSceneX() - centerX, e.getSceneY() - 100 - centerY);
+                    double currentDistance = Math.hypot(localCoords.getX() - centerX, localCoords.getY() - centerY);
                     if (currentDistance <= distance[0] || distance[0] == 0.0) {
                         distance[0] = currentDistance;
                         nearby[0] = n;
@@ -190,6 +192,7 @@ public class NodeService {
         }
 
         layoutService.layout();
+        CanvasService.getInstance().resize();
         SidebarController.getInstance().sync();
 
         node.setDisable(false);

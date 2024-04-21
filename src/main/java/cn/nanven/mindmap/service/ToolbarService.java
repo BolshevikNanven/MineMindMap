@@ -3,6 +3,7 @@ package cn.nanven.mindmap.service;
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.util.CommandUtil;
 import cn.nanven.mindmap.util.StyleUtil;
 import cn.nanven.mindmap.view.NodeView;
 import javafx.geometry.Pos;
@@ -100,8 +101,16 @@ public class ToolbarService {
         });
         this.boldBtn.setOnAction(e -> {
             if (this.boldBtn.isSelected()) {
-                node.setFont(StyleUtil.mergeFont(node.getFont(), FontWeight.BOLD));
-            } else node.setFont(StyleUtil.mergeFont(node.getFont(), FontWeight.NORMAL));
+                UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                    node.setFont(StyleUtil.mergeFont(node.getFont(), (FontWeight) param));
+                    syncState();
+                }, FontWeight.BOLD, FontWeight.NORMAL));
+            } else {
+                UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                    node.setFont(StyleUtil.mergeFont(node.getFont(), (FontWeight) param));
+                    syncState();
+                }, FontWeight.NORMAL, FontWeight.BOLD));
+            }
         });
         this.italicBtn.setOnAction(e -> {
             if (this.italicBtn.isSelected()) {
@@ -136,12 +145,10 @@ public class ToolbarService {
             NodeDao.deleteNode(node);
         });
         this.undoBtn.setOnAction(e -> {
-
-
+            UndoAndRedoService.getInstance().undo();
         });
         this.redoBtn.setOnAction(e -> {
-
-
+            UndoAndRedoService.getInstance().redo();
         });
         this.scaleSlider.valueProperty().bindBidirectional(StoreManager.canvasScaleProperty());
     }

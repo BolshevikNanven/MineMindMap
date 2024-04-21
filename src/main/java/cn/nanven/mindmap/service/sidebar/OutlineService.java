@@ -52,7 +52,7 @@ public class OutlineService implements SidebarService {
     private void updateOutline() {
         virtualRootItem.getChildren().clear(); // 清除以前所有的根节点
         for (NodeEntity node : StoreManager.getRootNodeList()) {
-            if (!node.hasParent()) { // 只处理没有父节点的节点
+            if (node.getParent()==null) { // 只处理没有父节点的节点
                 TreeItem<String> rootItem = new TreeItem<>(node.getContent());
                 virtualRootItem.getChildren().add(rootItem); // 添加到虚拟根节点作为它的子节点
                 addTreeItems(rootItem, node.getChildren()); // 根据新的根节点重建大纲
