@@ -1,8 +1,10 @@
 package cn.nanven.mindmap.service;
 
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -24,6 +26,12 @@ public class WindowService {
     private double dragOffsetX;
     private double dragOffsetY;
 
+
+    private static final double MIN_WIDTH = 700.0D;
+    private static final double MIN_HEIGHT = 500.0D;
+    private static final double BORDER = 5.0D;
+
+
     private WindowService() {
     }
 
@@ -39,8 +47,8 @@ public class WindowService {
         this.windowY = stage.getY();
         this.windowWidth = stage.getWidth();
         this.windowHeight = stage.getHeight();
-
         addListener();
+        addResizeListeners();
     }
 
     public static void init(Parent root, Stage stage) {
@@ -87,7 +95,7 @@ public class WindowService {
             }
         });
 
-        // 添加鼠标拖动时的事件处理
+
         root.setOnMouseDragged(event -> {
 
             if (!isMax) {
@@ -95,6 +103,116 @@ public class WindowService {
                 stage.setY(event.getScreenY() - dragOffsetY);
             }
         });
+
     }
+    private void addResizeListeners() {
+        root.setOnMouseMoved(this::onMouseMoved);
+        root.setOnMousePressed(this::onMousePressed);
+        root.setOnMouseDragged(this::onMouseDragged);
+    }
+
+    private void onMouseMoved(MouseEvent event) {
+        if (isMax) {
+            return;
+        }
+        updateCursor(event);
+    }
+
+    private void onMousePressed(MouseEvent event) {
+        if (isMax) {
+            return;
+        }
+        if (root.getCursor() != Cursor.DEFAULT) {
+            double xOffset = stage.getWidth() - event.getX();
+            double yOffset = stage.getHeight() - event.getY();
+        } else {
+            dragOffsetX = event.getSceneX();
+            dragOffsetY = event.getSceneY();
+        }
+    }
+
+    private void onMouseDragged(MouseEvent event) {
+        if (isMax) {
+            return;
+        }
+        if (root.getCursor() != Cursor.DEFAULT) {
+            double mouseX = event.getScreenX();
+            double mouseY = event.getScreenY();
+            double newWidth = stage.getWidth();
+            double newHeight = stage.getHeight();
+
+
+            switch (root.getCursor().toString()) {
+                case "NW_RESIZE":
+                    newWidth = stage.getX() + stage.getWidth() - mouseX;
+                    newHeight = stage.getY() + stage.getHeight() - mouseY;
+                    if (newWidth >= MIN_WIDTH) stage.setX(mouseX);
+                    if (newHeight >= MIN_HEIGHT) stage.setY(mouseY);
+                    break;
+                case "NE_RESIZE":
+                    newWidth = mouseX - stage.getX();
+                    newHeight = stage.getY() + stage.getHeight() - mouseY;
+                    if (newHeight >= MIN_HEIGHT) stage.setY(mouseY);
+                    break;
+                case "SW_RESIZE":
+                    newWidth = stage.getX() + stage.getWidth() - mouseX;
+                    newHeight = mouseY - stage.getY();
+                    if (newWidth >= MIN_WIDTH) stage.setX(mouseX);
+                    break;
+                case "SE_RESIZE":
+                    newWidth = mouseX - stage.getX();
+                    newHeight = mouseY - stage.getY();
+                    break;
+                case "E_RESIZE":
+                    newWidth = mouseX - stage.getX();
+                    break;
+                case "S_RESIZE":
+                    newHeight = mouseY - stage.getY();
+                    break;
+                case "W_RESIZE":
+                    newWidth = stage.getX() + stage.getWidth() - mouseX;
+                    if (newWidth >= MIN_WIDTH) stage.setX(mouseX);
+                    break;
+                case "N_RESIZE":
+                    newHeight = stage.getY() + stage.getHeight() - mouseY;
+                    if (newHeight >= MIN_HEIGHT) stage.setY(mouseY);
+                    break;
+            }
+
+
+            if (newWidth >= MIN_WIDTH) stage.setWidth(newWidth);
+            if (newHeight >= MIN_HEIGHT) stage.setHeight(newHeight);
+        } else {
+            stage.setX(event.getScreenX() - dragOffsetX);
+            stage.setY(event.getScreenY() - dragOffsetY);
+        }
+    }
+
+    private void updateCursor(MouseEvent event) {
+        double x = event.getX();
+        double y = event.getY();
+        Cursor cursorType = Cursor.DEFAULT;
+        if (x < BORDER && y < BORDER) {
+            cursorType = Cursor.NW_RESIZE;
+        } else if (x > root.getBoundsInLocal().getWidth() - BORDER && y < BORDER) {
+            cursorType = Cursor.NE_RESIZE;
+        } else if (x < BORDER && y > root.getBoundsInLocal().getHeight() - BORDER) {
+            cursorType = Cursor.SW_RESIZE;
+        } else if (x > root.getBoundsInLocal().getWidth() - BORDER && y > root.getBoundsInLocal().getHeight() - BORDER) {
+            cursorType = Cursor.SE_RESIZE;
+        } else if (x < BORDER) {
+            cursorType = Cursor.W_RESIZE;
+        } else if (x > root.getBoundsInLocal().getWidth() - BORDER) {
+            cursorType = Cursor.E_RESIZE;
+        } else if (y < BORDER) {
+            cursorType = Cursor.N_RESIZE;
+        } else if (y > root.getBoundsInLocal().getHeight() - BORDER) {
+            cursorType = Cursor.S_RESIZE;
+        }
+        root.setCursor(cursorType);
+    }
+
+
+
 
 }
