@@ -1,12 +1,14 @@
 #base {
-    -fx-border-radius: 6;
-    -fx-border-color: #dedede;
-    -fx-border-width: 1;
     -fx-background-color: #ffffff;
     -fx-background-radius: 6;
+    -fx-effect: dropshadow(three-pass-box, #b0b0b0, 12, 0.1, 0, 3);
+    -fx-padding: 12;
+    -fx-background-insets: 12;
 }
 
 #base.max {
+    -fx-padding: 0;
+    -fx-background-insets: 0;
     -fx-border-radius: 0;
     -fx-background-radius: 0;
 }
@@ -16,7 +18,7 @@ Button {
 }
 
 .context-menu {
-    -fx-effect: dropshadow(three-pass-box, #a4a4a4, 8, 0.01, 0, 3);
+    -fx-effect: dropshadow(three-pass-box, #bdbdbd, 8, 0.02, 0, 3);
     -fx-padding: 8 2 8 2;
     -fx-background-radius: 4;
     -fx-border-radius: 4;
@@ -30,7 +32,7 @@ Button {
     -fx-background-radius: 4;
 }
 
-.menu-item .label {
+.menu-item .title {
     -fx-text-fill: #212121;
 }
 
@@ -74,7 +76,7 @@ Button {
     -fx-text-fill: #212121;
 }
 
-.menu-bar .menu-button:hover .label, .menu-bar .menu-button:showing .label {
+.menu-bar .menu-button:hover>.label, .menu-bar .menu-button:showing>.label {
     -fx-text-fill: #212121;
 }
 

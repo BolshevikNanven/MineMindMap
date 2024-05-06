@@ -19,9 +19,9 @@ public class UndoAndRedoService {
 
     private void pushUndoStack(Command command) {
         flagOfRedo = false;
-        if (StoreManager.getUndoStack().size() < 10)
+        if (StoreManager.getUndoStack().size() < 10) {
             StoreManager.getUndoStack().push(command);
-        else {
+        }else {
             Command[] temp = new Command[10];
             for (int i = 0; i < StoreManager.getUndoStack().size(); i++)
                 temp[i] = StoreManager.getUndoStack().pop();
@@ -52,6 +52,7 @@ public class UndoAndRedoService {
         if (!StoreManager.getUndoStack().isEmpty()) {
             flagOfRedo = true;
             Command pop = StoreManager.getUndoStack().pop();
+            pushRedoStack(pop);
             pop.undo();
         }
     }
@@ -59,6 +60,7 @@ public class UndoAndRedoService {
     public void redo() {
         if (!StoreManager.getRedoStack().isEmpty()) {
             Command pop = StoreManager.getRedoStack().pop();
+            pushUndoStack(pop);
             pop.execute();
         }
     }

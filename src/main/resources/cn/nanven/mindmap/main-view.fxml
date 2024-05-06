@@ -45,14 +45,46 @@
                               <Insets right="4.0" />
                            </HBox.margin>
                         </Region>
-                        <MenuBar prefHeight="30.0" prefWidth="188.0">
+                        <MenuBar id="menu-bar" prefHeight="30.0" prefWidth="188.0">
                           <menus>
-                            <Menu mnemonicParsing="false" styleClass="menu-bar-btn" text="文件">
+                            <Menu id="file-menu" mnemonicParsing="false" styleClass="menu-bar-btn" text="文件">
                               <items>
-                                <MenuItem mnemonicParsing="false" text="新建" />
-                                    <MenuItem mnemonicParsing="false" text="保存" />
-                                    <MenuItem mnemonicParsing="false" text="保存到..." />
-                                    <MenuItem mnemonicParsing="false" text="打开" />
+                                <MenuItem id="new-file-menu" mnemonicParsing="false">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <Label prefWidth="68.0" styleClass="title" text="新建" />
+                                                <Label styleClass="description" textAlignment="RIGHT" />
+                                             </children>
+                                          </HBox>
+                                       </graphic></MenuItem>
+                                    <MenuItem id="save-file-menu" mnemonicParsing="false">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <Label prefWidth="68.0" styleClass="title" text="保存" />
+                                                <Label styleClass="description" text="Ctrl+s" textAlignment="RIGHT" />
+                                             </children>
+                                          </HBox>
+                                       </graphic></MenuItem>
+                                    <MenuItem id="save-as-file-menu" mnemonicParsing="false">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <Label prefWidth="68.0" styleClass="title" text="另存为" />
+                                                <Label styleClass="description" textAlignment="RIGHT" />
+                                             </children>
+                                          </HBox>
+                                       </graphic></MenuItem>
+                                    <MenuItem id="open-file-menu" mnemonicParsing="false">
+                                       <graphic>
+                                          <HBox>
+                                             <children>
+                                                <Label prefWidth="68.0" styleClass="title" text="打开" />
+                                                <Label styleClass="description" textAlignment="RIGHT" />
+                                             </children>
+                                          </HBox>
+                                       </graphic></MenuItem>
                               </items>
                             </Menu>
                             <Menu mnemonicParsing="false" styleClass="menu-bar-btn" text="编辑">
@@ -334,7 +366,7 @@
                                        <graphic>
                                           <HBox>
                                              <children>
-                                                <Label prefWidth="68.0" text="子节点" />
+                                                <Label prefWidth="68.0" styleClass="title" text="子节点" />
                                                 <Label styleClass="description" text="Tab" textAlignment="RIGHT" />
                                              </children>
                                           </HBox>
@@ -344,7 +376,7 @@
                                        <graphic>
                                           <HBox>
                                              <children>
-                                                <Label prefWidth="68.0" text="兄弟节点" />
+                                                <Label prefWidth="68.0" styleClass="title" text="兄弟节点" />
                                                 <Label contentDisplay="RIGHT" styleClass="description" text="Enter" textAlignment="RIGHT" />
                                              </children>
                                           </HBox>

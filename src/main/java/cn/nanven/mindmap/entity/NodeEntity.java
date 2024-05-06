@@ -1,34 +1,62 @@
 package cn.nanven.mindmap.entity;
 
-import com.google.gson.Gson;
+import cn.nanven.mindmap.util.StyleUtil;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class NodeEntity {
+public class NodeEntity implements Serializable {
+    @JsonIgnore
     private NodeEntity parent;
     private List<NodeEntity> children;
+    @JsonIgnore
     private LineEntity line;
+    @JsonIgnore
     private Double bounds;
+    @JsonIgnore
     private Object param;
+    @JsonIgnore
     private final SimpleBooleanProperty deleteSymbol = new SimpleBooleanProperty();
+    @JsonIgnore
     private final SimpleBooleanProperty disabled = new SimpleBooleanProperty();
     private final SimpleObjectProperty<Pos> alignment = new SimpleObjectProperty<>();
     private final SimpleStringProperty content = new SimpleStringProperty();
     private final SimpleDoubleProperty x = new SimpleDoubleProperty();
     private final SimpleDoubleProperty y = new SimpleDoubleProperty();
     private final SimpleDoubleProperty width = new SimpleDoubleProperty();
+    @JsonIgnore
     private final SimpleDoubleProperty actualWidth = new SimpleDoubleProperty();
     private final SimpleDoubleProperty height = new SimpleDoubleProperty();
+    @JsonIgnore
     private final SimpleDoubleProperty actualHeight = new SimpleDoubleProperty();
     private final SimpleObjectProperty<Background> background = new SimpleObjectProperty<>();
     private final SimpleObjectProperty<Paint> color = new SimpleObjectProperty<>();
     private final SimpleObjectProperty<Font> font = new SimpleObjectProperty<>();
     private final SimpleBooleanProperty fontUnderline = new SimpleBooleanProperty();
+
+    @JsonProperty("background")
+    public String getJsonBackground(){
+        return background.get().getFills().get(0).getFill().toString();
+    }
+    @JsonProperty("background")
+    public void setJsonBackground(String background){
+        this.background.set(StyleUtil.newBackground(background));
+    }
+    @JsonProperty("color")
+    public String getJsonColor(){
+        return color.get().toString();
+    }
+    @JsonProperty("color")
+    public void setJsonColor(String color){
+        this.color.set(Paint.valueOf(color));
+    }
 
     public void delete() {
         this.deleteSymbol.set(true);

@@ -100,14 +100,15 @@ public class ToolbarService {
             }
         });
         this.boldBtn.setOnAction(e -> {
+            NodeEntity n = node;
             if (this.boldBtn.isSelected()) {
                 UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
-                    node.setFont(StyleUtil.mergeFont(node.getFont(), (FontWeight) param));
+                    n.setFont(StyleUtil.mergeFont(n.getFont(), (FontWeight) param));
                     syncState();
                 }, FontWeight.BOLD, FontWeight.NORMAL));
             } else {
                 UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
-                    node.setFont(StyleUtil.mergeFont(node.getFont(), (FontWeight) param));
+                    n.setFont(StyleUtil.mergeFont(n.getFont(), (FontWeight) param));
                     syncState();
                 }, FontWeight.NORMAL, FontWeight.BOLD));
             }
