@@ -2,7 +2,7 @@ package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.entity.NodeEntity;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.CommandUtil;
 import cn.nanven.mindmap.util.StyleUtil;
 import cn.nanven.mindmap.view.NodeView;
@@ -142,7 +142,7 @@ public class ToolbarService {
             syncState();
         });
         this.deleteBtn.setOnAction(e -> {
-            NodeEntity node = StoreManager.getSelectedNode().getNodeEntity();
+            NodeEntity node = SystemStore.getSelectedNode().getNodeEntity();
             NodeDao.deleteNode(node);
         });
         this.undoBtn.setOnAction(e -> {
@@ -151,7 +151,7 @@ public class ToolbarService {
         this.redoBtn.setOnAction(e -> {
             UndoAndRedoService.getInstance().redo();
         });
-        this.scaleSlider.valueProperty().bindBidirectional(StoreManager.canvasScaleProperty());
+        this.scaleSlider.valueProperty().bindBidirectional(SystemStore.canvasScaleProperty());
     }
 
     private void setDisable(Boolean state) {
@@ -189,7 +189,7 @@ public class ToolbarService {
     }
 
     public void syncState() {
-        NodeView selectedNode = StoreManager.getSelectedNode();
+        NodeView selectedNode = SystemStore.getSelectedNode();
 
         if (selectedNode == null) {
             setDisable(true);

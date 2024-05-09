@@ -2,7 +2,7 @@ package cn.nanven.mindmap.service.sidebar;
 
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.SidebarService;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
 import javafx.scene.Node;
 import javafx.scene.control.TreeItem;
@@ -51,7 +51,7 @@ public class OutlineService implements SidebarService {
 
     private void updateOutline() {
         virtualRootItem.getChildren().clear(); // 清除以前所有的根节点
-        for (NodeEntity node : StoreManager.getRootNodeList()) {
+        for (NodeEntity node : SystemStore.getRootNodeList()) {
             if (node.getParent()==null) { // 只处理没有父节点的节点
                 TreeItem<String> rootItem = new TreeItem<>(node.getContent());
                 virtualRootItem.getChildren().add(rootItem); // 添加到虚拟根节点作为它的子节点

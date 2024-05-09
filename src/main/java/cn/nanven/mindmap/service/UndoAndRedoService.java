@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.entity.Command;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 
 public class UndoAndRedoService {
 
@@ -19,15 +19,15 @@ public class UndoAndRedoService {
 
     private void pushUndoStack(Command command) {
         flagOfRedo = false;
-        if (StoreManager.getUndoStack().size() < 10) {
-            StoreManager.getUndoStack().push(command);
+        if (SystemStore.getUndoStack().size() < 10) {
+            SystemStore.getUndoStack().push(command);
         }else {
             Command[] temp = new Command[10];
-            for (int i = 0; i < StoreManager.getUndoStack().size(); i++)
-                temp[i] = StoreManager.getUndoStack().pop();
-            for (int i = StoreManager.getUndoStack().size() - 1; i > 0; i--)
-                StoreManager.getUndoStack().push(temp[i]);
-            StoreManager.getUndoStack().push(command);
+            for (int i = 0; i < SystemStore.getUndoStack().size(); i++)
+                temp[i] = SystemStore.getUndoStack().pop();
+            for (int i = SystemStore.getUndoStack().size() - 1; i > 0; i--)
+                SystemStore.getUndoStack().push(temp[i]);
+            SystemStore.getUndoStack().push(command);
         }
     }
 
@@ -35,10 +35,10 @@ public class UndoAndRedoService {
 
         if (flagOfRedo)//可以入栈
         {
-            StoreManager.getRedoStack().push(command);
+            SystemStore.getRedoStack().push(command);
         } else {//清空Redo栈
-            for (int i = 0; i < StoreManager.getRedoStack().size(); i++) {
-                StoreManager.getRedoStack().pop();
+            for (int i = 0; i < SystemStore.getRedoStack().size(); i++) {
+                SystemStore.getRedoStack().pop();
             }
         }
     }
@@ -49,17 +49,17 @@ public class UndoAndRedoService {
     }
 
     public void undo() {
-        if (!StoreManager.getUndoStack().isEmpty()) {
+        if (!SystemStore.getUndoStack().isEmpty()) {
             flagOfRedo = true;
-            Command pop = StoreManager.getUndoStack().pop();
+            Command pop = SystemStore.getUndoStack().pop();
             pushRedoStack(pop);
             pop.undo();
         }
     }
 
     public void redo() {
-        if (!StoreManager.getRedoStack().isEmpty()) {
-            Command pop = StoreManager.getRedoStack().pop();
+        if (!SystemStore.getRedoStack().isEmpty()) {
+            Command pop = SystemStore.getRedoStack().pop();
             pushUndoStack(pop);
             pop.execute();
         }

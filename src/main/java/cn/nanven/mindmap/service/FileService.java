@@ -2,32 +2,21 @@ package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.entity.NodeEntity;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.store.ThreadsPool;
 import cn.nanven.mindmap.util.AlgorithmUtil;
-import com.fasterxml.jackson.core.JacksonException;
-import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import javafx.application.Platform;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
-import javafx.scene.text.Font;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.List;
-import java.util.function.Consumer;
 
 public class FileService {
     private static FileService instance;
@@ -78,10 +67,10 @@ public class FileService {
     }
 
     private void handleSave() {
-        if (StoreManager.getFile() == null) {
+        if (SystemStore.getFile() == null) {
             writeFile();
         } else {
-            writeFile(StoreManager.getFile());
+            writeFile(SystemStore.getFile());
         }
     }
 
@@ -101,11 +90,11 @@ public class FileService {
                 }
 
                 FileWriter fileWriter = new FileWriter(file);
-                objectMapper.writer().writeValue(fileWriter, StoreManager.getRootNodeList());
+                objectMapper.writer().writeValue(fileWriter, SystemStore.getRootNodeList());
 
                 fileWriter.close();
-                if (StoreManager.getFile() == null) {
-                    StoreManager.setFile(file);
+                if (SystemStore.getFile() == null) {
+                    SystemStore.setFile(file);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -117,7 +106,7 @@ public class FileService {
     public void writeFile(File file) {
         try {
             FileWriter fileWriter = new FileWriter(file);
-            objectMapper.writer().writeValue(fileWriter, StoreManager.getRootNodeList());
+            objectMapper.writer().writeValue(fileWriter, SystemStore.getRootNodeList());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -136,12 +125,12 @@ public class FileService {
             try (FileReader fileReader = new FileReader(file)) {
                 List<NodeEntity> list = objectMapper.readValue(fileReader, new TypeReference<>() {
                 });
-                StoreManager.getRootNodeList().forEach(node -> {
+                SystemStore.getRootNodeList().forEach(node -> {
                     Platform.runLater(() -> NodeDao.deleteNode(node));
                 });
-                StoreManager.setFile(file);
+                SystemStore.setFile(file);
                 for (NodeEntity root : list) {
-                    StoreManager.getRootNodeList().add(root);
+                    SystemStore.getRootNodeList().add(root);
                     //序列化时无parent参数，需手动添加
                     AlgorithmUtil.headMapNode(root, (parent, node) -> {
                         node.setParent(parent);

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
-public class StoreManager {
+public class SystemStore {
     private static final List<NodeEntity> rootNodeList = new ArrayList<>();
     private static NodeView selectedNode;
     private static AuxiliaryNodeView auxiliaryNode;
@@ -32,7 +32,7 @@ public class StoreManager {
     }
 
     public static void setCanvasScale(int canvasScale) {
-        StoreManager.canvasScale.set(canvasScale);
+        SystemStore.canvasScale.set(canvasScale);
     }
 
     public static Stack<Command> getUndoStack() {
@@ -52,7 +52,7 @@ public class StoreManager {
     }
 
     public static void setAuxiliaryNode(AuxiliaryNodeView auxiliaryNode) {
-        StoreManager.auxiliaryNode = auxiliaryNode;
+        SystemStore.auxiliaryNode = auxiliaryNode;
     }
 
     public static NodeView getSelectedNode() {
@@ -60,18 +60,18 @@ public class StoreManager {
     }
 
     public static void setSelectedNode(NodeView selectedNode) {
-        StoreManager.selectedNode = selectedNode;
+        SystemStore.selectedNode = selectedNode;
     }
 
     public static void setFile(File file) {
-        StoreManager.file.set(file);
+        SystemStore.file.set(file);
     }
 
     public static File getFile() {
-        return StoreManager.file.get();
+        return SystemStore.file.get();
     }
     public static SimpleObjectProperty<File> file(){
-        return StoreManager.file;
+        return SystemStore.file;
     }
 
     public static boolean isLoadingState() {
@@ -83,6 +83,6 @@ public class StoreManager {
     }
 
     public static void setLoadingState(boolean loadingState) {
-        StoreManager.loadingState.set(loadingState);
+        SystemStore.loadingState.set(loadingState);
     }
 }

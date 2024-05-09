@@ -1,5 +1,6 @@
 package cn.nanven.mindmap.service.layout;
 
+import cn.nanven.mindmap.common.enums.Direction;
 import cn.nanven.mindmap.service.LayoutService;
 import javafx.scene.layout.Pane;
 
@@ -27,8 +28,11 @@ public class LayoutFactory {
 
     public LayoutService getService(String type) {
         switch (type) {
+            case "LeftTreeLayout" -> {
+                return new HorizonTreeLayout(canvas, Direction.LEFT);
+            }
             default -> {
-                return new LogicMapLayout(canvas);
+                return new HorizonTreeLayout(canvas, Direction.RIGHT);
             }
         }
     }

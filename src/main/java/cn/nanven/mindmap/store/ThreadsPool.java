@@ -20,8 +20,8 @@ public class ThreadsPool extends ThreadPoolExecutor {
     protected void beforeExecute(Thread t, Runnable r) {
         super.beforeExecute(t, r);
         System.out.println(t.getName() + "执行");
-        if (!StoreManager.isLoadingState()) {
-            StoreManager.setLoadingState(true);
+        if (!SystemStore.isLoadingState()) {
+            SystemStore.setLoadingState(true);
         }
     }
 
@@ -29,7 +29,7 @@ public class ThreadsPool extends ThreadPoolExecutor {
     protected void afterExecute(Runnable r, Throwable t) {
         super.afterExecute(r, t);
         if (getQueue().isEmpty() && getActiveCount() <= 1) {
-            StoreManager.setLoadingState(false);
+            SystemStore.setLoadingState(false);
         }
     }
 

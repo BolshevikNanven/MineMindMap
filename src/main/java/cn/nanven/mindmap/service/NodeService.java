@@ -4,7 +4,8 @@ import cn.nanven.mindmap.controller.SidebarController;
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.layout.LayoutFactory;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SettingStore;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
 import cn.nanven.mindmap.view.AuxiliaryNodeView;
 import cn.nanven.mindmap.view.NodeView;
@@ -22,7 +23,6 @@ public class NodeService {
     private static NodeService instance;
     private Pane canvas;
     private ScrollPane container;
-    private LayoutService layoutService;
 
     private NodeService() {
 
@@ -38,8 +38,8 @@ public class NodeService {
                 selectNode(null);
             }
         });
-        layoutService = LayoutFactory.getInstance().getService("mindMap");
-        StoreManager.setAuxiliaryNode(new AuxiliaryNodeView(canvas));
+        SettingStore.setLayoutService(LayoutFactory.getInstance().getService(""));
+        SystemStore.setAuxiliaryNode(new AuxiliaryNodeView(canvas));
     }
 
     public static NodeService getInstance() {
@@ -75,7 +75,7 @@ public class NodeService {
                 LineService.getInstance().addLine(newNode.getParent(), newNode);
                 SidebarController.getInstance().sync();
                 CanvasService.getInstance().resize();
-                layoutService.layout();
+                SettingStore.getLayoutService().layout();
 
                 selectNode(nodeView);
                 nodeView.focusText();
@@ -87,7 +87,7 @@ public class NodeService {
     }
 
     public void addSubNode() {
-        NodeView selectedNode = StoreManager.getSelectedNode();
+        NodeView selectedNode = SystemStore.getSelectedNode();
         if (selectedNode == null) {
             addNode(null, null);
         } else {
@@ -96,7 +96,7 @@ public class NodeService {
     }
 
     public void addBroNode() {
-        NodeView selectedNode = StoreManager.getSelectedNode();
+        NodeView selectedNode = SystemStore.getSelectedNode();
         if (selectedNode == null) {
             addNode(null, null);
         } else {
@@ -106,7 +106,7 @@ public class NodeService {
 
     public void renderNodeTree() {
         final NodeEntity[] last = {null};
-        for (NodeEntity root : StoreManager.getRootNodeList()) {
+        for (NodeEntity root : SystemStore.getRootNodeList()) {
             AlgorithmUtil.headMapNode(root, (parent, node) -> {
                 NodeView nodeView = new NodeView(node);
                 nodeView.setFocusTraversable(true);
@@ -124,7 +124,7 @@ public class NodeService {
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 SidebarController.getInstance().sync();
                 CanvasService.getInstance().resize();
-                layoutService.layout();
+                SettingStore.getLayoutService().layout();
 
                 last[0].actualHeightProperty().removeListener(this);
             }
@@ -133,7 +133,7 @@ public class NodeService {
     }
 
     public void selectNode(NodeView newNode) {
-        NodeView prevNode = StoreManager.getSelectedNode();
+        NodeView prevNode = SystemStore.getSelectedNode();
         if (newNode == prevNode) {
             return;
         }
@@ -144,7 +144,7 @@ public class NodeService {
         if (newNode != null) {
             newNode.getStyleClass().addAll("node-selected");
         }
-        StoreManager.setSelectedNode(newNode);
+        SystemStore.setSelectedNode(newNode);
         ToolbarService.getInstance().syncState();
         SidebarController.getInstance().sync();
     }
@@ -187,11 +187,11 @@ public class NodeService {
             }
 
             //拖拽辅助节点
-            StoreManager.getAuxiliaryNode().move(offsetX, offsetY);
+            SystemStore.getAuxiliaryNode().move(offsetX, offsetY);
             node.setDisable(true);
 
             //遍历寻找吸附节点
-            for (NodeEntity root : StoreManager.getRootNodeList()) {
+            for (NodeEntity root : SystemStore.getRootNodeList()) {
                 AlgorithmUtil.headMapNode(root, (parent, n) -> {
                     double centerX = n.getX() + n.getActualWidth() / 2;
                     double centerY = n.getY() + n.getActualHeight() / 2;
@@ -204,7 +204,7 @@ public class NodeService {
 
                 });
             }
-            layoutService.indicate(nearby[0], localCoords.getX(), localCoords.getY());
+            SettingStore.getLayoutService().indicate(nearby[0], localCoords.getX(), localCoords.getY());
 
         }
     }
@@ -215,11 +215,11 @@ public class NodeService {
             Point2D orgLocalCoords = canvas.sceneToLocal(prevX, prevY);
             Point2D localCoords = canvas.sceneToLocal(e.getSceneX(), e.getSceneY());
 
-            StoreManager.getAuxiliaryNode().hide();
-            layoutService.snap(node.getNodeEntity(), localCoords.getX(), localCoords.getY(), orgLocalCoords.getX(), orgLocalCoords.getY());
+            SystemStore.getAuxiliaryNode().hide();
+            SettingStore.getLayoutService().snap(node.getNodeEntity(), localCoords.getX(), localCoords.getY(), orgLocalCoords.getX(), orgLocalCoords.getY());
         }
 
-        layoutService.layout();
+        SettingStore.getLayoutService().layout();
         CanvasService.getInstance().resize();
         SidebarController.getInstance().sync();
 
@@ -229,7 +229,7 @@ public class NodeService {
     public void removeNode(NodeView node) {
         //移除node视图
         canvas.getChildren().remove(node);
-        layoutService.layout();
+        SettingStore.getLayoutService().layout();
         SidebarController.getInstance().sync();
     }
 

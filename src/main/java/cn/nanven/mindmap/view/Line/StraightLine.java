@@ -1,9 +1,12 @@
 package cn.nanven.mindmap.view.Line;
 
 import cn.nanven.mindmap.entity.LineEntity;
+import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.util.StyleUtil;
 import cn.nanven.mindmap.view.LineView;
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -16,43 +19,29 @@ public class StraightLine extends LineView {
 
     }
 
-    public StraightLine(LineEntity lineEntity) {
-        this.lineEntity = lineEntity;
+    public StraightLine(NodeEntity head, NodeEntity tail, SimpleDoubleProperty[] headBindings, SimpleDoubleProperty[] tailBindings) {
         line = new Line();
 
-        if (lineEntity.getHead() != null) {
-            line.startXProperty().bind(lineEntity.getHead().xProperty().add(lineEntity.getHead().actualWidthProperty()));
-            line.startYProperty().bind(lineEntity.getHead().yProperty().add(lineEntity.getHead().actualHeightProperty().divide(2)));
-        } else {
-            line.setVisible(false);
-        }
+        this.head = head;
+        this.tail = tail;
 
-        line.endXProperty().bind(lineEntity.getTail().xProperty());
-        line.endYProperty().bind(lineEntity.getTail().yProperty().add(lineEntity.getTail().actualHeightProperty().divide(2)));
+        line.startXProperty().bind(headBindings[0]);
+        line.startYProperty().bind(headBindings[1]);
+        line.endXProperty().bind(tailBindings[0]);
+        line.endYProperty().bind(tailBindings[1]);
 
-        line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(lineEntity.getTail().getBackground())));
+        line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
         line.setStrokeWidth(2.0);
 
         addListener();
     }
 
     private void addListener() {
-        this.lineEntity.getTail().backgroundProperty().addListener((observableValue, prev, background) -> {
+        this.tail.backgroundProperty().addListener((observableValue, prev, background) -> {
             line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(background)));
         });
-        this.lineEntity.getTail().deleteSymbolProperty().addListener(e -> {
-            LineService.getInstance().deleteLine(line, lineEntity);
-        });
-        this.lineEntity.headProperty().addListener((observableValue, prev, nodeEntity) -> {
-            if (nodeEntity != null) {
-                line.setVisible(true);
-                line.startXProperty().unbind();
-                line.startYProperty().unbind();
-                line.startXProperty().bind(lineEntity.getHead().xProperty().add(lineEntity.getHead().actualWidthProperty()));
-                line.startYProperty().bind(lineEntity.getHead().yProperty().add(lineEntity.getHead().actualHeightProperty().divide(2)));
-            } else {
-                line.setVisible(false);
-            }
+        this.tail.deleteSymbolProperty().addListener(e -> {
+            LineService.getInstance().deleteLine(this);
         });
     }
 

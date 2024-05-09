@@ -6,6 +6,7 @@ import cn.nanven.mindmap.common.jackson.deserializer.FontDeserializer;
 import cn.nanven.mindmap.common.jackson.serializer.BackgroundSerializer;
 import cn.nanven.mindmap.common.jackson.serializer.ColorSerializer;
 import cn.nanven.mindmap.util.StyleUtil;
+import cn.nanven.mindmap.view.LineView;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -24,7 +25,7 @@ public class NodeEntity implements Serializable {
     private NodeEntity parent;
     private List<NodeEntity> children;
     @JsonIgnore
-    private LineEntity line;
+    private LineView line;
     @JsonIgnore
     private Double bounds;
     @JsonIgnore
@@ -38,9 +39,9 @@ public class NodeEntity implements Serializable {
     private final SimpleDoubleProperty x = new SimpleDoubleProperty();
     private final SimpleDoubleProperty y = new SimpleDoubleProperty();
     private final SimpleDoubleProperty width = new SimpleDoubleProperty();
+    private final SimpleDoubleProperty height = new SimpleDoubleProperty();
     @JsonIgnore
     private final SimpleDoubleProperty actualWidth = new SimpleDoubleProperty();
-    private final SimpleDoubleProperty height = new SimpleDoubleProperty();
     @JsonIgnore
     private final SimpleDoubleProperty actualHeight = new SimpleDoubleProperty();
     @JsonSerialize(using = BackgroundSerializer.class)
@@ -52,31 +53,6 @@ public class NodeEntity implements Serializable {
     @JsonDeserialize(using = FontDeserializer.class)
     private final SimpleObjectProperty<Font> font = new SimpleObjectProperty<>();
     private final SimpleBooleanProperty fontUnderline = new SimpleBooleanProperty();
-
-    @Override
-    public String toString() {
-        return "NodeEntity{" +
-                "parent=" + parent +
-                ", children=" + children +
-                ", line=" + line +
-                ", bounds=" + bounds +
-                ", param=" + param +
-                ", deleteSymbol=" + deleteSymbol +
-                ", disabled=" + disabled +
-                ", alignment=" + alignment +
-                ", content=" + content +
-                ", x=" + x +
-                ", y=" + y +
-                ", width=" + width +
-                ", actualWidth=" + actualWidth +
-                ", height=" + height +
-                ", actualHeight=" + actualHeight +
-                ", background=" + background +
-                ", color=" + color +
-                ", font=" + font +
-                ", fontUnderline=" + fontUnderline +
-                '}';
-    }
 
     public void delete() {
         this.deleteSymbol.set(true);
@@ -90,11 +66,11 @@ public class NodeEntity implements Serializable {
         this.param = param;
     }
 
-    public LineEntity getLine() {
+    public LineView getLine() {
         return line;
     }
 
-    public void setLine(LineEntity line) {
+    public void setLine(LineView line) {
         this.line = line;
     }
 

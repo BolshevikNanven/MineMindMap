@@ -1,16 +1,11 @@
 package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.entity.NodeEntity;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
-import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 
 public class CanvasService {
@@ -47,7 +42,7 @@ public class CanvasService {
     private void addListener() {
         final double[] mouseAnchor = new double[2];
         //监听缩放尺度
-        StoreManager.canvasScaleProperty().addListener(((observableValue, number, t1) -> {
+        SystemStore.canvasScaleProperty().addListener(((observableValue, number, t1) -> {
             canvas.setScaleX(t1.doubleValue() / 100);
             canvas.setScaleY(t1.doubleValue() / 100);
             if (!prevNew) {
@@ -61,7 +56,7 @@ public class CanvasService {
         //鼠标滚轮缩放
         canvasContainer.setOnScroll(e -> {
             if (e.isControlDown()) {
-                int d = StoreManager.getCanvasScale() + (e.getDeltaY() > 0 ? 3 : -3);
+                int d = SystemStore.getCanvasScale() + (e.getDeltaY() > 0 ? 3 : -3);
                 if (d >= 50 && d <= 175) {
                     scale(d);
                     e.consume();
@@ -103,7 +98,7 @@ public class CanvasService {
                 canvasContainer.setVvalue(vValue - dy / yOverflow);
             }
 
-            for (NodeEntity root : StoreManager.getRootNodeList()) {
+            for (NodeEntity root : SystemStore.getRootNodeList()) {
                 AlgorithmUtil.headMapNode(root, (parent, node) -> {
                     if (!xScroll) node.setX(node.getX() + dx);
                     if (!yScroll) node.setY(node.getY() + dy);
@@ -120,14 +115,14 @@ public class CanvasService {
     }
 
     public void scale(int value) {
-        StoreManager.setCanvasScale(value);
+        SystemStore.setCanvasScale(value);
     }
 
     public void resize() {
         double[] bounds = new double[]{0.0, 0.0, 0.0, 0.0};//上右下左
 
         //获取节点占位边界
-        for (NodeEntity root : StoreManager.getRootNodeList()) {
+        for (NodeEntity root : SystemStore.getRootNodeList()) {
             AlgorithmUtil.headMapNode(root, (parent, node) -> {
                 if (node.getX() < bounds[3]) {
                     bounds[3] = node.getX();
@@ -146,7 +141,7 @@ public class CanvasService {
 
         if (bounds[0] < 0) {
             //超出上边界
-            for (NodeEntity root : StoreManager.getRootNodeList()) {
+            for (NodeEntity root : SystemStore.getRootNodeList()) {
                 AlgorithmUtil.headMapNode(root, (parent, node) -> {
                     node.setY(node.getY() - bounds[0]);
                 });
@@ -160,7 +155,7 @@ public class CanvasService {
         }
         if (bounds[3] < 0) {
             //超出左边界
-            for (NodeEntity root : StoreManager.getRootNodeList()) {
+            for (NodeEntity root : SystemStore.getRootNodeList()) {
                 AlgorithmUtil.headMapNode(root, (parent, node) -> {
                     node.setX(node.getX() - bounds[3]);
                 });

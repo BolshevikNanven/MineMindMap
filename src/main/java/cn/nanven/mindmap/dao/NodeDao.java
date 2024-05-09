@@ -1,8 +1,9 @@
 package cn.nanven.mindmap.dao;
 
 import cn.nanven.mindmap.entity.NodeEntity;
+import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.service.ToolbarService;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.StyleUtil;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Paint;
@@ -14,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NodeDao {
-    private static final List<NodeEntity> rootNodeList = StoreManager.getRootNodeList();
+    private static final List<NodeEntity> rootNodeList = SystemStore.getRootNodeList();
 
     private static void doDeleteNode(NodeEntity node) {
         if (!node.getChildren().isEmpty()) {
@@ -41,18 +42,18 @@ public class NodeDao {
             }
             parent.getChildren().add(index, node);
             node.setParent(parent);
-            node.getLine().setHead(parent);
+            LineService.getInstance().addLine(parent, node);
         }
 
     }
 
     public static void deleteNode(NodeEntity node) {
         if (node.getParent() == null) {
-            StoreManager.getRootNodeList().remove(node);
+            SystemStore.getRootNodeList().remove(node);
         } else {
             node.getParent().getChildren().remove(node);
         }
-        StoreManager.setSelectedNode(null);
+        SystemStore.setSelectedNode(null);
         ToolbarService.getInstance().syncState();
         doDeleteNode(node);
     }

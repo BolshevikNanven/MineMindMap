@@ -3,7 +3,7 @@ package cn.nanven.mindmap.view;
 import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.NodeService;
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
@@ -111,7 +111,7 @@ public class NodeView extends AnchorPane {
             e.consume();
         });
         this.setOnMousePressed(e -> {
-            StoreManager.getAuxiliaryNode().render(nodeEntity);
+            SystemStore.getAuxiliaryNode().render(nodeEntity);
             mouseAnchor[0] = e.getSceneX();
             mouseAnchor[1] = e.getSceneY();
 

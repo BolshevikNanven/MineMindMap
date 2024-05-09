@@ -2,7 +2,9 @@ package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.entity.LineEntity;
 import cn.nanven.mindmap.entity.NodeEntity;
+import cn.nanven.mindmap.store.SettingStore;
 import cn.nanven.mindmap.view.Line.StraightLine;
+import cn.nanven.mindmap.view.Line.TwoPolyLine;
 import cn.nanven.mindmap.view.LineView;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
@@ -30,21 +32,25 @@ public class LineService {
     }
 
     public void addLine(NodeEntity head, NodeEntity tail) {
-            LineEntity lineEntity = new LineEntity();
-            lineEntity.setHead(head);
-            lineEntity.setTail(tail);
+        if (head == null) return;
 
-            tail.setLine(lineEntity);
+        LayoutService layoutService = SettingStore.getLayoutService();
+        if (tail.getLine() != null) {
+            deleteLine(tail.getLine());
+            tail.setLine(null);
+        }
 
-            LineView lineView = new StraightLine(lineEntity);
+        LineView lineView = new TwoPolyLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+        tail.setLine(lineView);
 
-            canvas.getChildren().add(lineView.render());
+        canvas.getChildren().add(lineView.render());
 
     }
-    public void deleteLine(Node line,LineEntity lineEntity){
-        canvas.getChildren().remove(line);
-        lineEntity.setHead(null);
-        lineEntity.setTail(null);
+
+    public void deleteLine(LineView lineView) {
+        canvas.getChildren().remove(lineView.render());
+        lineView.setHead(null);
+        lineView.setTail(null);
     }
 
 }

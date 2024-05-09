@@ -1,6 +1,6 @@
 package cn.nanven.mindmap.service;
 
-import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.store.ThreadsPool;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -74,13 +74,13 @@ public class WindowService {
         this.miniBtn.setOnAction(e -> {
             stage.setIconified(true);
         });
-        this.loadingIndicator.visibleProperty().bind(StoreManager.loadingStateProperty());
+        this.loadingIndicator.visibleProperty().bind(SystemStore.loadingStateProperty());
         //监听当前文件以更改标题
-        StoreManager.file().addListener(observable -> {
-            if (StoreManager.getFile() != null) {
+        SystemStore.file().addListener(observable -> {
+            if (SystemStore.getFile() != null) {
                 //回到ui线程进行渲染
                 Platform.runLater(() -> {
-                    String fullName = StoreManager.getFile().getName();
+                    String fullName = SystemStore.getFile().getName();
                     this.title.setText(fullName.substring(0, fullName.lastIndexOf('.')));
                 });
             }
