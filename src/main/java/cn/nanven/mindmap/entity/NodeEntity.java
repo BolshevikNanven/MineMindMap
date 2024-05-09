@@ -1,8 +1,15 @@
 package cn.nanven.mindmap.entity;
 
+import cn.nanven.mindmap.common.jackson.deserializer.BackgroundDeserializer;
+import cn.nanven.mindmap.common.jackson.deserializer.ColorDeserializer;
+import cn.nanven.mindmap.common.jackson.deserializer.FontDeserializer;
+import cn.nanven.mindmap.common.jackson.serializer.BackgroundSerializer;
+import cn.nanven.mindmap.common.jackson.serializer.ColorSerializer;
 import cn.nanven.mindmap.util.StyleUtil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
@@ -36,26 +43,39 @@ public class NodeEntity implements Serializable {
     private final SimpleDoubleProperty height = new SimpleDoubleProperty();
     @JsonIgnore
     private final SimpleDoubleProperty actualHeight = new SimpleDoubleProperty();
+    @JsonSerialize(using = BackgroundSerializer.class)
+    @JsonDeserialize(using = BackgroundDeserializer.class)
     private final SimpleObjectProperty<Background> background = new SimpleObjectProperty<>();
+    @JsonSerialize(using = ColorSerializer.class)
+    @JsonDeserialize(using = ColorDeserializer.class)
     private final SimpleObjectProperty<Paint> color = new SimpleObjectProperty<>();
+    @JsonDeserialize(using = FontDeserializer.class)
     private final SimpleObjectProperty<Font> font = new SimpleObjectProperty<>();
     private final SimpleBooleanProperty fontUnderline = new SimpleBooleanProperty();
 
-    @JsonProperty("background")
-    public String getJsonBackground(){
-        return background.get().getFills().get(0).getFill().toString();
-    }
-    @JsonProperty("background")
-    public void setJsonBackground(String background){
-        this.background.set(StyleUtil.newBackground(background));
-    }
-    @JsonProperty("color")
-    public String getJsonColor(){
-        return color.get().toString();
-    }
-    @JsonProperty("color")
-    public void setJsonColor(String color){
-        this.color.set(Paint.valueOf(color));
+    @Override
+    public String toString() {
+        return "NodeEntity{" +
+                "parent=" + parent +
+                ", children=" + children +
+                ", line=" + line +
+                ", bounds=" + bounds +
+                ", param=" + param +
+                ", deleteSymbol=" + deleteSymbol +
+                ", disabled=" + disabled +
+                ", alignment=" + alignment +
+                ", content=" + content +
+                ", x=" + x +
+                ", y=" + y +
+                ", width=" + width +
+                ", actualWidth=" + actualWidth +
+                ", height=" + height +
+                ", actualHeight=" + actualHeight +
+                ", background=" + background +
+                ", color=" + color +
+                ", font=" + font +
+                ", fontUnderline=" + fontUnderline +
+                '}';
     }
 
     public void delete() {

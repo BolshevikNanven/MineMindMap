@@ -1,9 +1,14 @@
 package cn.nanven.mindmap.service;
 
+import cn.nanven.mindmap.store.StoreManager;
+import cn.nanven.mindmap.store.ThreadsPool;
+import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Screen;
@@ -17,6 +22,8 @@ public class WindowService {
     private Button miniBtn;
     private Button scaleBtn;
     private Button closeBtn;
+    private ImageView loadingIndicator;
+    private Label title;
     private double windowX;
     private double windowY;
     private double windowWidth;
@@ -27,9 +34,9 @@ public class WindowService {
     private double dragOffsetY;
 
 
-    private static final double MIN_WIDTH = 700.0D;
+    private static final double MIN_WIDTH = 900.0D;
     private static final double MIN_HEIGHT = 500.0D;
-    private static final double BORDER = 5.0D;
+    private static final double BORDER = 12.0D;
 
 
     private WindowService() {
@@ -38,10 +45,12 @@ public class WindowService {
     private WindowService(Parent root, Stage stage) {
         this.root = root;
         this.stage = stage;
-        this.base= (BorderPane) root.lookup("#base");
+        this.base = (BorderPane) root.lookup("#base");
         this.miniBtn = (Button) root.lookup("#window-mini-btn");
         this.scaleBtn = (Button) root.lookup("#window-scale-btn");
         this.closeBtn = (Button) root.lookup("#window-close-btn");
+        this.loadingIndicator = (ImageView) root.lookup("#loading-indicator");
+        this.title = (Label) root.lookup("#title");
 
         this.windowX = stage.getX();
         this.windowY = stage.getY();
@@ -65,7 +74,17 @@ public class WindowService {
         this.miniBtn.setOnAction(e -> {
             stage.setIconified(true);
         });
-
+        this.loadingIndicator.visibleProperty().bind(StoreManager.loadingStateProperty());
+        //监听当前文件以更改标题
+        StoreManager.file().addListener(observable -> {
+            if (StoreManager.getFile() != null) {
+                //回到ui线程进行渲染
+                Platform.runLater(() -> {
+                    String fullName = StoreManager.getFile().getName();
+                    this.title.setText(fullName.substring(0, fullName.lastIndexOf('.')));
+                });
+            }
+        });
         this.scaleBtn.setOnAction(e -> {
             if (isMax) {
                 stage.setX(windowX);
@@ -85,7 +104,11 @@ public class WindowService {
             }
         });
         this.closeBtn.setOnAction(e -> {
+            ThreadsPool.close();
             stage.close();
+        });
+        stage.setOnCloseRequest(windowEvent -> {
+            ThreadsPool.close();
         });
         root.setOnMousePressed(event -> {
 
@@ -105,6 +128,7 @@ public class WindowService {
         });
 
     }
+
     private void addResizeListeners() {
         root.setOnMouseMoved(this::onMouseMoved);
         root.setOnMousePressed(this::onMousePressed);
@@ -211,8 +235,6 @@ public class WindowService {
         }
         root.setCursor(cursorType);
     }
-
-
 
 
 }

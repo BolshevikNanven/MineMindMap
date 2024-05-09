@@ -104,6 +104,34 @@ public class NodeService {
         }
     }
 
+    public void renderNodeTree() {
+        final NodeEntity[] last = {null};
+        for (NodeEntity root : StoreManager.getRootNodeList()) {
+            AlgorithmUtil.headMapNode(root, (parent, node) -> {
+                NodeView nodeView = new NodeView(node);
+                nodeView.setFocusTraversable(true);
+
+                this.canvas.getChildren().add(nodeView);
+                LineService.getInstance().addLine(node.getParent(), node);
+                last[0] = node;
+            });
+        }
+        if (last[0] == null) return;
+
+        //等待节点渲染完成再进行布局
+        last[0].actualHeightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                SidebarController.getInstance().sync();
+                CanvasService.getInstance().resize();
+                layoutService.layout();
+
+                last[0].actualHeightProperty().removeListener(this);
+            }
+        });
+
+    }
+
     public void selectNode(NodeView newNode) {
         NodeView prevNode = StoreManager.getSelectedNode();
         if (newNode == prevNode) {
@@ -164,7 +192,7 @@ public class NodeService {
 
             //遍历寻找吸附节点
             for (NodeEntity root : StoreManager.getRootNodeList()) {
-                AlgorithmUtil.headMapNode(root, n -> {
+                AlgorithmUtil.headMapNode(root, (parent, n) -> {
                     double centerX = n.getX() + n.getActualWidth() / 2;
                     double centerY = n.getY() + n.getActualHeight() / 2;
 

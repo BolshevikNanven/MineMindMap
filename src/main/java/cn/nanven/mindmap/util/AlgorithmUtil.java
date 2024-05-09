@@ -1,13 +1,20 @@
 package cn.nanven.mindmap.util;
 
 import cn.nanven.mindmap.entity.NodeEntity;
-import cn.nanven.mindmap.util.handler.MapEventHandler;
+import cn.nanven.mindmap.common.handler.MapEventHandler;
 
 public class AlgorithmUtil {
-    public static void headMapNode(NodeEntity node, MapEventHandler handler) {
-        handler.handle(node);
+    private static void headMapNode(NodeEntity parent, NodeEntity node, MapEventHandler handler) {
+        handler.handle(parent, node);
         for (NodeEntity child : node.getChildren()) {
-            headMapNode(child, handler);
+            headMapNode(node, child, handler);
+        }
+    }
+
+    public static void headMapNode(NodeEntity node, MapEventHandler handler) {
+        handler.handle(null, node);
+        for (NodeEntity child : node.getChildren()) {
+            headMapNode(node, child, handler);
         }
     }
 
@@ -15,18 +22,19 @@ public class AlgorithmUtil {
         for (NodeEntity child : node.getChildren()) {
             tailMapNode(child, handler);
         }
-        handler.handle(node);
+        handler.handle(null, node);
     }
 
     public static NodeEntity findRoot(NodeEntity target) {
         NodeEntity node = target;
-        while (true){
-            if (node.getParent()==null){
+        while (true) {
+            if (node.getParent() == null) {
                 return node;
             }
-            node=node.getParent();
+            node = node.getParent();
         }
     }
+
     //向根节点判断节点是否存在
     public static boolean checkExistParent(NodeEntity start, NodeEntity target) {
         NodeEntity node = start;

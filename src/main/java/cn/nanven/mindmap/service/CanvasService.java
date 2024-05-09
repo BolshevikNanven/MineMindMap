@@ -104,7 +104,7 @@ public class CanvasService {
             }
 
             for (NodeEntity root : StoreManager.getRootNodeList()) {
-                AlgorithmUtil.headMapNode(root, node -> {
+                AlgorithmUtil.headMapNode(root, (parent, node) -> {
                     if (!xScroll) node.setX(node.getX() + dx);
                     if (!yScroll) node.setY(node.getY() + dy);
                 });
@@ -128,7 +128,7 @@ public class CanvasService {
 
         //获取节点占位边界
         for (NodeEntity root : StoreManager.getRootNodeList()) {
-            AlgorithmUtil.headMapNode(root, node -> {
+            AlgorithmUtil.headMapNode(root, (parent, node) -> {
                 if (node.getX() < bounds[3]) {
                     bounds[3] = node.getX();
                 }
@@ -147,7 +147,7 @@ public class CanvasService {
         if (bounds[0] < 0) {
             //超出上边界
             for (NodeEntity root : StoreManager.getRootNodeList()) {
-                AlgorithmUtil.headMapNode(root, node -> {
+                AlgorithmUtil.headMapNode(root, (parent, node) -> {
                     node.setY(node.getY() - bounds[0]);
                 });
             }
@@ -161,7 +161,7 @@ public class CanvasService {
         if (bounds[3] < 0) {
             //超出左边界
             for (NodeEntity root : StoreManager.getRootNodeList()) {
-                AlgorithmUtil.headMapNode(root, node -> {
+                AlgorithmUtil.headMapNode(root, (parent, node) -> {
                     node.setX(node.getX() - bounds[3]);
                 });
             }

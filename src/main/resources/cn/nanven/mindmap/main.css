@@ -65,36 +65,33 @@ Button {
     -fx-background-color: #fff;
 }
 
-.menu-bar {
-    -fx-background-color: null;
-}
 
-.menu-bar .menu-button {
+#menu {
     -fx-pref-height: 30;
     -fx-background-color: null;
     -fx-background-radius: 4px;
     -fx-text-fill: #212121;
+    -fx-cursor: hand;
 }
 
-.menu-bar .menu-button:hover>.label, .menu-bar .menu-button:showing>.label {
-    -fx-text-fill: #212121;
-}
-
-.menu-bar .menu-button:hover {
-    -fx-background-color: rgb(232, 235, 238);
-
-}
-
-.menu-bar .menu-button:showing {
+#menu:hover, #menu:showing {
     -fx-background-color: rgb(232, 235, 238);
 }
 
-.menu-bar .menu-button:pressed {
-    -fx-background-color: rgb(228, 231, 234);
+#menu Region {
+    -fx-background-color: #737373;
+}
+
+#menu > .arrow-button {
+    -fx-padding: 0;
+}
+
+#menu > .arrow-button > .arrow {
+    -fx-padding: 0;
 }
 
 .toolbar {
-    -fx-background-color: rgb(237, 242, 250);
+    -fx-background-color: rgb(234, 239, 250);
     -fx-background-radius: 42;
 }
 
@@ -150,12 +147,14 @@ Button {
     -fx-background-color: null;
     -fx-padding: 0 0 0 8;
 }
-.slider > .track{
+
+.slider > .track {
     -fx-background-color: #dedede;
     -fx-background-insets: 0;
     -fx-padding: 2;
 }
-.slider > .thumb{
+
+.slider > .thumb {
     -fx-background-color: #525252;
     -fx-border-width: 3.5;
     -fx-border-color: rgb(237, 242, 250);
@@ -164,7 +163,8 @@ Button {
     -fx-border-radius: 8;
     -fx-effect: null;
 }
-.slider > .thumb:pressed{
+
+.slider > .thumb:pressed {
     -fx-padding: 8.5 2 8.5 2;
 }
 
@@ -199,10 +199,12 @@ Button {
     -fx-background-color: #ffffff;
     -fx-background-radius: 0 16 0 6;
 }
+
 .mind-map-canvas {
     -fx-background-radius: 0 16 0 6;
     -fx-background-color: #fff;
 }
+
 .scroll-bar {
     -fx-background-color: null;
     -fx-border-color: null;
@@ -256,9 +258,8 @@ Button {
 }
 
 
-
 #sidebar-container {
-    -fx-background-color: rgb(237, 242, 250);
+    -fx-background-color: rgb(234, 239, 250);
     -fx-background-radius: 16;
 }
 
@@ -294,7 +295,8 @@ Button {
     -fx-border-width: 2;
     -fx-border-color: transparent;
 }
-.node-box:disabled{
+
+.node-box:disabled {
     -fx-opacity: 0.6;
 }
 
@@ -382,8 +384,13 @@ Button {
 .chevron-right-icon {
     -fx-shape: "M12.6 12L8.7 8.1q-.275-.275-.275-.7t.275-.7q.275-.275.7-.275t.7.275l4.6 4.6q.15.15.213.325t.062.375q0 .2-.062.375t-.213.325l-4.6 4.6q-.275.275-.7.275t-.7-.275q-.275-.275-.275-.7t.275-.7z";
 }
-.search-icon{
+
+.search-icon {
     -fx-shape: "M9.5 16q-2.725 0-4.612-1.888T3 9.5q0-2.725 1.888-4.612T9.5 3q2.725 0 4.613 1.888T16 9.5q0 1.1-.35 2.075T14.7 13.3l5.6 5.6q.275.275.275.7t-.275.7q-.275.275-.7.275t-.7-.275l-5.6-5.6q-.75.6-1.725.95T9.5 16m0-2q1.875 0 3.188-1.312T14 9.5q0-1.875-1.312-3.187T9.5 5Q7.625 5 6.313 6.313T5 9.5q0 1.875 1.313 3.188T9.5 14";
+}
+
+.menu-icon {
+    -fx-shape: "M4 6h24v2H4zm0 18h24v2H4zm0-12h24v2H4zm0 6h24v2H4z";
 }
 
 .icon.disabled, text-color-icon.disabled {

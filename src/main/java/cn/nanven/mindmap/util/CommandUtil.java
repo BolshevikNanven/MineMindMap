@@ -1,7 +1,7 @@
 package cn.nanven.mindmap.util;
 
 import cn.nanven.mindmap.entity.Command;
-import cn.nanven.mindmap.util.handler.CommandEventHandler;
+import cn.nanven.mindmap.common.handler.CommandEventHandler;
 
 public class CommandUtil {
     public static Command generate(CommandEventHandler handler, Object param1, Object param2) {

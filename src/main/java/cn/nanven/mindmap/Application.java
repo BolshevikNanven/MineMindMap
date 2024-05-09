@@ -27,8 +27,8 @@ public class Application extends javafx.application.Application {
         stage.setScene(scene);
         stage.show();
 
-        WindowService.init(root,stage);
-        FileService.init(stage,root);
+        WindowService.init(root, stage);
+        FileService.init(root, stage, scene);
     }
 
     public static void main(String[] args) {

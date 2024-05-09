@@ -84,6 +84,7 @@ public class NodeDao {
         return node;
     }
 
+
     private static NodeEntity newBean(NodeEntity template) {
         NodeEntity node = new NodeEntity();
         if (template == null) {
