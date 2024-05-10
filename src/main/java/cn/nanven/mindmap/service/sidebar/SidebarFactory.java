@@ -28,8 +28,11 @@ public class SidebarFactory {
 
     public SidebarService getService(String type) {
         switch (type) {
-            case "outline"-> {
+            case "outline" -> {
                 return new OutlineService();
+            }
+            case "design" -> {
+                return new DesignService();
             }
             default -> {
                 return null;

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
@@ -22,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="base" prefHeight="640.0" prefWidth="939.0" stylesheets="@main.css,@outline.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
+<BorderPane id="base" prefHeight="640.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
    <top>
       <VBox style="-fx-background-color: null;" BorderPane.alignment="CENTER">
          <children>
@@ -109,7 +110,7 @@
                         </MenuButton>
                         <ImageView id="loading-indicator" fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@loading.gif" />
+                              <Image url="@image/loading.gif" />
                            </image>
                            <HBox.margin>
                               <Insets left="8.0" />
@@ -445,7 +446,7 @@
          <right>
             <BorderPane id="sidebar-container" fx:id="sidebar" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="522.0" prefWidth="294.0" BorderPane.alignment="CENTER">
                <BorderPane.margin>
-                  <Insets bottom="12.0" left="12.0" right="12.0" />
+                  <Insets bottom="12.0" left="12.0" right="8.0" />
                </BorderPane.margin>
                <top>
                   <BorderPane BorderPane.alignment="CENTER_LEFT">
@@ -489,4 +490,9 @@
          </right>
       </BorderPane>
    </center>
+   <stylesheets>
+      <URL value="@css/main.css" />
+      <URL value="@css/outline.css" />
+      <URL value="@css/icon.css" />
+   </stylesheets>
 </BorderPane>

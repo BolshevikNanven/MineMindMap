@@ -1,13 +1,17 @@
 package cn.nanven.mindmap.service;
 
-import cn.nanven.mindmap.entity.LineEntity;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.store.SettingStore;
+import cn.nanven.mindmap.view.Line.CurveLine;
 import cn.nanven.mindmap.view.Line.StraightLine;
 import cn.nanven.mindmap.view.Line.TwoPolyLine;
 import cn.nanven.mindmap.view.LineView;
-import javafx.scene.Node;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.layout.Pane;
+
+import java.util.concurrent.atomic.AtomicReference;
 
 public class LineService {
     private static LineService instance;
@@ -34,17 +38,86 @@ public class LineService {
     public void addLine(NodeEntity head, NodeEntity tail) {
         if (head == null) return;
 
-        LayoutService layoutService = SettingStore.getLayoutService();
+        //前后节点宽高渲染是否完毕信号量
+        AtomicReference<Integer> semaphore = new AtomicReference<>(0);
+
+        //先删除原有的线
         if (tail.getLine() != null) {
             deleteLine(tail.getLine());
             tail.setLine(null);
         }
 
-        LineView lineView = new TwoPolyLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+        //如果前后节点均不是新建的则直接添加线条
+        if (head.getActualHeight() != 0 && head.getActualWidth() != 0 && tail.getActualWidth() != 0 && tail.getActualHeight() != 0) {
+            doAddLine(head, tail);
+            return;
+        }
+
+        //否则监听属性变化，根据信号量来新增
+        head.actualHeightProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                semaphore.getAndSet(semaphore.get() + 1);
+                head.actualHeightProperty().removeListener(this);
+                if (semaphore.get() >= 4) {
+                    doAddLine(head, tail);
+                }
+            }
+        });
+        head.actualWidthProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                semaphore.getAndSet(semaphore.get() + 1);
+                head.actualWidthProperty().removeListener(this);
+                if (semaphore.get() >= 4) {
+                    doAddLine(head, tail);
+                }
+            }
+        });
+        tail.actualHeightProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                semaphore.getAndSet(semaphore.get() + 1);
+                tail.actualHeightProperty().removeListener(this);
+                if (semaphore.get() >= 4) {
+                    doAddLine(head, tail);
+                }
+            }
+        });
+        tail.actualWidthProperty().addListener(new ChangeListener<>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
+                semaphore.getAndSet(semaphore.get() + 1);
+                tail.actualWidthProperty().removeListener(this);
+                if (semaphore.get() >= 4) {
+                    doAddLine(head, tail);
+                }
+            }
+        });
+
+
+    }
+
+    private void doAddLine(NodeEntity head, NodeEntity tail) {
+        LineView lineView = generateLine(head, tail);
         tail.setLine(lineView);
-
         canvas.getChildren().add(lineView.render());
+    }
 
+    private LineView generateLine(NodeEntity head, NodeEntity tail) {
+        LayoutService layoutService = SettingStore.getLayoutService();
+
+        switch (SettingStore.getLine()) {
+            case "StraightLine" -> {
+                return new StraightLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+            }
+            case "CurveLine" -> {
+                return new CurveLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+            }
+            default -> {
+                return new TwoPolyLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+            }
+        }
     }
 
     public void deleteLine(LineView lineView) {

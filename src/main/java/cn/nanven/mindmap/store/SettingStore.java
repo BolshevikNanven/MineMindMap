@@ -2,17 +2,32 @@ package cn.nanven.mindmap.store;
 
 import cn.nanven.mindmap.entity.SettingEntity;
 import cn.nanven.mindmap.service.LayoutService;
+import cn.nanven.mindmap.service.layout.LayoutFactory;
 
 public class SettingStore {
-    private static SettingEntity setting;
-    private static LayoutService layoutService;
-
-    public static SettingEntity getSetting() {
-        return setting;
+    static {
+        setting = new SettingEntity();
+        setLayout("RightTreeLayout");
+        setLine("TwoPolyLine");
+        layoutService= LayoutFactory.getInstance().getService("RightTreeLayout");
     }
 
-    public static void setSetting(SettingEntity setting) {
-        SettingStore.setting = setting;
+    private static final SettingEntity setting;
+    private static LayoutService layoutService;
+    public static String getLayout() {
+        return setting.getLayout();
+    }
+
+    public static void setLayout(String layout) {
+        setting.setLayout(layout);
+    }
+
+    public static String getLine() {
+        return setting.getLine();
+    }
+
+    public static void setLine(String line) {
+        setting.setLine(line);
     }
 
     public static LayoutService getLayoutService() {

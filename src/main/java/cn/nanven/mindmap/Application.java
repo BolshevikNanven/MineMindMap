@@ -19,7 +19,6 @@ public class Application extends javafx.application.Application {
         Parent root = fxmlLoader.load();
 
         Scene scene = new Scene(root, 1080, 680);
-        scene.getStylesheets().add(getClass().getResource("main.css").toExternalForm());
         scene.setFill(Color.TRANSPARENT);
 
         stage.initStyle(StageStyle.TRANSPARENT);

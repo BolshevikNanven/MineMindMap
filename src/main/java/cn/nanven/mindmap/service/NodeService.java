@@ -38,7 +38,6 @@ public class NodeService {
                 selectNode(null);
             }
         });
-        SettingStore.setLayoutService(LayoutFactory.getInstance().getService(""));
         SystemStore.setAuxiliaryNode(new AuxiliaryNodeView(canvas));
     }
 
@@ -72,11 +71,11 @@ public class NodeService {
         newNode.actualHeightProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                LineService.getInstance().addLine(newNode.getParent(), newNode);
                 SidebarController.getInstance().sync();
                 CanvasService.getInstance().resize();
                 SettingStore.getLayoutService().layout();
 
+                LineService.getInstance().addLine(newNode.getParent(), newNode);
                 selectNode(nodeView);
                 nodeView.focusText();
 
@@ -119,12 +118,14 @@ public class NodeService {
         if (last[0] == null) return;
 
         //等待节点渲染完成再进行布局
-        last[0].actualHeightProperty().addListener(new ChangeListener<Number>() {
+        last[0].actualHeightProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
                 SidebarController.getInstance().sync();
                 CanvasService.getInstance().resize();
                 SettingStore.getLayoutService().layout();
+
+
 
                 last[0].actualHeightProperty().removeListener(this);
             }

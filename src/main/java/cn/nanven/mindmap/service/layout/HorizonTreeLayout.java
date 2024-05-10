@@ -40,11 +40,18 @@ public class HorizonTreeLayout implements LayoutService {
         if (node.getChildren() == null || node.getChildren().isEmpty()) {
             bounds = node.getActualHeight();
         } else {
-            for (NodeEntity child : node.getChildren()) {
+            for (int i = 0; i < node.getChildren().size(); i++) {
+                NodeEntity child = node.getChildren().get(i);
                 doBounds(child);
-                if (bounds <= 0.0) {
+                if (bounds == 0.0) {
                     bounds += child.getBounds();
                 } else bounds += child.getBounds() + MARGIN_V;
+
+
+                //最后一个子节点特殊处理，不计下边空白高度
+                //if (i == node.getChildren().size() - 1 && i != 0) {
+                //    bounds -= child.getBounds() / 2 - child.getActualHeight() / 2;
+                //}
 
             }
         }
@@ -67,7 +74,9 @@ public class HorizonTreeLayout implements LayoutService {
                 top += broNodeList.get(i).getBounds() + MARGIN_V;
             }
 
+
             top += node.getBounds() / 2 - node.getActualHeight() / 2;
+
             node.setY(top);
             if (layoutDirection == Direction.RIGHT) {
                 node.setX(parent.getX() + parent.getActualWidth() + MARGIN_H);
@@ -186,7 +195,7 @@ public class HorizonTreeLayout implements LayoutService {
     public SimpleDoubleProperty[] getLineHead(NodeEntity node) {
         if (node == null) return null;
 
-        SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(),new SimpleDoubleProperty()};
+        SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(), new SimpleDoubleProperty()};
         if (layoutDirection == Direction.RIGHT) {
             res[0].set(node.getX() + node.getActualWidth());
             node.xProperty().addListener((observableValue, number, t1) -> {
@@ -198,16 +207,16 @@ public class HorizonTreeLayout implements LayoutService {
                 res[0].set(node.getX());
             });
         }
-        res[1].set(node.getY() + node.getActualHeight()/2);
+        res[1].set(node.getY() + node.getActualHeight() / 2);
         node.yProperty().addListener((observableValue, number, t1) -> {
-            res[1].set(node.getY() + node.getActualHeight()/2);
+            res[1].set(node.getY() + node.getActualHeight() / 2);
         });
         return res;
     }
 
     @Override
     public SimpleDoubleProperty[] getLineTail(NodeEntity node) {
-        SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(),new SimpleDoubleProperty()};
+        SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(), new SimpleDoubleProperty()};
         if (layoutDirection == Direction.RIGHT) {
             res[0].set(node.getX());
             node.xProperty().addListener((observableValue, number, t1) -> {
@@ -219,9 +228,9 @@ public class HorizonTreeLayout implements LayoutService {
                 res[0].set(node.getX() + node.getActualWidth());
             });
         }
-        res[1].set(node.getY() + node.getActualHeight()/2);
+        res[1].set(node.getY() + node.getActualHeight() / 2);
         node.yProperty().addListener((observableValue, number, t1) -> {
-            res[1].set(node.getY() + node.getActualHeight()/2);
+            res[1].set(node.getY() + node.getActualHeight() / 2);
         });
         return res;
     }

@@ -1,16 +1,84 @@
 package cn.nanven.mindmap.service.sidebar;
 
+import cn.nanven.mindmap.Application;
+import cn.nanven.mindmap.service.NodeService;
 import cn.nanven.mindmap.service.SidebarService;
+import cn.nanven.mindmap.service.layout.LayoutFactory;
+import cn.nanven.mindmap.store.SettingStore;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.control.ChoiceBox;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DesignService implements SidebarService {
+    private final Parent root;
+    private ChoiceBox<String> layoutChoiceBox;
+    private ChoiceBox<String> lineChoiceBox;
+    private final String[] layoutNames = new String[]{"右侧树布局", "左侧树布局", "思维导图布局"};
+    private final String[] layoutServices = new String[]{"RightTreeLayout", "LeftTreeLayout", "MindMapLayout"};
+    private final String[] lineNames = new String[]{"直线", "折线", "曲线"};
+    private final String[] lineServices = new String[]{"StraightLine", "TwoPolyLine", "CurveLine"};
+
+    public DesignService() {
+        FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("design-sidebar.fxml"));
+        try {
+            root = fxmlLoader.load();
+            layoutChoiceBox = (ChoiceBox<String>) root.lookup("#layout-choice-box");
+            lineChoiceBox = (ChoiceBox<String>) root.lookup("#line-choice-box");
+
+            layoutChoiceBox.getItems().addAll(layoutNames);
+            lineChoiceBox.getItems().addAll(lineNames);
+
+            sync();
+            addListener();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addListener() {
+        layoutChoiceBox.setOnAction(actionEvent -> {
+            for (int i = 0; i < layoutNames.length; i++) {
+                if (layoutChoiceBox.getValue().equals(layoutNames[i])) {
+                    SettingStore.setLayout(layoutServices[i]);
+                    SettingStore.setLayoutService(LayoutFactory.getInstance().getService(layoutServices[i]));
+                    NodeService.getInstance().renderNodeTree();
+                    break;
+                }
+            }
+
+        });
+        lineChoiceBox.setOnAction(actionEvent -> {
+            for (int i = 0; i < lineNames.length; i++) {
+                if (lineChoiceBox.getValue().equals(lineNames[i])) {
+                    SettingStore.setLine(lineServices[i]);
+
+                    NodeService.getInstance().renderNodeTree();
+                    break;
+                }
+            }
+        });
+    }
+
     @Override
     public Node render() {
-        return null;
+        return root;
     }
 
     @Override
     public void sync() {
-
+        for (int i = 0; i < lineNames.length; i++) {
+            if (layoutServices[i].equals(SettingStore.getLayout())) {
+                layoutChoiceBox.getSelectionModel().select(i);
+            }
+            if (lineServices[i].equals(SettingStore.getLine())) {
+                SettingStore.setLine(lineServices[i]);
+                lineChoiceBox.getSelectionModel().select(i);
+            }
+        }
     }
 }
