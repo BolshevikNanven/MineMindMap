@@ -82,19 +82,35 @@ public class ToolbarService {
             }
         });
         this.alignMenuBtn.getItems().forEach(item -> {
+
             if (item.getId().equals("align-left-menu-item")) {
+
                 item.setOnAction(e -> {
-                    node.setAlignment(Pos.CENTER_LEFT);
+                    NodeEntity n = node;
+                    Pos oldAlignment = n.getAlignment();
+                    UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                        n.setAlignment((Pos) param);
+                    }, Pos.CENTER_LEFT, oldAlignment));
                     syncState();
                 });
             } else if (item.getId().equals("align-center-menu-item")) {
+
                 item.setOnAction(e -> {
-                    node.setAlignment(Pos.CENTER);
+                    NodeEntity n = node;
+                    Pos oldAlignment = n.getAlignment();
+                    UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                        n.setAlignment((Pos) param);
+                    }, Pos.CENTER, oldAlignment));
                     syncState();
                 });
             } else if (item.getId().equals("align-right-menu-item")) {
+
                 item.setOnAction(e -> {
-                    node.setAlignment(Pos.CENTER_RIGHT);
+                    NodeEntity n = node;
+                    Pos oldAlignment = n.getAlignment();
+                    UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                        n.setAlignment((Pos) param);
+                    }, Pos.CENTER_RIGHT, oldAlignment));
                     syncState();
                 });
             }
@@ -119,28 +135,64 @@ public class ToolbarService {
             } else node.setFont(StyleUtil.mergeFont(node.getFont(), FontPosture.REGULAR));
         });
         this.underlineBtn.setOnAction(e -> {
-            node.setFontUnderline(this.underlineBtn.isSelected());
+            NodeEntity n = node;
+            if (this.underlineBtn.isSelected()) {
+                UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                    n.setFontUnderline((Boolean) param);
+                    syncState();
+                }, true, false));
+            } else {
+                UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                    n.setFontUnderline((Boolean) param);
+                    syncState();
+                }, false, true));
+            }
         });
+
+
         this.incFontSizeBtn.setOnAction(e -> {
             double size = Double.parseDouble(this.fontSizeLabel.getText());
+            double hasNotIncreasedSize = size;
+            NodeEntity n = node;
             if (size < 56) size++;
-            node.setFont(StyleUtil.mergeFont(node.getFont(), size));
-            syncState();
+            UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                n.setFont(StyleUtil.mergeFont(n.getFont(), (double) param));
+                syncState();
+            }, size, hasNotIncreasedSize));
+
+
         });
         this.decFontSizeBtn.setOnAction(e -> {
             double size = Double.parseDouble(this.fontSizeLabel.getText());
+            double hasNotDecreasedSize = size;
+            NodeEntity n = node;
             if (size > 8) size--;
-            node.setFont(StyleUtil.mergeFont(node.getFont(), size));
-            syncState();
+            UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                node.setFont(StyleUtil.mergeFont(node.getFont(), (double) param));
+                syncState();
+            }, size, hasNotDecreasedSize));
+
         });
-        this.fontColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-            node.setColor(t1);
-            syncState();
+        this.fontColorPicker.setOnAction(actionEvent -> {
+            NodeEntity n = node;
+            Paint c = n.getColor();
+            UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                n.setColor((Color) param);
+                syncState();
+            }, fontColorPicker.getValue(), c));
         });
-        this.backgroundColorPicker.valueProperty().addListener((observableValue, color, t1) -> {
-            node.setBackground(StyleUtil.newBackground(t1.toString().substring(2)));
-            syncState();
+
+        this.backgroundColorPicker.setOnAction(actionEvent -> {
+            NodeEntity n = node;
+            Paint c = n.getColor();
+            UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                n.setBackground(StyleUtil.newBackground(((Color) param).toString().substring(2)));
+                syncState();
+            }, fontColorPicker.getValue(), c));
+
         });
+
+
         this.deleteBtn.setOnAction(e -> {
             NodeEntity node = SystemStore.getSelectedNode().getNodeEntity();
             NodeDao.deleteNode(node);

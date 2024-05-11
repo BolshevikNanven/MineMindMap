@@ -1,7 +1,9 @@
 module cn.nanven.mindmap {
     requires javafx.controls;
     requires javafx.fxml;
+    requires javafx.swing;
     requires com.fasterxml.jackson.databind;
+    requires java.desktop;
 
     opens cn.nanven.mindmap to javafx.fxml;
     exports cn.nanven.mindmap;

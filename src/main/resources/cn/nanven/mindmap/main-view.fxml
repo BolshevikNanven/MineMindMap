@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane id="base" prefHeight="640.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
+<BorderPane id="base" prefHeight="640.0" prefWidth="939.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="cn.nanven.mindmap.controller.MainController">
    <top>
       <VBox style="-fx-background-color: null;" BorderPane.alignment="CENTER">
          <children>
@@ -437,7 +437,7 @@
             <Insets />
          </BorderPane.margin>
          <center>
-            <ScrollPane fx:id="canvasContainer" pannable="true" styleClass="canvas-container">
+            <ScrollPane id="canvas" fx:id="canvasContainer" pannable="true" styleClass="canvas-container">
                <content>
                   <Pane fx:id="canvas" styleClass="mind-map-canvas" />
                </content>
