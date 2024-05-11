@@ -1,4 +1,9 @@
+
 #base {
+    primary-color: rgb(225, 235, 252);
+    primary-hover-color: rgb(204, 221, 248);
+    primary-active-color: rgb(192, 213, 248);
+
     -fx-background-color: #ffffff;
     -fx-background-radius: 6;
     -fx-effect: dropshadow(three-pass-box, #b0b0b0, 12, 0.1, 0, 3);
@@ -45,9 +50,11 @@ Button {
 .menu-item:hover, .menu-item:focused {
     -fx-background-color: rgb(228, 232, 234);
 }
-.menu-item:hover .label, .menu-item:focused .label{
+
+.menu-item:hover .label, .menu-item:focused .label {
     -fx-text-fill: #212121;
 }
+
 .sys-btn {
     -fx-background-radius: 0;
     -fx-background-color: null;
@@ -95,7 +102,7 @@ Button {
 }
 
 .toolbar {
-    -fx-background-color: rgb(234, 239, 250);
+    -fx-background-color: primary-color;
     -fx-background-radius: 42;
 }
 
@@ -108,11 +115,11 @@ Button {
 }
 
 .toolbar .toggle-button:selected {
-    -fx-background-color: rgb(211, 227, 253);
+    -fx-background-color: primary-hover-color;
 }
 
 .toolbar .toggle-button:selected:hover {
-    -fx-background-color: rgb(191, 207, 236);
+    -fx-background-color: primary-active-color;
 }
 
 .toolbar .button, .toolbar .toggle-button {
@@ -121,11 +128,11 @@ Button {
 }
 
 .toolbar .button:hover, .toolbar .toggle-button:hover {
-    -fx-background-color: rgb(223, 229, 235);
+    -fx-background-color: primary-hover-color;
 }
 
 .toolbar .button:pressed, .toolbar .toggle-button:pressed {
-    -fx-background-color: rgb(217, 220, 226);
+    -fx-background-color: primary-active-color;
 }
 
 .toolbar .menu-button, .toolbar .color-picker {
@@ -136,11 +143,11 @@ Button {
 }
 
 .toolbar .menu-button:hover, .toolbar .color-picker:hover {
-    -fx-background-color: rgb(223, 229, 235);
+    -fx-background-color: primary-hover-color;
 }
 
 .toolbar .menu-button:pressed, .toolbar .color-picker:pressed {
-    -fx-background-color: rgb(220, 224, 231);
+    -fx-background-color: primary-active-color;
 }
 
 .font-color-picker .picker-color-rect {
@@ -153,7 +160,7 @@ Button {
 }
 
 .slider > .track {
-    -fx-background-color: #dedede;
+    -fx-background-color: #f8f8f8;
     -fx-background-insets: 0;
     -fx-padding: 2;
 }
@@ -161,7 +168,7 @@ Button {
 .slider > .thumb {
     -fx-background-color: #525252;
     -fx-border-width: 3.5;
-    -fx-border-color: rgb(237, 242, 250);
+    -fx-border-color: primary-color;
     -fx-padding: 8.5 1.5 8.5 1.5;
     -fx-background-insets: 2;
     -fx-border-radius: 8;
@@ -218,7 +225,6 @@ Button {
 .scroll-bar:horizontal .track,
 .scroll-bar:vertical .track {
     -fx-background-color: null;
-    -fx-padding: 28 0 0 0;
     -fx-border-color: transparent;
     -fx-background-radius: 0;
     -fx-border-radius: 2;
@@ -263,7 +269,7 @@ Button {
 
 
 #sidebar-container {
-    -fx-background-color: rgb(234, 239, 250);
+    -fx-background-color: primary-color;
     -fx-background-radius: 16;
 }
 
@@ -286,11 +292,11 @@ Button {
 }
 
 #sidebar-fold-btn:hover {
-    -fx-background-color: rgb(223, 229, 235);
+    -fx-background-color: primary-hover-color;
 }
 
 #sidebar-fold-btn:pressed {
-    -fx-background-color: rgb(217, 220, 226);
+    -fx-background-color: primary-active-color;
 }
 
 .node-box {

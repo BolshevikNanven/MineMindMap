@@ -8,28 +8,24 @@ import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.store.SettingStore;
 import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.layout.Pane;
 
 import java.util.List;
 
-public class HorizonTreeLayout implements LayoutService {
+public class MindMapLayout implements LayoutService {
     private final Double MARGIN_V = 16.0;
     private final Pane canvas;
     private final Pane indicator;
     private NodeEntity parent;
     private NodeEntity brother;
     private Direction nodeDirection;
-    private Direction layoutDirection;
 
-    public HorizonTreeLayout(Pane canvas, Direction direction) {
+    public MindMapLayout(Pane canvas) {
         this.canvas = canvas;
         this.indicator = new Pane();
         this.indicator.setPrefHeight(4);
         this.indicator.setVisible(false);
-        this.layoutDirection = direction;
 
         canvas.getChildren().add(indicator);
     }
@@ -47,12 +43,6 @@ public class HorizonTreeLayout implements LayoutService {
                     bounds += child.getBounds();
                 } else bounds += child.getBounds() + MARGIN_V;
 
-
-                //最后一个子节点特殊处理，不计下边空白高度
-                //if (i == node.getChildren().size() - 1 && i != 0) {
-                //    bounds -= child.getBounds() / 2 - child.getActualHeight() / 2;
-                //}
-
             }
         }
 
@@ -61,6 +51,27 @@ public class HorizonTreeLayout implements LayoutService {
             bounds = node.getActualHeight();
         }
         node.setBounds(bounds);
+
+        //根节点需设置左右bounds,直接放params里
+        if (node.getParent() == null) {
+            Double rightBounds = 0.0;
+            Double leftBounds = 0.0;
+
+            for (int i = 0; i < node.getChildren().size(); i++) {
+                NodeEntity child = node.getChildren().get(i);
+                if (i % 2 == 0) {
+                    child.setParam(Direction.RIGHT);
+                    rightBounds += child.getBounds() + MARGIN_V;
+                } else {
+                    child.setParam(Direction.LEFT);
+                    leftBounds += child.getBounds() + MARGIN_V;
+                }
+            }
+            rightBounds -= MARGIN_V;
+            leftBounds -= MARGIN_V;
+
+            node.setParam(new Double[]{leftBounds, rightBounds});
+        }
     }
 
     private void doLayout(NodeEntity node) {
@@ -73,22 +84,41 @@ public class HorizonTreeLayout implements LayoutService {
 
             double top = parent.getY() + parent.getActualHeight() / 2 - parent.getBounds() / 2;
 
-            for (int i = 0; i < index; i++) {
-                top += broNodeList.get(i).getBounds() + MARGIN_V;
+            //二级节点需特殊处理左右布局
+            if (parent.getParent() == null) {
+                Double[] bounds = (Double[]) parent.getParam();
+                if (node.getParam() == Direction.RIGHT) {
+                    top = parent.getY() + parent.getActualHeight() / 2 - bounds[1] / 2;
+                } else {
+                    top = parent.getY() + parent.getActualHeight() / 2 - bounds[0] / 2;
+                }
             }
 
+            for (int i = 0; i < index; i++) {
+                NodeEntity n = broNodeList.get(i);
+                if (n.getParam() == node.getParam()) {
+                    top += n.getBounds() + MARGIN_V;
+                }
+            }
 
             top += node.getBounds() / 2 - node.getActualHeight() / 2;
 
             node.setY(top);
-            if (layoutDirection == Direction.RIGHT) {
+            if (node.getParam() == Direction.RIGHT) {
                 node.setX(parent.getX() + parent.getActualWidth() + marginH);
             } else {
                 node.setX(parent.getX() - node.getActualWidth() - marginH);
             }
+            LineService.getInstance().addLine(parent, node);
         }
         if (node.getChildren() != null) {
-            for (NodeEntity child : node.getChildren()) {
+            for (int i = 0; i < node.getChildren().size(); i++) {
+                NodeEntity child = node.getChildren().get(i);
+                NodeEntity parent = node.getParent();
+                if (parent != null) {
+                    child.setParam(node.getParam());
+                }
+
                 doLayout(child);
             }
         }
@@ -119,14 +149,14 @@ public class HorizonTreeLayout implements LayoutService {
         indicator.setBackground(node.getBackground());
         indicator.setPrefWidth(node.getActualWidth());
 
-        if (right > node.getActualWidth() / 2 && layoutDirection == Direction.RIGHT) {
+        if (right > node.getActualWidth() / 2 && node.getParam() == Direction.RIGHT) {
             //右吸附
             indicator.setLayoutX(node.getX() + node.getActualWidth());
             indicator.setLayoutY(node.getY() + node.getActualHeight() / 2 - 2);
 
             parent = node;
             brother = null;
-        } else if (right < 0 && layoutDirection == Direction.LEFT) {
+        } else if (right < 0 && node.getParam() == Direction.LEFT) {
             //左吸附
             indicator.setLayoutX(node.getX() - indicator.getWidth());
             indicator.setLayoutY(node.getY() + node.getActualHeight() / 2 - 2);
@@ -198,8 +228,9 @@ public class HorizonTreeLayout implements LayoutService {
     public SimpleDoubleProperty[] getLineHead(NodeEntity head, NodeEntity tail) {
         if (head == null) return null;
 
+
         SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(), new SimpleDoubleProperty()};
-        if (layoutDirection == Direction.RIGHT) {
+        if (head.getParam() == Direction.RIGHT || head.getParent() == null && tail.getParam() == Direction.RIGHT) {
             res[0].set(head.getX() + head.getActualWidth());
             head.xProperty().addListener((observableValue, number, t1) -> {
                 res[0].set(head.getX() + head.getActualWidth());
@@ -220,7 +251,7 @@ public class HorizonTreeLayout implements LayoutService {
     @Override
     public SimpleDoubleProperty[] getLineTail(NodeEntity head, NodeEntity tail) {
         SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(), new SimpleDoubleProperty()};
-        if (layoutDirection == Direction.RIGHT) {
+        if (tail.getParam() == Direction.RIGHT) {
             res[0].set(tail.getX());
             tail.xProperty().addListener((observableValue, number, t1) -> {
                 res[0].set(tail.getX());

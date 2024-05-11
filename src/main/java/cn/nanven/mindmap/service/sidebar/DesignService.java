@@ -9,6 +9,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -18,6 +20,7 @@ public class DesignService implements SidebarService {
     private final Parent root;
     private ChoiceBox<String> layoutChoiceBox;
     private ChoiceBox<String> lineChoiceBox;
+    private Spinner<Integer> marginSpinner;
     private final String[] layoutNames = new String[]{"右侧树布局", "左侧树布局", "思维导图布局"};
     private final String[] layoutServices = new String[]{"RightTreeLayout", "LeftTreeLayout", "MindMapLayout"};
     private final String[] lineNames = new String[]{"直线", "折线", "曲线"};
@@ -29,9 +32,12 @@ public class DesignService implements SidebarService {
             root = fxmlLoader.load();
             layoutChoiceBox = (ChoiceBox<String>) root.lookup("#layout-choice-box");
             lineChoiceBox = (ChoiceBox<String>) root.lookup("#line-choice-box");
+            marginSpinner = (Spinner<Integer>) root.lookup("#margin-spinner");
 
             layoutChoiceBox.getItems().addAll(layoutNames);
             lineChoiceBox.getItems().addAll(lineNames);
+
+            marginSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(16, 128, 56));
 
             sync();
             addListener();
@@ -61,6 +67,11 @@ public class DesignService implements SidebarService {
                     break;
                 }
             }
+        });
+        marginSpinner.valueProperty().addListener((observableValue, integer, t1) -> {
+            SettingStore.setMarginH(t1);
+
+            SettingStore.getLayoutService().layout();
         });
     }
 

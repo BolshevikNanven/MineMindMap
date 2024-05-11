@@ -3,6 +3,7 @@ package cn.nanven.mindmap.store;
 import cn.nanven.mindmap.entity.Command;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.view.AuxiliaryNodeView;
+import cn.nanven.mindmap.view.NodeContext;
 import cn.nanven.mindmap.view.NodeView;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
@@ -14,14 +15,26 @@ import java.util.List;
 import java.util.Stack;
 
 public class SystemStore {
+    static {
+        nodeContext = new NodeContext();
+    }
     private static final List<NodeEntity> rootNodeList = new ArrayList<>();
     private static NodeView selectedNode;
     private static AuxiliaryNodeView auxiliaryNode;
+    private static NodeContext nodeContext;
     private static final SimpleIntegerProperty canvasScale = new SimpleIntegerProperty(100);
     private static final Stack<Command> undoStack = new Stack<>();
     private static final Stack<Command> redoStack = new Stack<>();
     private static final SimpleObjectProperty<File> file = new SimpleObjectProperty<>();
     private static volatile SimpleBooleanProperty loadingState = new SimpleBooleanProperty(false);
+
+    public static NodeContext getNodeContext() {
+        return nodeContext;
+    }
+
+    public static void setNodeContext(NodeContext nodeContext) {
+        SystemStore.nodeContext = nodeContext;
+    }
 
     public static int getCanvasScale() {
         return canvasScale.get();
@@ -70,7 +83,8 @@ public class SystemStore {
     public static File getFile() {
         return SystemStore.file.get();
     }
-    public static SimpleObjectProperty<File> file(){
+
+    public static SimpleObjectProperty<File> file() {
         return SystemStore.file;
     }
 

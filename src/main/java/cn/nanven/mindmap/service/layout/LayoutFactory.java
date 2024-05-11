@@ -31,6 +31,9 @@ public class LayoutFactory {
             case "LeftTreeLayout" -> {
                 return new HorizonTreeLayout(canvas, Direction.LEFT);
             }
+            case "MindMapLayout" -> {
+                return new MindMapLayout(canvas);
+            }
             default -> {
                 return new HorizonTreeLayout(canvas, Direction.RIGHT);
             }

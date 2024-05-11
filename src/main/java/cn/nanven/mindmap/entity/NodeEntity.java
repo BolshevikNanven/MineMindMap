@@ -53,9 +53,8 @@ public class NodeEntity implements Serializable {
     @JsonDeserialize(using = FontDeserializer.class)
     private final SimpleObjectProperty<Font> font = new SimpleObjectProperty<>();
     private final SimpleBooleanProperty fontUnderline = new SimpleBooleanProperty();
-
-    public void delete() {
-        this.deleteSymbol.set(true);
+    public void setDeleteSymbol(boolean deleteSymbol) {
+        this.deleteSymbol.set(deleteSymbol);
     }
 
     public Object getParam() {

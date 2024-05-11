@@ -25,7 +25,7 @@ public class NodeDao {
         }
         node.setParent(null);
         node.setChildren(null);
-        node.delete();
+        node.setDeleteSymbol(true);
     }
 
     public static void moveNode(NodeEntity node, NodeEntity parent, int index) {
@@ -39,6 +39,8 @@ public class NodeDao {
         } else {
             if (node.getParent() != null) {
                 node.getParent().getChildren().remove(node);
+            }else {
+                SystemStore.getRootNodeList().remove(node);
             }
             parent.getChildren().add(index, node);
             node.setParent(parent);

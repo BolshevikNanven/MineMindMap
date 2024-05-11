@@ -41,12 +41,6 @@ public class LineService {
         //前后节点宽高渲染是否完毕信号量
         AtomicReference<Integer> semaphore = new AtomicReference<>(0);
 
-        //先删除原有的线
-        if (tail.getLine() != null) {
-            deleteLine(tail.getLine());
-            tail.setLine(null);
-        }
-
         //如果前后节点均不是新建的则直接添加线条
         if (head.getActualHeight() != 0 && head.getActualWidth() != 0 && tail.getActualWidth() != 0 && tail.getActualHeight() != 0) {
             doAddLine(head, tail);
@@ -99,6 +93,12 @@ public class LineService {
     }
 
     private void doAddLine(NodeEntity head, NodeEntity tail) {
+        //先删除原有的线
+        if (tail.getLine() != null) {
+            deleteLine(tail.getLine());
+            tail.setLine(null);
+        }
+
         LineView lineView = generateLine(head, tail);
         tail.setLine(lineView);
         canvas.getChildren().add(lineView.render());
@@ -109,13 +109,13 @@ public class LineService {
 
         switch (SettingStore.getLine()) {
             case "StraightLine" -> {
-                return new StraightLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+                return new StraightLine(head, tail, layoutService.getLineHead(head, tail), layoutService.getLineTail(tail, tail));
             }
             case "CurveLine" -> {
-                return new CurveLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+                return new CurveLine(head, tail, layoutService.getLineHead(head, tail), layoutService.getLineTail(tail, tail));
             }
             default -> {
-                return new TwoPolyLine(head, tail, layoutService.getLineHead(head), layoutService.getLineTail(tail));
+                return new TwoPolyLine(head, tail, layoutService.getLineHead(head, tail), layoutService.getLineTail(tail, tail));
             }
         }
     }

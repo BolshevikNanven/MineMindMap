@@ -6,6 +6,7 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ColorPicker?>
+<?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
@@ -220,6 +221,13 @@
                                  <HBox.margin>
                                     <Insets right="2.0" />
                                  </HBox.margin>
+                                 <contextMenu>
+                                    <ContextMenu>
+                                      <items>
+                                        <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                                      </items>
+                                    </ContextMenu>
+                                 </contextMenu>
                               </ToggleButton>
                               <ToggleButton id="italic-btn" maxHeight="32.0" maxWidth="32.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="32.0">
                                  <graphic>

@@ -213,7 +213,7 @@ public class FileService {
                 List<NodeEntity> list = objectMapper.readValue(fileReader, new TypeReference<>() {
                 });
                 SystemStore.getRootNodeList().forEach(node -> {
-                    Platform.runLater(() -> NodeDao.deleteNode(node));
+                    Platform.runLater(() -> NodeService.getInstance().deleteNode(node));
                 });
                 SystemStore.setFile(file);
                 for (NodeEntity root : list) {

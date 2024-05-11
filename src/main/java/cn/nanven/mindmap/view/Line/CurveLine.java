@@ -57,8 +57,8 @@ public class CurveLine extends LineView {
         this.tail.backgroundProperty().addListener((observableValue, prev, background) -> {
             line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(background)));
         });
-        this.tail.deleteSymbolProperty().addListener(e -> {
-            LineService.getInstance().deleteLine(this);
+        this.tail.deleteSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) LineService.getInstance().deleteLine(this);
         });
     }
 

@@ -11,10 +11,11 @@
     -fx-padding: 6px;
     -fx-text-fill: #363636;
     -fx-background-color: null;
+    -fx-background-insets: 0;
 }
 
 .tree-cell:filled:selected, .tree-cell:focused:selected {
-    -fx-background-color: null;
+    -fx-background-color: #fafafa;
     -fx-text-fill: rgb(24,90,188);
     -fx-font-weight: bold;
 }

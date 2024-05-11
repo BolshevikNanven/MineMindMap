@@ -8,6 +8,7 @@ import cn.nanven.mindmap.store.SettingStore;
 import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
 import cn.nanven.mindmap.view.AuxiliaryNodeView;
+import cn.nanven.mindmap.view.NodeContext;
 import cn.nanven.mindmap.view.NodeView;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -85,6 +86,10 @@ public class NodeService {
 
     }
 
+    public void showContext(NodeView nodeView, double x, double y) {
+        SystemStore.getNodeContext().render(nodeView, x, y);
+    }
+
     public void addSubNode() {
         NodeView selectedNode = SystemStore.getSelectedNode();
         if (selectedNode == null) {
@@ -104,6 +109,7 @@ public class NodeService {
     }
 
     public void renderNodeTree() {
+        this.canvas.getChildren().clear();
         final NodeEntity[] last = {null};
         for (NodeEntity root : SystemStore.getRootNodeList()) {
             AlgorithmUtil.headMapNode(root, (parent, node) -> {
@@ -113,6 +119,8 @@ public class NodeService {
                 this.canvas.getChildren().add(nodeView);
                 LineService.getInstance().addLine(node.getParent(), node);
                 last[0] = node;
+
+
             });
         }
         if (last[0] == null) return;
@@ -124,7 +132,6 @@ public class NodeService {
                 SidebarController.getInstance().sync();
                 CanvasService.getInstance().resize();
                 SettingStore.getLayoutService().layout();
-
 
 
                 last[0].actualHeightProperty().removeListener(this);
@@ -225,6 +232,10 @@ public class NodeService {
         SidebarController.getInstance().sync();
 
         node.setDisable(false);
+    }
+
+    public void deleteNode(NodeEntity node) {
+        NodeDao.deleteNode(node);
     }
 
     public void removeNode(NodeView node) {

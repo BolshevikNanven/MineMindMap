@@ -6,6 +6,7 @@ import cn.nanven.mindmap.service.NodeService;
 import cn.nanven.mindmap.store.SystemStore;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,9 +62,11 @@ public class NodeView extends AnchorPane {
         final double[] mouseAnchor = new double[2];
         AtomicReference<Boolean> isDrag = new AtomicReference<>(false);
 
-        nodeEntity.deleteSymbolProperty().addListener(e -> {
-            this.nodeEntity = null;
-            NodeService.getInstance().removeNode(this);
+        nodeEntity.deleteSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                this.nodeEntity = null;
+                NodeService.getInstance().removeNode(this);
+            }
         });
         nodeEntity.colorProperty().addListener(e -> {
             textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
@@ -75,17 +78,20 @@ public class NodeView extends AnchorPane {
                 this.nodeEntity.setDisabled(false);
                 textField.requestFocus();
             }
+            if (e.getButton() == MouseButton.SECONDARY) {
+                NodeService.getInstance().showContext(this, e.getScreenX(), e.getScreenY());
+            }
             NodeService.getInstance().selectNode(this);
             e.consume();
         });
         this.setOnKeyPressed(e -> {
-            if (e.isControlDown()){
+            if (e.isControlDown()) {
                 return;
             }
             switch (e.getCode()) {
                 case ENTER -> NodeService.getInstance().addBroNode();
                 case TAB -> NodeService.getInstance().addSubNode();
-                case DELETE -> NodeDao.deleteNode(this.getNodeEntity());
+                case DELETE -> NodeService.getInstance().deleteNode(nodeEntity);
                 case ESCAPE -> NodeService.getInstance().selectNode(null);
                 default -> focusText();
             }

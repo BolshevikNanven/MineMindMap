@@ -9,11 +9,21 @@ public class SettingStore {
         setting = new SettingEntity();
         setLayout("RightTreeLayout");
         setLine("TwoPolyLine");
-        layoutService= LayoutFactory.getInstance().getService("RightTreeLayout");
+        setMarginH(56);
+        layoutService = LayoutFactory.getInstance().getService("RightTreeLayout");
     }
 
     private static final SettingEntity setting;
     private static LayoutService layoutService;
+
+    public static Integer getMarginH() {
+        return setting.getMarginH();
+    }
+
+    public static void setMarginH(Integer marginH) {
+        setting.setMarginH(marginH);
+    }
+
     public static String getLayout() {
         return setting.getLayout();
     }

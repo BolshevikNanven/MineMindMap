@@ -3,6 +3,7 @@ package cn.nanven.mindmap.entity;
 public class SettingEntity {
     private String layout;
     private String line;
+    private Integer marginH;
 
     public String getLayout() {
         return layout;
@@ -18,5 +19,13 @@ public class SettingEntity {
 
     public void setLine(String line) {
         this.line = line;
+    }
+
+    public Integer getMarginH() {
+        return marginH;
+    }
+
+    public void setMarginH(Integer marginH) {
+        this.marginH = marginH;
     }
 }

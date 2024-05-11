@@ -14,6 +14,6 @@ public interface LayoutService {
 
     void snap(NodeEntity node, double x, double y, double prevX, double prevY);//吸附操作
 
-    SimpleDoubleProperty[] getLineHead(NodeEntity node);//获取线头
-    SimpleDoubleProperty[] getLineTail(NodeEntity node);//获取线尾
+    SimpleDoubleProperty[] getLineHead(NodeEntity head,NodeEntity tail);//获取线头
+    SimpleDoubleProperty[] getLineTail(NodeEntity head,NodeEntity tail);//获取线尾
 }
