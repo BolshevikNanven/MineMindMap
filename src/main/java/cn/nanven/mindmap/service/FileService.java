@@ -1,6 +1,5 @@
 package cn.nanven.mindmap.service;
 
-import cn.nanven.mindmap.dao.NodeDao;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.store.ThreadsPool;
@@ -14,6 +13,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.WritableImage;
@@ -33,18 +33,22 @@ import java.util.List;
 public class FileService {
     private static FileService instance;
     private Stage stage;
-    private Scene scene;
     private ObjectMapper objectMapper;
     private MenuButton menuButton;
+    private Button savaFileButton;
+    private Button saveAsImageButton;
+    private ScrollPane scrollPane;
 
     private FileService() {
     }
 
     private FileService(Parent root, Stage stage, Scene scene) {
         this.stage = stage;
-        this.scene = scene;
         this.objectMapper = new ObjectMapper();
         this.menuButton = (MenuButton) root.lookup("#menu");
+        this.savaFileButton = (Button) root.lookup("#save-file-button");
+        this.saveAsImageButton = (Button) root.lookup("#save-as-image-button");
+        this.scrollPane = (ScrollPane) root.lookup("#canvas");
 
         addListener();
     }
@@ -60,26 +64,20 @@ public class FileService {
     }
 
     private void addListener() {
-        scene.setOnKeyPressed(keyEvent -> {
-            if (keyEvent.isControlDown()) {
-                if (keyEvent.getCode() == KeyCode.S) {
-                    handleSave();
-                    keyEvent.consume();
-                }
-            }
-        });
         menuButton.getItems().forEach(menuItem -> {
             switch (menuItem.getId()) {
                 case "save-as-file-menu" -> menuItem.setOnAction(actionEvent -> writeFile());
                 case "save-file-menu" -> menuItem.setOnAction(actionEvent -> handleSave());
                 case "new-file-menu" -> menuItem.setOnAction(actionEvent -> newFile());
                 case "open-file-menu" -> menuItem.setOnAction(actionEvent -> readFile());
-                case "save-as-image-menu" -> menuItem.setOnAction(actionEvent -> {exportAsImage();});
+                case "save-as-image-menu" -> menuItem.setOnAction(actionEvent -> exportAsImage());
             }
         });
+        savaFileButton.setOnAction(actionEvent -> handleSave());
+        saveAsImageButton.setOnAction(actionEvent -> exportAsImage());
     }
 
-    private void exportAsImage() {
+    public void exportAsImage() {
 
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("导出为图片");
@@ -95,7 +93,7 @@ public class FileService {
         if (file == null) {
             return;
         }
-        ScrollPane scrollPane = (ScrollPane) scene.lookup("#canvas");
+
         Pane contentPane = (Pane) scrollPane.getContent();
 
 
@@ -153,7 +151,7 @@ public class FileService {
     }
 
 
-    private void handleSave() {
+    public void handleSave() {
         if (SystemStore.getFile() == null) {
             writeFile();
         } else {

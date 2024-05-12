@@ -8,6 +8,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -17,24 +18,25 @@ public class NodeView extends AnchorPane {
 
     private NodeEntity nodeEntity;
     private TextField textField;
+    private AnchorPane body;
 
     private NodeView() {
     }
 
     public NodeView(NodeEntity nodeEntity) {
         this.nodeEntity = nodeEntity;
+
         textField = new TextField();
+        body = new AnchorPane();
 
-        this.getStyleClass().add(BASE_CLASS);
-        this.layoutXProperty().bind(nodeEntity.xProperty());
-        this.layoutYProperty().bind(nodeEntity.yProperty());
-        this.prefWidthProperty().bind(nodeEntity.widthProperty());
-        this.prefHeightProperty().bind(nodeEntity.heightProperty());
-        this.backgroundProperty().bind(nodeEntity.backgroundProperty());
+        body.getStyleClass().add(BASE_CLASS);
+        body.prefWidthProperty().bind(nodeEntity.widthProperty());
+        body.prefHeightProperty().bind(nodeEntity.heightProperty());
+        body.backgroundProperty().bind(nodeEntity.backgroundProperty());
+        body.borderProperty().bind(nodeEntity.borderProperty());
 
-        nodeEntity.actualWidthProperty().bind(this.widthProperty());
-        nodeEntity.actualHeightProperty().bind(this.heightProperty());
-
+        nodeEntity.actualWidthProperty().bind(body.widthProperty());
+        nodeEntity.actualHeightProperty().bind(body.heightProperty());
 
         textField.getStyleClass().add(TEXT_CLASS);
         AnchorPane.setTopAnchor(textField, 0.0);
@@ -47,13 +49,23 @@ public class NodeView extends AnchorPane {
         textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
         textField.fontProperty().bind(nodeEntity.fontProperty());
         textField.disableProperty().bind(nodeEntity.disabledProperty());
+
+        this.getStyleClass().add("node-container");
+        AnchorPane.setTopAnchor(body, 0.0);
+        AnchorPane.setRightAnchor(body, 0.0);
+        AnchorPane.setBottomAnchor(body, 0.0);
+        AnchorPane.setLeftAnchor(body, 0.0);
+        this.layoutXProperty().bind(nodeEntity.xProperty().subtract(4));
+        this.layoutYProperty().bind(nodeEntity.yProperty().subtract(4));
+
         nodeEntity.fontUnderlineProperty().addListener((e, prev, value) -> {
             if (value) {
                 textField.getStyleClass().add("underline");
             } else textField.getStyleClass().remove("underline");
         });
 
-        this.getChildren().add(textField);
+        body.getChildren().add(textField);
+        this.getChildren().add(body);
         addListener();
     }
 
@@ -64,7 +76,7 @@ public class NodeView extends AnchorPane {
 
         nodeEntity.deleteSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
             if (t1) {
-                this.nodeEntity = null;
+                nodeEntity = null;
                 NodeService.getInstance().removeNode(this);
             }
         });
@@ -72,10 +84,10 @@ public class NodeView extends AnchorPane {
             textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
         });
 
-        this.setOnMouseClicked(e -> {
-            this.requestFocus();
+        body.setOnMouseClicked(e -> {
+            body.requestFocus();
             if (e.getClickCount() == 2) {
-                this.nodeEntity.setDisabled(false);
+                nodeEntity.setDisabled(false);
                 textField.requestFocus();
             }
             if (e.getButton() == MouseButton.SECONDARY) {
@@ -84,7 +96,7 @@ public class NodeView extends AnchorPane {
             NodeService.getInstance().selectNode(this);
             e.consume();
         });
-        this.setOnKeyPressed(e -> {
+        body.setOnKeyPressed(e -> {
             if (e.isControlDown()) {
                 return;
             }
@@ -105,30 +117,30 @@ public class NodeView extends AnchorPane {
             }
         });
         this.setOnMouseMoved(e -> {
-            if (e.getX() > this.getWidth() - 8 && e.getX() < this.getWidth() + 8 && e.getY() > this.getHeight() - 8 && e.getY() < this.getHeight() + 8) {
+            if (e.getX() > body.getWidth() - 8 && e.getX() < body.getWidth() + 8 && e.getY() > body.getHeight() - 8 && e.getY() < body.getHeight() + 8) {
                 this.setCursor(Cursor.SE_RESIZE);
-            } else if (e.getX() > this.getWidth() - 8 && e.getX() < this.getWidth() + 8) {
+            } else if (e.getX() > body.getWidth() - 8 && e.getX() < body.getWidth() + 8) {
                 this.setCursor(Cursor.E_RESIZE);
-            } else if (e.getY() > this.getHeight() - 8 && e.getY() < this.getHeight() + 8) {
+            } else if (e.getY() > body.getHeight() - 8 && e.getY() < body.getHeight() + 8) {
                 this.setCursor(Cursor.S_RESIZE);
             } else {
                 this.setCursor(Cursor.DEFAULT);
             }
             e.consume();
         });
-        this.setOnMousePressed(e -> {
+        body.setOnMousePressed(e -> {
             SystemStore.getAuxiliaryNode().render(nodeEntity);
             mouseAnchor[0] = e.getSceneX();
             mouseAnchor[1] = e.getSceneY();
 
             e.consume();
         });
-        this.setOnMouseDragged(e -> {
+        body.setOnMouseDragged(e -> {
             isDrag.set(true);
             NodeService.getInstance().dragNode(this, mouseAnchor[0], mouseAnchor[1], e);
             e.consume();
         });
-        this.setOnMouseReleased(e -> {
+        body.setOnMouseReleased(e -> {
             if (isDrag.get()) {
                 NodeService.getInstance().dragDoneNode(this, mouseAnchor[0], mouseAnchor[1], e);
             }

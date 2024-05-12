@@ -234,6 +234,12 @@ public class NodeService {
         node.setDisable(false);
     }
 
+    public void applyStyle(NodeEntity node) {
+        NodeDao.treeApplyStyle(node);
+
+        renderNodeTree();
+    }
+
     public void deleteNode(NodeEntity node) {
         NodeDao.deleteNode(node);
     }

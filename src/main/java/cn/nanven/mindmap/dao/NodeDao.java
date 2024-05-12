@@ -1,9 +1,11 @@
 package cn.nanven.mindmap.dao;
 
+import cn.nanven.mindmap.common.handler.MapEventHandler;
 import cn.nanven.mindmap.entity.NodeEntity;
 import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.service.ToolbarService;
 import cn.nanven.mindmap.store.SystemStore;
+import cn.nanven.mindmap.util.AlgorithmUtil;
 import cn.nanven.mindmap.util.StyleUtil;
 import javafx.geometry.Pos;
 import javafx.scene.paint.Paint;
@@ -39,7 +41,7 @@ public class NodeDao {
         } else {
             if (node.getParent() != null) {
                 node.getParent().getChildren().remove(node);
-            }else {
+            } else {
                 SystemStore.getRootNodeList().remove(node);
             }
             parent.getChildren().add(index, node);
@@ -47,6 +49,26 @@ public class NodeDao {
             LineService.getInstance().addLine(parent, node);
         }
 
+    }
+
+    public static void treeApplyStyle(NodeEntity node) {
+        AlgorithmUtil.headMapNode(node, ((parent, node1) -> {
+            if (parent != null) {
+                copyStyle(parent,node1);
+            }
+        }));
+
+    }
+
+    public static void copyStyle(NodeEntity source, NodeEntity target) {
+        target.setAlignment(source.getAlignment());
+        target.setBorder(source.getBorder());
+        target.setBackground(source.getBackground());
+        target.setColor(source.getColor());
+        target.setFont(source.getFont());
+        target.setFontUnderline(source.isFontUnderline());
+        target.setHeight(source.getHeight());
+        target.setWidth(source.getWidth());
     }
 
     public static void deleteNode(NodeEntity node) {
@@ -99,6 +121,7 @@ public class NodeDao {
             node.setWidth(86);
             node.setDisabled(false);
             node.setBackground(StyleUtil.newBackground("rgb(211,227,253)"));
+            node.setBorder(StyleUtil.newBorder("transparent"));
             node.setColor(Paint.valueOf("#212121"));
             node.setFont(Font.font("system", FontWeight.NORMAL, FontPosture.REGULAR, 14));
             node.setFontUnderline(false);
@@ -111,6 +134,7 @@ public class NodeDao {
             node.setDisabled(false);
             node.setWidth(template.getWidth());
             node.setBackground(template.getBackground());
+            node.setBorder(template.getBorder());
             node.setColor(template.getColor());
             node.setFont(template.getFont());
             node.setFontUnderline(template.isFontUnderline());

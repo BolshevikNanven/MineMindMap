@@ -41,7 +41,9 @@ public class NodeContext extends ContextMenu {
         addSubNodeMenu.setOnAction(actionEvent -> {
             NodeService.getInstance().addSubNode();
         });
-
+        applyStyleMenu.setOnAction(actionEvent -> {
+            NodeService.getInstance().applyStyle(node.getNodeEntity());
+        });
     }
 
     private HBox generateMenu(String icon, String title, String key) {

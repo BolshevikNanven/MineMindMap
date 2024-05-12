@@ -17,7 +17,7 @@
    <children>
       <BorderPane prefHeight="58.0">
          <padding>
-            <Insets left="4.0" right="8.0" />
+            <Insets left="16.0" right="16.0" />
          </padding>
          <right>
             <ChoiceBox id="layout-choice-box" prefHeight="32.0" prefWidth="116.0" BorderPane.alignment="CENTER">
@@ -35,7 +35,7 @@
                         <String fx:value="icon" />
                      </styleClass>
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="16.0" />
                      </HBox.margin>
                   </Region>
                   <Label prefHeight="18.0" prefWidth="81.0" text="布局方式">
@@ -44,16 +44,13 @@
                      </font>
                   </Label>
                </children>
-               <padding>
-                  <Insets left="6.0" />
-               </padding>
             </HBox>
          </left>
       </BorderPane>
       <Region prefHeight="1.0" prefWidth="200.0" styleClass="divider" />
       <BorderPane prefHeight="58.0">
          <padding>
-            <Insets left="4.0" right="8.0" />
+            <Insets left="16.0" right="16.0" />
          </padding>
          <right>
             <ChoiceBox id="line-choice-box" prefHeight="32.0" prefWidth="96.0" BorderPane.alignment="CENTER">
@@ -71,7 +68,7 @@
                         <String fx:value="icon" />
                      </styleClass>
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="16.0" />
                      </HBox.margin>
                   </Region>
                   <Label prefHeight="18.0" prefWidth="75.0" text="连线样式">
@@ -80,16 +77,13 @@
                      </font>
                   </Label>
                </children>
-               <padding>
-                  <Insets left="6.0" />
-               </padding>
             </HBox>
          </left>
       </BorderPane>
       <Region prefHeight="1.0" prefWidth="200.0" styleClass="divider" />
       <BorderPane prefHeight="58.0">
          <padding>
-            <Insets left="4.0" right="8.0" />
+            <Insets left="16.0" right="16.0" />
          </padding>
          <left>
             <HBox alignment="CENTER_LEFT" BorderPane.alignment="CENTER">
@@ -100,7 +94,7 @@
                         <String fx:value="icon" />
                      </styleClass>
                      <HBox.margin>
-                        <Insets right="10.0" />
+                        <Insets right="16.0" />
                      </HBox.margin>
                   </Region>
                   <Label prefHeight="18.0" prefWidth="75.0" text="节点间距">
@@ -109,9 +103,6 @@
                      </font>
                   </Label>
                </children>
-               <padding>
-                  <Insets left="6.0" />
-               </padding>
             </HBox>
          </left>
          <right>

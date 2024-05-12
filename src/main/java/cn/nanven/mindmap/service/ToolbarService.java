@@ -14,6 +14,8 @@ import javafx.scene.paint.Paint;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.util.Objects;
+
 public class ToolbarService {
     private static ToolbarService instance;
     private NodeEntity node;
@@ -28,9 +30,14 @@ public class ToolbarService {
     private Button incFontSizeBtn;
     private MenuButton alignMenuBtn;
     private Region alignMenuIcon;
+    private HBox alignMenuBtnContainer;
     private Region fontColorIcon;
     private ColorPicker fontColorPicker;
+    private HBox fontColorPickerContainer;
     private ColorPicker backgroundColorPicker;
+    private Region borderColorIcon;
+    private ColorPicker borderColorPicker;
+    private HBox borderColorPickerContainer;
     private Button deleteBtn;
     private MenuButton addMenuBtn;
 
@@ -47,13 +54,23 @@ public class ToolbarService {
         this.decFontSizeBtn = (Button) toolbar.lookup("#dec-font-size-btn");
         this.fontSizeLabel = (Label) toolbar.lookup("#font-size-label");
         this.incFontSizeBtn = (Button) toolbar.lookup("#inc-font-size-btn");
+
+        this.alignMenuBtnContainer = (HBox) toolbar.lookup("#align-menu-btn-container");
         this.alignMenuBtn = (MenuButton) toolbar.lookup("#align-menu-btn");
         this.alignMenuIcon = (Region) toolbar.lookup("#align-menu-icon");
+
+        this.fontColorPickerContainer = (HBox) toolbar.lookup("#font-color-picker-container");
         this.fontColorPicker = (ColorPicker) toolbar.lookup("#font-color-picker");
         this.fontColorIcon = (Region) toolbar.lookup("#font-color-icon");
+
+        this.borderColorPickerContainer = (HBox) toolbar.lookup("#border-color-picker-container");
+        this.borderColorPicker = (ColorPicker) toolbar.lookup("#border-color-picker");
+        this.borderColorIcon = (Region) toolbar.lookup("#border-color-icon");
+
         this.backgroundColorPicker = (ColorPicker) toolbar.lookup("#background-color-picker");
         this.deleteBtn = (Button) toolbar.lookup("#delete-btn");
         this.addMenuBtn = (MenuButton) toolbar.lookup("#add-menu-btn");
+
 
         setDisable(true);
         addListener();
@@ -81,8 +98,8 @@ public class ToolbarService {
                 });
             }
         });
+        this.alignMenuBtnContainer.setOnMouseClicked(mouseEvent -> alignMenuBtn.show());
         this.alignMenuBtn.getItems().forEach(item -> {
-
             if (item.getId().equals("align-left-menu-item")) {
 
                 item.setOnAction(e -> {
@@ -173,6 +190,7 @@ public class ToolbarService {
             }, size, hasNotDecreasedSize));
 
         });
+        this.fontColorPickerContainer.setOnMouseClicked(mouseEvent -> fontColorPicker.show());
         this.fontColorPicker.setOnAction(actionEvent -> {
             NodeEntity n = node;
             Paint c = n.getColor();
@@ -181,18 +199,23 @@ public class ToolbarService {
                 syncState();
             }, fontColorPicker.getValue(), c));
         });
-
         this.backgroundColorPicker.setOnAction(actionEvent -> {
             NodeEntity n = node;
-            Paint c = n.getColor();
+            String c = StyleUtil.getBackgroundColor(n.getBackground());
             UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
-                n.setBackground(StyleUtil.newBackground(((Color) param).toString().substring(2)));
+                n.setBackground(StyleUtil.newBackground((String) param));
                 syncState();
-            }, fontColorPicker.getValue(), c));
-
+            }, backgroundColorPicker.getValue().toString(), c));
         });
-
-
+        this.borderColorPickerContainer.setOnMouseClicked(mouseEvent -> borderColorPicker.show());
+        this.borderColorPicker.setOnAction(actionEvent -> {
+            NodeEntity n = node;
+            String c = StyleUtil.getBorderColor(n.getBorder());
+            UndoAndRedoService.getInstance().execute(CommandUtil.generate(param -> {
+                n.setBorder(StyleUtil.newBorder((String) param));
+                syncState();
+            }, borderColorPicker.getValue().toString(), c));
+        });
         this.deleteBtn.setOnAction(e -> {
             NodeEntity node = SystemStore.getSelectedNode().getNodeEntity();
             NodeDao.deleteNode(node);
@@ -213,29 +236,26 @@ public class ToolbarService {
             this.underlineBtn.setDisable(true);
             this.decFontSizeBtn.setDisable(true);
             this.incFontSizeBtn.setDisable(true);
-            this.alignMenuBtn.setDisable(true);
-            this.fontColorPicker.setDisable(true);
+            this.alignMenuBtnContainer.setDisable(true);
+            this.fontColorPickerContainer.setDisable(true);
             this.backgroundColorPicker.setDisable(true);
+            this.borderColorPickerContainer.setDisable(true);
 
             this.fontSizeLabel.setDisable(true);
             this.deleteBtn.setDisable(true);
-            this.alignMenuIcon.getStyleClass().add("disabled");
-            this.fontColorIcon.getStyleClass().add("disabled");
         } else {
             this.boldBtn.setDisable(false);
             this.italicBtn.setDisable(false);
             this.underlineBtn.setDisable(false);
             this.decFontSizeBtn.setDisable(false);
             this.incFontSizeBtn.setDisable(false);
-            this.alignMenuBtn.setDisable(false);
-            this.fontColorPicker.setDisable(false);
+            this.alignMenuBtnContainer.setDisable(false);
+            this.fontColorPickerContainer.setDisable(false);
             this.backgroundColorPicker.setDisable(false);
+            this.borderColorPickerContainer.setDisable(false);
 
             this.fontSizeLabel.setDisable(false);
             this.deleteBtn.setDisable(false);
-
-            this.alignMenuIcon.getStyleClass().remove("disabled");
-            this.fontColorIcon.getStyleClass().remove("disabled");
         }
 
     }
@@ -255,6 +275,7 @@ public class ToolbarService {
         boolean italic = node.getFont().getStyle().contains("Italic");
         int fontSize = (int) node.getFont().getSize();
         String backgroundColor = StyleUtil.getBackgroundColor(node.getBackground());
+        String borderColor = StyleUtil.getBorderColor(node.getBorder());
         String fontColor = node.getColor().toString();
         Pos alignment = node.getAlignment();
 
@@ -263,9 +284,17 @@ public class ToolbarService {
         this.italicBtn.setSelected(italic);
 
         this.fontSizeLabel.setText(Integer.toString(fontSize));
-        this.fontColorIcon.setBackground(new Background(new BackgroundFill(Paint.valueOf(fontColor), null, null)));
+        this.fontColorIcon.setBackground(StyleUtil.newBackground(fontColor));
         this.fontColorPicker.setValue(Color.valueOf(fontColor));
         this.backgroundColorPicker.setValue(Color.valueOf(backgroundColor));
+
+        String borderOpacity = borderColor.substring(borderColor.length() - 2);
+        if (Objects.equals(borderOpacity, "00")) {
+            this.borderColorIcon.setBackground(StyleUtil.newBackground(backgroundColor));
+        } else {
+            this.borderColorIcon.setBackground(StyleUtil.newBackground(borderColor));
+        }
+        this.borderColorPicker.setValue(Color.valueOf(borderColor));
 
         switch (alignment) {
             case CENTER -> {

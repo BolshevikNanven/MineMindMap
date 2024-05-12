@@ -1,8 +1,6 @@
 package cn.nanven.mindmap.util;
 
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -32,10 +30,20 @@ public class StyleUtil {
 
         return Font.font(font.getFamily(), finalFontWeight, posture, finalSize);
     }
-    public static Background newBackground(String color){
-       return new Background(new BackgroundFill(Paint.valueOf(color), new CornerRadii(8), null));
+
+    public static Background newBackground(String color) {
+        return new Background(new BackgroundFill(Paint.valueOf(color), new CornerRadii(10), null));
     }
-    public static String getBackgroundColor(Background background){
+
+    public static String getBackgroundColor(Background background) {
         return background.getFills().get(0).getFill().toString();
     }
+
+    public static Border newBorder(String color) {
+        return new Border(new BorderStroke(Paint.valueOf(color), BorderStrokeStyle.SOLID, new CornerRadii(8), new BorderWidths(2)));
+    }
+    public static String getBorderColor(Border border){
+        return border.getStrokes().get(0).getLeftStroke().toString();
+    }
+
 }

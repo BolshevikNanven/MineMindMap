@@ -53,16 +53,6 @@ public class CanvasService {
             canvas.setPrefWidth(prevWidth * (t1.doubleValue() / 100));
             canvas.setPrefHeight(prevHeight * (t1.doubleValue() / 100));
         }));
-        //鼠标滚轮缩放
-        canvasContainer.setOnScroll(e -> {
-            if (e.isControlDown()) {
-                int d = SystemStore.getCanvasScale() + (e.getDeltaY() > 0 ? 3 : -3);
-                if (d >= 50 && d <= 175) {
-                    scale(d);
-                    e.consume();
-                }
-            }
-        });
         //控制画布大小为容器大小
         canvasContainer.widthProperty().addListener((observableValue, bounds, t1) -> {
             canvas.setPrefWidth((Double) t1);

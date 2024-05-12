@@ -34,65 +34,53 @@ public class HorizonTreeLayout implements LayoutService {
         canvas.getChildren().add(indicator);
     }
 
-    //TODO:BUG: node children可能为null,原因不明
     private void doBounds(NodeEntity node) {
-        double bounds = 0.0;
-        if (node.getChildren() == null || node.getChildren().isEmpty()) {
-            bounds = node.getActualHeight();
-        } else {
-            for (int i = 0; i < node.getChildren().size(); i++) {
-                NodeEntity child = node.getChildren().get(i);
-                doBounds(child);
-                if (bounds == 0.0) {
-                    bounds += child.getBounds();
-                } else bounds += child.getBounds() + MARGIN_V;
-
-
-                //最后一个子节点特殊处理，不计下边空白高度
-                //if (i == node.getChildren().size() - 1 && i != 0) {
-                //    bounds -= child.getBounds() / 2 - child.getActualHeight() / 2;
-                //}
-
-            }
+        // 直接检查子节点列表是否为空
+        if (node.getChildren().isEmpty()) {
+            node.setBounds(node.getActualHeight());
+            return;
         }
 
-        //子节点高度和小于此节点高度
-        if (bounds < node.getActualHeight()) {
-            bounds = node.getActualHeight();
+        double totalHeight = 0.0;
+        for (NodeEntity child : node.getChildren()) {
+            doBounds(child);
+            // 更新高度总和，考虑空白
+            totalHeight += (totalHeight > 0 ? child.getBounds() + MARGIN_V : child.getBounds());
         }
-        node.setBounds(bounds);
+
+        // 子节点高度和可能小于此节点高度
+        node.setBounds(Math.max(totalHeight, node.getActualHeight()));
     }
 
     private void doLayout(NodeEntity node) {
+        // 仅当节点有父级时，才处理布局
         if (node.getParent() != null) {
-            List<NodeEntity> broNodeList = node.getParent().getChildren();
             NodeEntity parent = node.getParent();
+            List<NodeEntity> siblings = parent.getChildren();
 
-            double marginH = SettingStore.getMarginH() * 1.0;
-            int index = broNodeList.indexOf(node);
+            // 提前计算父节点和所有子节点的相关位置，避免重复计算
+            double parentCenterY = parent.getY() + parent.getActualHeight() / 2;
+            double childrenTotalHeight = siblings.stream().mapToDouble(NodeEntity::getBounds).sum();
+            double childrenSpacing = (siblings.size() - 1) * MARGIN_V;
+            double top = parentCenterY - (childrenTotalHeight + childrenSpacing) / 2;
 
-            double top = parent.getY() + parent.getActualHeight() / 2 - parent.getBounds() / 2;
+            for (NodeEntity child : siblings) {
+                double childY = top + child.getBounds() / 2 - child.getActualHeight() / 2;
+                double childX = layoutDirection == Direction.RIGHT ?
+                        parent.getX() + parent.getActualWidth() + SettingStore.getMarginH() :
+                        parent.getX() - child.getActualWidth() - SettingStore.getMarginH();
 
-            for (int i = 0; i < index; i++) {
-                top += broNodeList.get(i).getBounds() + MARGIN_V;
-            }
+                // 直接设置计算得到的位置
+                child.setY(childY);
+                child.setX(childX);
 
-
-            top += node.getBounds() / 2 - node.getActualHeight() / 2;
-
-            node.setY(top);
-            if (layoutDirection == Direction.RIGHT) {
-                node.setX(parent.getX() + parent.getActualWidth() + marginH);
-            } else {
-                node.setX(parent.getX() - node.getActualWidth() - marginH);
-            }
-        }
-        if (node.getChildren() != null) {
-            for (NodeEntity child : node.getChildren()) {
-                doLayout(child);
+                // 更新下一个子节点起始位置
+                top += child.getBounds() + MARGIN_V;
             }
         }
 
+        // 递归处理子节点
+        node.getChildren().forEach(this::doLayout);
     }
 
     @Override

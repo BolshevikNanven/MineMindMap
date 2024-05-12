@@ -11,11 +11,11 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 
-public class CurveLine extends LineView {
-    private Path line;
+import java.util.Objects;
 
+public class CurveLine extends LineView {
     public CurveLine(NodeEntity head, NodeEntity tail, SimpleDoubleProperty[] headBindings, SimpleDoubleProperty[] tailBindings) {
-        line = new Path();
+        Path line = new Path();
 
         this.head = head;
         this.tail = tail;
@@ -46,24 +46,25 @@ public class CurveLine extends LineView {
         line.getElements().add(moveTo);
         line.getElements().add(cubicCurveTo);
 
-        line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
+        String borderColor = StyleUtil.getBorderColor(tail.getBorder());
+        String borderOpacity = borderColor.substring(borderColor.length() - 2);
+
+        if (Objects.equals(borderOpacity, "00")) {
+            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
+        } else {
+            line.setStroke(Color.valueOf(borderColor));
+        }
+
+
         line.setStrokeWidth(2.0);
         line.setFill(null); // 确保路径是透明的，没有填充色
 
+        this.line = line;
         addListener();
-    }
-
-    private void addListener() {
-        this.tail.backgroundProperty().addListener((observableValue, prev, background) -> {
-            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(background)));
-        });
-        this.tail.deleteSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (t1) LineService.getInstance().deleteLine(this);
-        });
     }
 
     @Override
     public Node render() {
-        return line;
+        return this.line;
     }
 }

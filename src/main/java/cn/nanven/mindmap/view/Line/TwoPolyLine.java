@@ -10,11 +10,11 @@ import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Polyline;
 
-public class TwoPolyLine extends LineView {
-    private Polyline line;
+import java.util.Objects;
 
+public class TwoPolyLine extends LineView {
     public TwoPolyLine(NodeEntity head, NodeEntity tail, SimpleDoubleProperty[] headBindings, SimpleDoubleProperty[] tailBindings) {
-        line = new Polyline();
+        Polyline line = new Polyline();
 
         this.head = head;
         this.tail = tail;
@@ -51,23 +51,22 @@ public class TwoPolyLine extends LineView {
             line.getPoints().set(7, tailBindings[1].get());
         });
 
-        line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
+        String borderColor = StyleUtil.getBorderColor(tail.getBorder());
+        String borderOpacity = borderColor.substring(borderColor.length() - 2);
+
+        if (Objects.equals(borderOpacity, "00")) {
+            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
+        } else {
+            line.setStroke(Color.valueOf(borderColor));
+        }
         line.setStrokeWidth(2.0);
 
+        this.line = line;
         addListener();
-    }
-
-    private void addListener() {
-        this.tail.backgroundProperty().addListener((observableValue, prev, background) -> {
-            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(background)));
-        });
-        this.tail.deleteSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (t1) LineService.getInstance().deleteLine(this);
-        });
     }
 
     @Override
     public Node render() {
-        return line;
+        return this.line;
     }
 }

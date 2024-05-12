@@ -1,9 +1,11 @@
 package cn.nanven.mindmap.entity;
 
 import cn.nanven.mindmap.common.jackson.deserializer.BackgroundDeserializer;
+import cn.nanven.mindmap.common.jackson.deserializer.BorderDeserializer;
 import cn.nanven.mindmap.common.jackson.deserializer.ColorDeserializer;
 import cn.nanven.mindmap.common.jackson.deserializer.FontDeserializer;
 import cn.nanven.mindmap.common.jackson.serializer.BackgroundSerializer;
+import cn.nanven.mindmap.common.jackson.serializer.BorderSerializer;
 import cn.nanven.mindmap.common.jackson.serializer.ColorSerializer;
 import cn.nanven.mindmap.util.StyleUtil;
 import cn.nanven.mindmap.view.LineView;
@@ -14,6 +16,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javafx.beans.property.*;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
+import javafx.scene.layout.Border;
 import javafx.scene.paint.Paint;
 import javafx.scene.text.Font;
 
@@ -47,12 +50,16 @@ public class NodeEntity implements Serializable {
     @JsonSerialize(using = BackgroundSerializer.class)
     @JsonDeserialize(using = BackgroundDeserializer.class)
     private final SimpleObjectProperty<Background> background = new SimpleObjectProperty<>();
+    @JsonSerialize(using = BorderSerializer.class)
+    @JsonDeserialize(using = BorderDeserializer.class)
+    private final SimpleObjectProperty<Border> border = new SimpleObjectProperty<>();
     @JsonSerialize(using = ColorSerializer.class)
     @JsonDeserialize(using = ColorDeserializer.class)
     private final SimpleObjectProperty<Paint> color = new SimpleObjectProperty<>();
     @JsonDeserialize(using = FontDeserializer.class)
     private final SimpleObjectProperty<Font> font = new SimpleObjectProperty<>();
     private final SimpleBooleanProperty fontUnderline = new SimpleBooleanProperty();
+
     public void setDeleteSymbol(boolean deleteSymbol) {
         this.deleteSymbol.set(deleteSymbol);
     }
@@ -247,5 +254,17 @@ public class NodeEntity implements Serializable {
 
     public void setFontUnderline(boolean fontUnderline) {
         this.fontUnderline.set(fontUnderline);
+    }
+
+    public Border getBorder() {
+        return border.get();
+    }
+
+    public SimpleObjectProperty<Border> borderProperty() {
+        return border;
+    }
+
+    public void setBorder(Border border) {
+        this.border.set(border);
     }
 }

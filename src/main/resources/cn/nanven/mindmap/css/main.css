@@ -7,13 +7,18 @@
     -fx-background-color: #ffffff;
     -fx-background-radius: 6;
     -fx-effect: dropshadow(three-pass-box, #b0b0b0, 12, 0.1, 0, 3);
-    -fx-padding: 12;
     -fx-background-insets: 12;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-border-color: #d5d5d5;
+    -fx-border-insets: 12;
 }
 
 #base.max {
     -fx-padding: 0;
     -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-border-width: 0;
     -fx-border-radius: 0;
     -fx-background-radius: 0;
 }
@@ -21,14 +26,20 @@
 Button {
     -fx-background-insets: null
 }
-
+.color-palette{
+    -fx-background-color: #f6f6f6;
+    -fx-background-radius: 6;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-border-color: #cccccc;
+}
 .context-menu {
     -fx-effect: dropshadow(three-pass-box, #bdbdbd, 8, 0.02, 0, 3);
-    -fx-padding: 8 2 8 2;
-    -fx-background-radius: 4;
+    -fx-padding: 2;
+    -fx-background-radius: 6;
     -fx-background-insets: 0;
     -fx-border-insets: 0;
-    -fx-border-radius: 4;
+    -fx-border-radius: 6;
     -fx-border-color: #fff;
 }
 
@@ -39,6 +50,14 @@ Button {
     -fx-background-radius: 4;
 }
 
+.menu-item .icon {
+    -fx-background-color: rgb(106, 111, 126);
+    -fx-pref-width: 13;
+    -fx-pref-height: 13;
+}
+.menu-item .hide {
+    -fx-background-color: transparent;
+}
 .menu-item .title {
     -fx-text-fill: #212121;
 }
@@ -53,6 +72,28 @@ Button {
 
 .menu-item:hover .label, .menu-item:focused .label {
     -fx-text-fill: #212121;
+}
+
+.title-bar {
+    -fx-background-color: primary-color;
+    -fx-background-radius: 0 18 18 0;
+}
+
+.title-bar .icon {
+    -fx-background-color: rgb(101, 106, 121);
+}
+
+.title-bar Button {
+    -fx-background-color: null;
+    -fx-background-radius: 6;
+}
+
+.title-bar Button:hover {
+    -fx-background-color: primary-hover-color;
+}
+
+.title-bar Button:pressed {
+    -fx-background-color: primary-active-color;
 }
 
 .sys-btn {
@@ -78,18 +119,20 @@ Button {
 
 
 #menu {
-    -fx-pref-height: 30;
-    -fx-background-color: null;
-    -fx-background-radius: 4px;
+    -fx-background-color: primary-color;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-border-width: 0;
+    -fx-background-radius: 18 0 0 18;
     -fx-text-fill: #212121;
     -fx-cursor: hand;
 }
 
 #menu:hover, #menu:showing {
-    -fx-background-color: rgb(232, 235, 238);
+    -fx-background-color: primary-hover-color;
 }
 
-#menu Region {
+#menu .menu-icon {
     -fx-background-color: #737373;
 }
 
@@ -215,7 +258,9 @@ Button {
     -fx-background-radius: 0 16 0 6;
     -fx-background-color: #fff;
 }
-
+.scroll-pane .corner{
+    -fx-background-color: null;
+}
 .scroll-bar {
     -fx-background-color: null;
     -fx-border-color: null;
@@ -299,23 +344,28 @@ Button {
     -fx-background-color: primary-active-color;
 }
 
+.node-container{
+    -fx-border-radius: 12;
+    -fx-border-width: 2;
+    -fx-padding: 2;
+    -fx-border-color: transparent;
+    -fx-border-insets: 0;
+}
 .node-box {
     -fx-padding: 2 12 2 12;
-    -fx-border-radius: 8;
     -fx-border-width: 2;
-    -fx-border-color: transparent;
 }
 
 .node-box:disabled {
     -fx-opacity: 0.6;
 }
 
-.node-box:hover {
+.node-container:hover {
     -fx-border-style: dashed;
     -fx-border-color: #212121;
 }
 
-.node-selected, .node-box.node-selected:hover {
+.node-selected, .node-container.node-selected:hover {
     -fx-border-style: solid;
     -fx-border-color: #212121;
 }

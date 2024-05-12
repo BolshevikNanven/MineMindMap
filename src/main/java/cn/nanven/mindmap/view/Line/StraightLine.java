@@ -12,15 +12,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Line;
 
-public class StraightLine extends LineView {
-    private Line line;
+import java.util.Objects;
 
+public class StraightLine extends LineView {
     private StraightLine() {
 
     }
 
     public StraightLine(NodeEntity head, NodeEntity tail, SimpleDoubleProperty[] headBindings, SimpleDoubleProperty[] tailBindings) {
-        line = new Line();
+        Line line = new Line();
 
         this.head = head;
         this.tail = tail;
@@ -30,19 +30,17 @@ public class StraightLine extends LineView {
         line.endXProperty().bind(tailBindings[0]);
         line.endYProperty().bind(tailBindings[1]);
 
-        line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
+        String borderColor = StyleUtil.getBorderColor(tail.getBorder());
+        borderColor = borderColor.substring(borderColor.length() - 2);
+        if (Objects.equals(borderColor, "00")) {
+            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(tail.getBackground())));
+        } else {
+            line.setStroke(Color.valueOf(borderColor));
+        }
         line.setStrokeWidth(2.0);
 
+        this.line=line;
         addListener();
-    }
-
-    private void addListener() {
-        this.tail.backgroundProperty().addListener((observableValue, prev, background) -> {
-            line.setStroke(Color.valueOf(StyleUtil.getBackgroundColor(background)));
-        });
-        this.tail.deleteSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
-            if (t1) LineService.getInstance().deleteLine(this);
-        });
     }
 
     public Node render() {

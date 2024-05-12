@@ -127,6 +127,34 @@ public class WindowService {
             }
         });
 
+        //绑定快捷键
+        root.setOnKeyPressed(keyEvent -> {
+            if (keyEvent.isControlDown()) {
+                switch (keyEvent.getCode()) {
+                    case S -> {
+                        FileService.getInstance().handleSave();
+                        keyEvent.consume();
+                    }
+                    case Z ->{
+                        UndoAndRedoService.getInstance().undo();
+                        keyEvent.consume();
+                    }
+                    case Y -> {
+                        UndoAndRedoService.getInstance().redo();
+                        keyEvent.consume();
+                    }
+                }
+            }
+        });
+        root.setOnScroll(e -> {
+            if (e.isControlDown()) {
+                int d = SystemStore.getCanvasScale() + (e.getDeltaY() > 0 ? 3 : -3);
+                if (d >= 50 && d <= 175) {
+                    CanvasService.getInstance().scale(d);
+                    e.consume();
+                }
+            }
+        });
     }
 
     private void addResizeListeners() {

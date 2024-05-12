@@ -1,5 +1,6 @@
 package cn.nanven.mindmap.common.jackson.serializer;
 
+import cn.nanven.mindmap.util.StyleUtil;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
@@ -11,7 +12,7 @@ import java.io.IOException;
 public class BackgroundSerializer extends JsonSerializer<Background> {
     @Override
     public void serialize(Background background, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-        String v = background.getFills().get(0).getFill().toString();
+        String v = StyleUtil.getBackgroundColor(background);
         jsonGenerator.writeString(v);
     }
 }
