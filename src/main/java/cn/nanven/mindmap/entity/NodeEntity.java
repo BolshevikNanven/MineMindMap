@@ -34,6 +34,8 @@ public class NodeEntity implements Serializable {
     @JsonIgnore
     private Object param;
     @JsonIgnore
+    private final SimpleBooleanProperty selectedSymbol=new SimpleBooleanProperty();
+    @JsonIgnore
     private final SimpleBooleanProperty deleteSymbol = new SimpleBooleanProperty();
     @JsonIgnore
     private final SimpleBooleanProperty disabled = new SimpleBooleanProperty();
@@ -266,5 +268,17 @@ public class NodeEntity implements Serializable {
 
     public void setBorder(Border border) {
         this.border.set(border);
+    }
+
+    public boolean isSelectedSymbol() {
+        return selectedSymbol.get();
+    }
+
+    public SimpleBooleanProperty selectedSymbolProperty() {
+        return selectedSymbol;
+    }
+
+    public void setSelectedSymbol(boolean selectedSymbol) {
+        this.selectedSymbol.set(selectedSymbol);
     }
 }

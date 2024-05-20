@@ -9,8 +9,6 @@ import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 
 import java.util.List;
-//加节点后不会自动展开
-//有两个根节点时只能生成一个
 
 public class OutlineService implements SidebarService {
     private final TreeView<String> outlineTreeView;

@@ -217,7 +217,7 @@ public class ToolbarService {
             }, borderColorPicker.getValue().toString(), c));
         });
         this.deleteBtn.setOnAction(e -> {
-            NodeEntity node = SystemStore.getSelectedNode().getNodeEntity();
+            NodeEntity node = SystemStore.getSelectedNode();
             NodeDao.deleteNode(node);
         });
         this.undoBtn.setOnAction(e -> {
@@ -261,14 +261,14 @@ public class ToolbarService {
     }
 
     public void syncState() {
-        NodeView selectedNode = SystemStore.getSelectedNode();
+        NodeEntity selectedNode = SystemStore.getSelectedNode();
 
         if (selectedNode == null) {
             setDisable(true);
             return;
         }
 
-        node = selectedNode.getNodeEntity();
+        node = selectedNode;
 
         boolean underline = node.isFontUnderline();
         boolean bold = node.getFont().getStyle().contains("Bold");

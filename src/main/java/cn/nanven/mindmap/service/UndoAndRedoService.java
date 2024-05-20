@@ -45,6 +45,7 @@ public class UndoAndRedoService {
 
     public void execute(Command command) {
         pushUndoStack(command);
+        SystemStore.getRedoStack().clear();
         command.execute();
     }
 

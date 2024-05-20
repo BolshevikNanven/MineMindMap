@@ -1,6 +1,7 @@
 package cn.nanven.mindmap.service;
 
 import cn.nanven.mindmap.entity.NodeEntity;
+import cn.nanven.mindmap.service.layout.LayoutParent;
 import cn.nanven.mindmap.view.NodeView;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;

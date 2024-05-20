@@ -13,21 +13,14 @@ import javafx.scene.layout.Pane;
 
 import java.util.List;
 
-public class MindMapLayout implements LayoutService {
-    private final Double MARGIN_V = 16.0;
-    private final Pane canvas;
-    private final Pane indicator;
+public class MindMapLayout extends LayoutParent {
     private NodeEntity parent;
     private NodeEntity brother;
     private Direction nodeDirection;
 
     public MindMapLayout(Pane canvas) {
-        this.canvas = canvas;
-        this.indicator = new Pane();
-        this.indicator.setPrefHeight(4);
-        this.indicator.setVisible(false);
+        super(canvas);
 
-        canvas.getChildren().add(indicator);
     }
 
     //TODO:BUG: node children可能为null,原因不明
@@ -54,8 +47,8 @@ public class MindMapLayout implements LayoutService {
 
         //根节点需设置左右bounds,直接放params里
         if (node.getParent() == null) {
-            Double rightBounds = 0.0;
-            Double leftBounds = 0.0;
+            double rightBounds = 0.0;
+            double leftBounds = 0.0;
 
             for (int i = 0; i < node.getChildren().size(); i++) {
                 NodeEntity child = node.getChildren().get(i);
@@ -142,45 +135,38 @@ public class MindMapLayout implements LayoutService {
         if (Math.abs(bottom) > node.getActualHeight() + 64 || Math.abs(right) > node.getActualWidth() + 72) {
             parent = null;
             brother = null;
-            indicator.setVisible(false);
+            hideIndicator();
             return;
         }
 
-        indicator.setBackground(node.getBackground());
-        indicator.setPrefWidth(node.getActualWidth());
 
         if (right > node.getActualWidth() / 2 && node.getParam() == Direction.RIGHT) {
             //右吸附
-            indicator.setLayoutX(node.getX() + node.getActualWidth());
-            indicator.setLayoutY(node.getY() + node.getActualHeight() / 2 - 2);
+            showIndicator(node,Direction.RIGHT);
 
             parent = node;
             brother = null;
         } else if (right < 0 && node.getParam() == Direction.LEFT) {
             //左吸附
-            indicator.setLayoutX(node.getX() - indicator.getWidth());
-            indicator.setLayoutY(node.getY() + node.getActualHeight() / 2 - 2);
+            showIndicator(node,Direction.LEFT);
 
             parent = node;
             brother = null;
         } else if (bottom > 0) {
             //下吸附
-            indicator.setLayoutX(node.getX());
-            indicator.setLayoutY(node.getY() + node.getActualHeight() + (MARGIN_V - indicator.getHeight()) / 2);
+            showIndicator(node,Direction.BOTTOM);
 
             parent = node.getParent();
             brother = node;
             nodeDirection = Direction.BOTTOM;
         } else if (bottom < 0) {
             //上吸附
-            indicator.setLayoutX(node.getX());
-            indicator.setLayoutY(node.getY() - (MARGIN_V + indicator.getHeight()) / 2);
+            showIndicator(node,Direction.TOP);
 
             parent = node.getParent();
             brother = node;
             nodeDirection = Direction.TOP;
         }
-        indicator.setVisible(true);
 
     }
 
@@ -195,20 +181,16 @@ public class MindMapLayout implements LayoutService {
 
         ///节点吸附自身，结束
         if (parent == node || brother == node) {
-            indicator.setVisible(false);
+            hideIndicator();
             return;
         }
 
         if (parent == null && node.getParent() != null) {   //节点取消吸附
-            node.getParent().getChildren().remove(node);
-            node.setParent(null);
-            LineService.getInstance().deleteLine(node.getLine());
-            node.setLine(null);
+            NodeDao.moveNode(node, null, 0);
 
-            SystemStore.getRootNodeList().add(node);
         } else if (parent != null && brother == null) {  //节点左右吸附
             if (AlgorithmUtil.checkExistParent(parent, node)) {
-                indicator.setVisible(false);
+                hideIndicator();
                 return;
             }
             NodeDao.moveNode(node, parent, 0);
@@ -216,11 +198,10 @@ public class MindMapLayout implements LayoutService {
             SystemStore.getRootNodeList().remove(node);
         } else if (parent != null && brother != null) {   //节点上下吸附
             int broIndex = brother.getParent().getChildren().indexOf(brother);
-            NodeDao.moveNode(node, parent, nodeDirection == Direction.TOP ? broIndex : broIndex + 1);
 
-            SystemStore.getRootNodeList().remove(node);
+            NodeDao.moveNode(node, parent, nodeDirection == Direction.TOP ? broIndex : broIndex + 1);
         }
-        indicator.setVisible(false);
+        hideIndicator();
 
     }
 
@@ -235,6 +216,9 @@ public class MindMapLayout implements LayoutService {
             head.xProperty().addListener((observableValue, number, t1) -> {
                 res[0].set(head.getX() + head.getActualWidth());
             });
+            head.widthProperty().addListener((observableValue, number, t1) -> {
+                res[0].set(head.getX() + head.getActualWidth());
+            });
         } else {
             res[0].set(head.getX());
             head.xProperty().addListener((observableValue, number, t1) -> {
@@ -243,6 +227,9 @@ public class MindMapLayout implements LayoutService {
         }
         res[1].set(head.getY() + head.getActualHeight() / 2);
         head.yProperty().addListener((observableValue, number, t1) -> {
+            res[1].set(head.getY() + head.getActualHeight() / 2);
+        });
+        head.heightProperty().addListener((observableValue, number, t1) -> {
             res[1].set(head.getY() + head.getActualHeight() / 2);
         });
         return res;
@@ -261,9 +248,15 @@ public class MindMapLayout implements LayoutService {
             tail.xProperty().addListener((observableValue, number, t1) -> {
                 res[0].set(tail.getX() + tail.getActualWidth());
             });
+            tail.widthProperty().addListener((observableValue, number, t1) -> {
+                res[0].set(tail.getX() + tail.getActualWidth());
+            });
         }
         res[1].set(tail.getY() + tail.getActualHeight() / 2);
         tail.yProperty().addListener((observableValue, number, t1) -> {
+            res[1].set(tail.getY() + tail.getActualHeight() / 2);
+        });
+        tail.heightProperty().addListener((observableValue, number, t1) -> {
             res[1].set(tail.getY() + tail.getActualHeight() / 2);
         });
         return res;

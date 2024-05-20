@@ -1,7 +1,6 @@
 package cn.nanven.mindmap.view;
 
 import cn.nanven.mindmap.service.NodeService;
-import javafx.geometry.Pos;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuItem;
@@ -9,18 +8,20 @@ import javafx.scene.layout.HBox;
 
 public class NodeContext extends ContextMenu {
     private NodeView node;
-    private MenuItem deleteMenu;
-    private MenuItem addSubNodeMenu;
-    private MenuItem addBroNodeMenu;
-    private MenuItem applyStyleMenu;
+    private final MenuItem editMenu;
+    private final MenuItem deleteMenu;
+    private final MenuItem addSubNodeMenu;
+    private final MenuItem addBroNodeMenu;
+    private final MenuItem applyStyleMenu;
 
     public NodeContext() {
-        deleteMenu = new MenuItem("", generateMenu("", "删除", "Delete"));
-        addSubNodeMenu = new MenuItem("", generateMenu("", "添加子节点", "Tab"));
-        addBroNodeMenu = new MenuItem("", generateMenu("", "添加兄弟节点", "Enter"));
-        applyStyleMenu = new MenuItem("", generateMenu("", "应用样式", ""));
+        editMenu = new MenuItem("", generateMenu("编辑", "双击"));
+        deleteMenu = new MenuItem("", generateMenu("删除节点", "Delete"));
+        addSubNodeMenu = new MenuItem("", generateMenu("添加子节点", "Tab"));
+        addBroNodeMenu = new MenuItem("", generateMenu("添加兄弟节点", "Enter"));
+        applyStyleMenu = new MenuItem("", generateMenu("应用样式", ""));
 
-        this.getItems().addAll(deleteMenu, addSubNodeMenu, addBroNodeMenu, applyStyleMenu);
+        this.getItems().addAll(editMenu, deleteMenu, addSubNodeMenu, addBroNodeMenu, applyStyleMenu);
 
         addListener();
     }
@@ -32,6 +33,9 @@ public class NodeContext extends ContextMenu {
     }
 
     private void addListener() {
+        editMenu.setOnAction(actionEvent -> {
+            node.focusText();
+        });
         deleteMenu.setOnAction(actionEvent -> {
             NodeService.getInstance().deleteNode(node.getNodeEntity());
         });
@@ -46,7 +50,7 @@ public class NodeContext extends ContextMenu {
         });
     }
 
-    private HBox generateMenu(String icon, String title, String key) {
+    private HBox generateMenu(String title, String key) {
         Label titleLabel = new Label(title);
         titleLabel.getStyleClass().add("title");
         titleLabel.setPrefWidth(86);

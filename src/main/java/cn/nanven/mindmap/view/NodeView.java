@@ -6,6 +6,7 @@ import cn.nanven.mindmap.service.NodeService;
 import cn.nanven.mindmap.store.SystemStore;
 import javafx.scene.Cursor;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Border;
@@ -80,22 +81,34 @@ public class NodeView extends AnchorPane {
                 NodeService.getInstance().removeNode(this);
             }
         });
+        nodeEntity.selectedSymbolProperty().addListener((observableValue, aBoolean, t1) -> {
+            if (t1) {
+                this.getStyleClass().add("node-selected");
+                body.requestFocus();
+            } else {
+                this.getStyleClass().remove("node-selected");
+                nodeEntity.setDisabled(true);
+            }
+        });
         nodeEntity.colorProperty().addListener(e -> {
             textField.setStyle("-fx-text-fill:#" + nodeEntity.getColor().toString().substring(2));
         });
 
+        //鼠标点击事件
         body.setOnMouseClicked(e -> {
-            body.requestFocus();
+            NodeService.getInstance().selectNode(nodeEntity);
             if (e.getClickCount() == 2) {
                 nodeEntity.setDisabled(false);
-                textField.requestFocus();
+                focusText();
             }
             if (e.getButton() == MouseButton.SECONDARY) {
                 NodeService.getInstance().showContext(this, e.getScreenX(), e.getScreenY());
             }
-            NodeService.getInstance().selectNode(this);
+
             e.consume();
         });
+
+        //键盘事件
         body.setOnKeyPressed(e -> {
             if (e.isControlDown()) {
                 return;
@@ -104,10 +117,36 @@ public class NodeView extends AnchorPane {
                 case ENTER -> NodeService.getInstance().addBroNode();
                 case TAB -> NodeService.getInstance().addSubNode();
                 case DELETE -> NodeService.getInstance().deleteNode(nodeEntity);
-                case ESCAPE -> NodeService.getInstance().selectNode(null);
+                case ESCAPE -> {
+                    if (nodeEntity.getDisabled()) {
+                        NodeService.getInstance().selectNode(null);
+                    } else {
+                        body.requestFocus();
+                        nodeEntity.setDisabled(true);
+                    }
+                    e.consume();
+                }
+                case UP -> {
+                    NodeService.getInstance().selectNodeByKey(KeyCode.UP);
+                    e.consume();
+                }
+                case DOWN -> {
+                    NodeService.getInstance().selectNodeByKey(KeyCode.DOWN);
+                    e.consume();
+                }
+                case LEFT -> {
+                    NodeService.getInstance().selectNodeByKey(KeyCode.LEFT);
+                    e.consume();
+                }
+                case RIGHT -> {
+                    NodeService.getInstance().selectNodeByKey(KeyCode.RIGHT);
+                    e.consume();
+                }
                 default -> focusText();
             }
         });
+
+        //输入框输入事件
         textField.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case TAB -> {
@@ -116,31 +155,32 @@ public class NodeView extends AnchorPane {
                 }
             }
         });
+
         this.setOnMouseMoved(e -> {
-            if (e.getX() > body.getWidth() - 8 && e.getX() < body.getWidth() + 8 && e.getY() > body.getHeight() - 8 && e.getY() < body.getHeight() + 8) {
+            if (e.getX() > body.getWidth() - 4 && e.getX() < body.getWidth() + 4 && e.getY() > body.getHeight() - 4 && e.getY() < body.getHeight() + 4) {
                 this.setCursor(Cursor.SE_RESIZE);
-            } else if (e.getX() > body.getWidth() - 8 && e.getX() < body.getWidth() + 8) {
+            } else if (e.getX() > body.getWidth() - 4 && e.getX() < body.getWidth() + 4) {
                 this.setCursor(Cursor.E_RESIZE);
-            } else if (e.getY() > body.getHeight() - 8 && e.getY() < body.getHeight() + 8) {
+            } else if (e.getY() > body.getHeight() - 4 && e.getY() < body.getHeight() + 4) {
                 this.setCursor(Cursor.S_RESIZE);
             } else {
                 this.setCursor(Cursor.DEFAULT);
             }
             e.consume();
         });
-        body.setOnMousePressed(e -> {
+        this.setOnMousePressed(e -> {
             SystemStore.getAuxiliaryNode().render(nodeEntity);
             mouseAnchor[0] = e.getSceneX();
             mouseAnchor[1] = e.getSceneY();
 
             e.consume();
         });
-        body.setOnMouseDragged(e -> {
+        this.setOnMouseDragged(e -> {
             isDrag.set(true);
             NodeService.getInstance().dragNode(this, mouseAnchor[0], mouseAnchor[1], e);
             e.consume();
         });
-        body.setOnMouseReleased(e -> {
+        this.setOnMouseReleased(e -> {
             if (isDrag.get()) {
                 NodeService.getInstance().dragDoneNode(this, mouseAnchor[0], mouseAnchor[1], e);
             }

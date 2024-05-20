@@ -8,6 +8,7 @@ import cn.nanven.mindmap.service.LineService;
 import cn.nanven.mindmap.store.SettingStore;
 import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
+import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -15,23 +16,16 @@ import javafx.scene.layout.Pane;
 
 import java.util.List;
 
-public class HorizonTreeLayout implements LayoutService {
-    private final Double MARGIN_V = 16.0;
-    private final Pane canvas;
-    private final Pane indicator;
+public class HorizonTreeLayout extends LayoutParent {
     private NodeEntity parent;
     private NodeEntity brother;
     private Direction nodeDirection;
-    private Direction layoutDirection;
+    private final Direction layoutDirection;
 
     public HorizonTreeLayout(Pane canvas, Direction direction) {
-        this.canvas = canvas;
-        this.indicator = new Pane();
-        this.indicator.setPrefHeight(4);
-        this.indicator.setVisible(false);
+        super(canvas);
         this.layoutDirection = direction;
 
-        canvas.getChildren().add(indicator);
     }
 
     private void doBounds(NodeEntity node) {
@@ -100,45 +94,38 @@ public class HorizonTreeLayout implements LayoutService {
         if (Math.abs(bottom) > node.getActualHeight() + 64 || Math.abs(right) > node.getActualWidth() + 72) {
             parent = null;
             brother = null;
-            indicator.setVisible(false);
+            hideIndicator();
             return;
         }
 
-        indicator.setBackground(node.getBackground());
-        indicator.setPrefWidth(node.getActualWidth());
 
         if (right > node.getActualWidth() / 2 && layoutDirection == Direction.RIGHT) {
             //右吸附
-            indicator.setLayoutX(node.getX() + node.getActualWidth());
-            indicator.setLayoutY(node.getY() + node.getActualHeight() / 2 - 2);
+            showIndicator(node, Direction.RIGHT);
 
             parent = node;
             brother = null;
         } else if (right < 0 && layoutDirection == Direction.LEFT) {
             //左吸附
-            indicator.setLayoutX(node.getX() - indicator.getWidth());
-            indicator.setLayoutY(node.getY() + node.getActualHeight() / 2 - 2);
+            showIndicator(node, Direction.LEFT);
 
             parent = node;
             brother = null;
         } else if (bottom > 0) {
             //下吸附
-            indicator.setLayoutX(node.getX());
-            indicator.setLayoutY(node.getY() + node.getActualHeight() + (MARGIN_V - indicator.getHeight()) / 2);
+            showIndicator(node, Direction.BOTTOM);
 
             parent = node.getParent();
             brother = node;
             nodeDirection = Direction.BOTTOM;
         } else if (bottom < 0) {
             //上吸附
-            indicator.setLayoutX(node.getX());
-            indicator.setLayoutY(node.getY() - (MARGIN_V + indicator.getHeight()) / 2);
+            showIndicator(node, Direction.TOP);
 
             parent = node.getParent();
             brother = node;
             nodeDirection = Direction.TOP;
         }
-        indicator.setVisible(true);
 
     }
 
@@ -153,20 +140,16 @@ public class HorizonTreeLayout implements LayoutService {
 
         ///节点吸附自身，结束
         if (parent == node || brother == node) {
-            indicator.setVisible(false);
+            hideIndicator();
             return;
         }
 
         if (parent == null && node.getParent() != null) {   //节点取消吸附
-            node.getParent().getChildren().remove(node);
-            node.setParent(null);
-            LineService.getInstance().deleteLine(node.getLine());
-            node.setLine(null);
 
-            SystemStore.getRootNodeList().add(node);
+            NodeDao.moveNode(node, null, 0);
         } else if (parent != null && brother == null) {  //节点左右吸附
             if (AlgorithmUtil.checkExistParent(parent, node)) {
-                indicator.setVisible(false);
+                hideIndicator();
                 return;
             }
             NodeDao.moveNode(node, parent, 0);
@@ -176,53 +159,49 @@ public class HorizonTreeLayout implements LayoutService {
             int broIndex = brother.getParent().getChildren().indexOf(brother);
             NodeDao.moveNode(node, parent, nodeDirection == Direction.TOP ? broIndex : broIndex + 1);
 
-            SystemStore.getRootNodeList().remove(node);
         }
-        indicator.setVisible(false);
+        hideIndicator();
 
     }
 
     @Override
     public SimpleDoubleProperty[] getLineHead(NodeEntity head, NodeEntity tail) {
-        if (head == null) return null;
-
-        SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(), new SimpleDoubleProperty()};
-        if (layoutDirection == Direction.RIGHT) {
-            res[0].set(head.getX() + head.getActualWidth());
-            head.xProperty().addListener((observableValue, number, t1) -> {
-                res[0].set(head.getX() + head.getActualWidth());
-            });
-        } else {
-            res[0].set(head.getX());
-            head.xProperty().addListener((observableValue, number, t1) -> {
-                res[0].set(head.getX());
-            });
-        }
-        res[1].set(head.getY() + head.getActualHeight() / 2);
-        head.yProperty().addListener((observableValue, number, t1) -> {
-            res[1].set(head.getY() + head.getActualHeight() / 2);
-        });
-        return res;
+        return createLineEndProperties(head, true);
     }
 
     @Override
     public SimpleDoubleProperty[] getLineTail(NodeEntity head, NodeEntity tail) {
-        SimpleDoubleProperty[] res = new SimpleDoubleProperty[]{new SimpleDoubleProperty(), new SimpleDoubleProperty()};
-        if (layoutDirection == Direction.RIGHT) {
-            res[0].set(tail.getX());
-            tail.xProperty().addListener((observableValue, number, t1) -> {
-                res[0].set(tail.getX());
-            });
-        } else {
-            res[0].set(tail.getX() + tail.getActualWidth());
-            tail.xProperty().addListener((observableValue, number, t1) -> {
-                res[0].set(tail.getX() + tail.getActualWidth());
-            });
-        }
-        res[1].set(tail.getY() + tail.getActualHeight() / 2);
-        tail.yProperty().addListener((observableValue, number, t1) -> {
-            res[1].set(tail.getY() + tail.getActualHeight() / 2);
-        });
-        return res;
+        return createLineEndProperties(tail, false);
     }
+
+    private SimpleDoubleProperty[] createLineEndProperties(NodeEntity node, boolean isHead) {
+        if (node == null) return null;
+
+        SimpleDoubleProperty xProperty = new SimpleDoubleProperty();
+        SimpleDoubleProperty yProperty = new SimpleDoubleProperty();
+
+        updateXProperty(xProperty, node, isHead);
+        updateYProperty(yProperty, node);
+
+        node.xProperty().addListener((observable, oldValue, newValue) -> updateXProperty(xProperty, node, isHead));
+        node.yProperty().addListener((observable, oldValue, newValue) -> updateYProperty(yProperty, node));
+        node.widthProperty().addListener((observable, oldValue, newValue) -> updateXProperty(xProperty, node, isHead));
+        node.heightProperty().addListener((observable, oldValue, newValue) -> updateYProperty(yProperty, node));
+
+        return new SimpleDoubleProperty[]{xProperty, yProperty};
+    }
+
+    private void updateXProperty(SimpleDoubleProperty xProperty, NodeEntity node, boolean isHead) {
+        if ((layoutDirection == Direction.RIGHT && isHead) || (layoutDirection != Direction.RIGHT && !isHead)) {
+            xProperty.set(node.getX() + node.getActualWidth());
+        } else {
+            xProperty.set(node.getX());
+        }
+    }
+
+    private void updateYProperty(SimpleDoubleProperty yProperty, NodeEntity node) {
+        yProperty.set(node.getY() + node.getActualHeight() / 2);
+    }
+
+
 }

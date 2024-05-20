@@ -1,9 +1,9 @@
 package cn.nanven.mindmap.dao;
 
 import cn.nanven.mindmap.common.handler.MapEventHandler;
+import cn.nanven.mindmap.entity.Command;
 import cn.nanven.mindmap.entity.NodeEntity;
-import cn.nanven.mindmap.service.LineService;
-import cn.nanven.mindmap.service.ToolbarService;
+import cn.nanven.mindmap.service.*;
 import cn.nanven.mindmap.store.SystemStore;
 import cn.nanven.mindmap.util.AlgorithmUtil;
 import cn.nanven.mindmap.util.StyleUtil;
@@ -13,25 +13,51 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NodeDao {
-    private static final List<NodeEntity> rootNodeList = SystemStore.getRootNodeList();
-
-    private static void doDeleteNode(NodeEntity node) {
-        if (!node.getChildren().isEmpty()) {
-            for (NodeEntity child : node.getChildren()) {
-                doDeleteNode(child);
-            }
-        }
-        node.setParent(null);
-        node.setChildren(null);
-        node.setDeleteSymbol(true);
-    }
 
     public static void moveNode(NodeEntity node, NodeEntity parent, int index) {
+        NodeEntity oldParent;
+        int oldIndex;
 
+        oldParent = node.getParent();
+        oldIndex = (oldParent != null) ? oldParent.getChildren().indexOf(node) : SystemStore.getRootNodeList().indexOf(node);
+
+        UndoAndRedoService.getInstance().execute(new Command() {
+            @Override
+            public void execute() {
+                doMoveNode(node, parent, index);
+                NodeService.getInstance().renderNodeTree();
+            }
+
+            @Override
+            public void undo() {
+                doMoveNode(node, oldParent, oldIndex);
+                NodeService.getInstance().renderNodeTree();
+            }
+        });
+
+    }
+
+    private static void doMoveNode(NodeEntity node, NodeEntity parent, int index) {
+        if (parent == null) {
+            if (node.getParent() != null) {
+                SystemStore.getRootNodeList().add(node);
+            }
+            node.getParent().getChildren().remove(node);
+            node.setParent(null);
+            node.setLine(null);
+
+            return;
+        }
+
+        //从根节点列表移除
+        if (node.getParent() == null) {
+            SystemStore.getRootNodeList().remove(node);
+        }
         if (node.getParent() == parent) {
             int prevIndex = parent.getChildren().indexOf(node);
             parent.getChildren().remove(prevIndex);
@@ -46,29 +72,23 @@ public class NodeDao {
             }
             parent.getChildren().add(index, node);
             node.setParent(parent);
-            LineService.getInstance().addLine(parent, node);
         }
-
     }
 
     public static void treeApplyStyle(NodeEntity node) {
         AlgorithmUtil.headMapNode(node, ((parent, node1) -> {
             if (parent != null) {
-                copyStyle(parent,node1);
+                node1.setAlignment(parent.getAlignment());
+                node1.setBorder(parent.getBorder());
+                node1.setBackground(parent.getBackground());
+                node1.setColor(parent.getColor());
+                node1.setFont(parent.getFont());
+                node1.setFontUnderline(parent.isFontUnderline());
+                node1.setHeight(parent.getHeight());
+                node1.setWidth(parent.getWidth());
             }
         }));
 
-    }
-
-    public static void copyStyle(NodeEntity source, NodeEntity target) {
-        target.setAlignment(source.getAlignment());
-        target.setBorder(source.getBorder());
-        target.setBackground(source.getBackground());
-        target.setColor(source.getColor());
-        target.setFont(source.getFont());
-        target.setFontUnderline(source.isFontUnderline());
-        target.setHeight(source.getHeight());
-        target.setWidth(source.getWidth());
     }
 
     public static void deleteNode(NodeEntity node) {
@@ -82,29 +102,119 @@ public class NodeDao {
         doDeleteNode(node);
     }
 
+    private static void doDeleteNode(NodeEntity node) {
+        if (!node.getChildren().isEmpty()) {
+            for (NodeEntity child : node.getChildren()) {
+                doDeleteNode(child);
+            }
+        }
+        node.setParent(null);
+        node.setChildren(null);
+        node.setDeleteSymbol(true);
+    }
+
     public static NodeEntity newNode(NodeEntity parent, NodeEntity prevNode) {
         NodeEntity node = newBean(prevNode);
-        node.setParent(parent);
-        node.setChildren(new ArrayList<>());
 
-        parent.getChildren().add(node);
+        WeakReference<NodeEntity> weakParent = new WeakReference<>(parent);
+        WeakReference<NodeEntity> weakNode = new WeakReference<>(node);
+        UndoAndRedoService.getInstance().execute(new Command() {
+            @Override
+            public void execute() {
+                NodeEntity parent = weakParent.get();
+                NodeEntity node = weakNode.get();
+                if (parent != null && node != null) {
+                    node.setParent(parent);
+                    node.setChildren(new ArrayList<>());
+                    parent.getChildren().add(node);
+
+                    NodeService.getInstance().renderNodeTree();
+                    NodeService.getInstance().selectNode(node);
+                }
+            }
+
+            @Override
+            public void undo() {
+                NodeEntity parent = weakParent.get();
+                NodeEntity node = weakNode.get();
+                if (parent != null && node != null) {
+                    parent.getChildren().remove(node);
+
+                    NodeService.getInstance().renderNodeTree();
+                    NodeService.getInstance().selectNode(node);
+                }
+            }
+        });
         return node;
     }
 
     public static NodeEntity newNode(NodeEntity parent) {
         NodeEntity node = newBean(parent);
-        node.setParent(parent);
-        node.setChildren(new ArrayList<>());
 
-        parent.getChildren().add(node);
+        WeakReference<NodeEntity> weakParent = new WeakReference<>(parent);
+        WeakReference<NodeEntity> weakNode = new WeakReference<>(node);
+        UndoAndRedoService.getInstance().execute(new Command() {
+            @Override
+            public void execute() {
+                NodeEntity parent = weakParent.get();
+                NodeEntity node = weakNode.get();
+                if (parent != null && node != null) {
+                    node.setParent(parent);
+                    node.setChildren(new ArrayList<>());
+                    parent.getChildren().add(node);
+
+                    NodeService.getInstance().renderNodeTree();
+                    NodeService.getInstance().selectNode(node);
+                }
+
+            }
+
+            @Override
+            public void undo() {
+                NodeEntity parent = weakParent.get();
+                NodeEntity node = weakNode.get();
+                if (parent != null && node != null) {
+                    parent.getChildren().remove(node);
+
+                    NodeService.getInstance().renderNodeTree();
+                    NodeService.getInstance().selectNode(node);
+                }
+            }
+        });
+
+
         return node;
     }
 
     public static NodeEntity newNode() {
         NodeEntity node = newBean(null);
-        rootNodeList.add(node);
-        node.setParent(null);
-        node.setChildren(new ArrayList<>());
+
+        WeakReference<NodeEntity> weakNode = new WeakReference<>(node);
+        UndoAndRedoService.getInstance().execute(new Command() {
+            @Override
+            public void execute() {
+                NodeEntity node = weakNode.get();
+                if (node != null) {
+                    SystemStore.getRootNodeList().add(node);
+                    node.setParent(null);
+                    node.setChildren(new ArrayList<>());
+
+                    NodeService.getInstance().renderNodeTree();
+                    NodeService.getInstance().selectNode(node);
+                }
+
+            }
+
+            @Override
+            public void undo() {
+                NodeEntity node = weakNode.get();
+                if (node != null) {
+                    SystemStore.getRootNodeList().remove(node);
+                    NodeService.getInstance().renderNodeTree();
+                    NodeService.getInstance().selectNode(node);
+                }
+            }
+        });
 
         return node;
     }
@@ -115,8 +225,8 @@ public class NodeDao {
         if (template == null) {
             node.setAlignment(Pos.CENTER_LEFT);
             node.setContent("新节点");
-            node.setX(50);
-            node.setY(50);
+            node.setX(CanvasService.getInstance().getCenterX());
+            node.setY(CanvasService.getInstance().getCenterY());
             node.setHeight(42);
             node.setWidth(86);
             node.setDisabled(false);
@@ -128,8 +238,8 @@ public class NodeDao {
         } else {
             node.setAlignment(template.getAlignment());
             node.setContent("新节点");
-            node.setX(50);
-            node.setY(50);
+            node.setX(CanvasService.getInstance().getCenterX());
+            node.setY(CanvasService.getInstance().getCenterY());
             node.setHeight(42);
             node.setDisabled(false);
             node.setWidth(template.getWidth());

@@ -19,7 +19,7 @@ public class SystemStore {
         nodeContext = new NodeContext();
     }
     private static final List<NodeEntity> rootNodeList = new ArrayList<>();
-    private static NodeView selectedNode;
+    private static NodeEntity selectedNode;
     private static AuxiliaryNodeView auxiliaryNode;
     private static NodeContext nodeContext;
     private static final SimpleIntegerProperty canvasScale = new SimpleIntegerProperty(100);
@@ -68,11 +68,11 @@ public class SystemStore {
         SystemStore.auxiliaryNode = auxiliaryNode;
     }
 
-    public static NodeView getSelectedNode() {
+    public static NodeEntity getSelectedNode() {
         return selectedNode;
     }
 
-    public static void setSelectedNode(NodeView selectedNode) {
+    public static void setSelectedNode(NodeEntity selectedNode) {
         SystemStore.selectedNode = selectedNode;
     }
 

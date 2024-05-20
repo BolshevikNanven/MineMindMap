@@ -61,7 +61,7 @@ public class CanvasService {
             canvas.setPrefHeight((Double) t1);
         });
         canvas.setOnMousePressed(e -> {
-            canvas.setCursor(Cursor.HAND);
+            canvas.setCursor(Cursor.CLOSED_HAND);
             mouseAnchor[0] = e.getSceneX();
             mouseAnchor[1] = e.getSceneY();
         });
@@ -162,5 +162,29 @@ public class CanvasService {
             canvas.setMinHeight(bounds[2] + 36);
         }
 
+    }
+
+    public double getCenterX() {
+        double viewportWidth = canvasContainer.getViewportBounds().getWidth();
+
+        double hValue = canvasContainer.getHvalue();
+
+        double contentWidth = canvas.getBoundsInLocal().getWidth();
+
+        double viewportTopLeftX = (contentWidth - viewportWidth) * hValue;
+
+        return viewportTopLeftX + (viewportWidth / 2);
+
+    }
+    public double getCenterY(){
+        double viewportHeight = canvasContainer.getViewportBounds().getHeight();
+
+        double vValue = canvasContainer.getVvalue();
+
+        double contentHeight = canvas.getBoundsInLocal().getHeight();
+
+        double viewportTopLeftY = (contentHeight - viewportHeight) * vValue;
+
+        return viewportTopLeftY + (viewportHeight / 2);
     }
 }

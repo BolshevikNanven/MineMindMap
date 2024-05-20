@@ -16,6 +16,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -63,27 +64,6 @@ public class NodeService {
             newNode = NodeDao.newNode(parent, brother);
         }
 
-        NodeView nodeView = new NodeView(newNode);
-        nodeView.setFocusTraversable(true);
-
-        this.canvas.getChildren().add(nodeView);
-
-        //等待节点渲染完成再进行布局
-        newNode.actualHeightProperty().addListener(new ChangeListener<>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                SidebarController.getInstance().sync();
-                CanvasService.getInstance().resize();
-                SettingStore.getLayoutService().layout();
-
-                LineService.getInstance().addLine(newNode.getParent(), newNode);
-                selectNode(nodeView);
-                nodeView.focusText();
-
-                newNode.actualHeightProperty().removeListener(this);
-            }
-        });
-
     }
 
     public void showContext(NodeView nodeView, double x, double y) {
@@ -91,26 +71,27 @@ public class NodeService {
     }
 
     public void addSubNode() {
-        NodeView selectedNode = SystemStore.getSelectedNode();
+        NodeEntity selectedNode = SystemStore.getSelectedNode();
         if (selectedNode == null) {
             addNode(null, null);
         } else {
-            addNode(selectedNode.getNodeEntity(), null);
+            addNode(selectedNode, null);
         }
     }
 
     public void addBroNode() {
-        NodeView selectedNode = SystemStore.getSelectedNode();
+        NodeEntity selectedNode = SystemStore.getSelectedNode();
         if (selectedNode == null) {
             addNode(null, null);
         } else {
-            addNode(selectedNode.getNodeEntity().getParent(), selectedNode.getNodeEntity());
+            addNode(selectedNode.getParent(), selectedNode);
         }
     }
 
     public void renderNodeTree() {
         this.canvas.getChildren().clear();
         final NodeEntity[] last = {null};
+
         for (NodeEntity root : SystemStore.getRootNodeList()) {
             AlgorithmUtil.headMapNode(root, (parent, node) -> {
                 NodeView nodeView = new NodeView(node);
@@ -119,7 +100,6 @@ public class NodeService {
                 this.canvas.getChildren().add(nodeView);
                 LineService.getInstance().addLine(node.getParent(), node);
                 last[0] = node;
-
 
             });
         }
@@ -133,24 +113,48 @@ public class NodeService {
                 CanvasService.getInstance().resize();
                 SettingStore.getLayoutService().layout();
 
-
                 last[0].actualHeightProperty().removeListener(this);
             }
         });
 
     }
 
-    public void selectNode(NodeView newNode) {
-        NodeView prevNode = SystemStore.getSelectedNode();
-        if (newNode == prevNode) {
+    public void selectNodeByKey(KeyCode keyCode) {
+        NodeEntity selectedNode = SystemStore.getSelectedNode();
+        if (selectedNode == null) {
             return;
         }
+        NodeEntity parent = selectedNode.getParent();
+        int index = parent != null ? parent.getChildren().indexOf(selectedNode) : 0;
+        switch (keyCode) {
+            case UP -> {
+                if (index != 0) selectNode(parent.getChildren().get(index - 1));
+            }
+            case DOWN -> {
+                if (parent != null && index < parent.getChildren().size() - 1) {
+                    selectNode(parent.getChildren().get(index + 1));
+                }
+            }
+            case LEFT -> {
+                if (parent != null) {
+                    selectNode(parent);
+                }
+            }
+            case RIGHT -> {
+                if (selectedNode.getChildren() != null && !selectedNode.getChildren().isEmpty()) {
+                    selectNode(selectedNode.getChildren().get(0));
+                }
+            }
+        }
+    }
+
+    public void selectNode(NodeEntity newNode) {
+        NodeEntity prevNode = SystemStore.getSelectedNode();
         if (prevNode != null) {
-            prevNode.getStyleClass().removeAll("node-selected");
-            prevNode.getNodeEntity().setDisabled(true);
+            prevNode.setSelectedSymbol(false);
         }
         if (newNode != null) {
-            newNode.getStyleClass().addAll("node-selected");
+            newNode.setSelectedSymbol(true);
         }
         SystemStore.setSelectedNode(newNode);
         ToolbarService.getInstance().syncState();
@@ -223,9 +227,12 @@ public class NodeService {
             Point2D orgLocalCoords = canvas.sceneToLocal(prevX, prevY);
             Point2D localCoords = canvas.sceneToLocal(e.getSceneX(), e.getSceneY());
 
-            SystemStore.getAuxiliaryNode().hide();
             SettingStore.getLayoutService().snap(node.getNodeEntity(), localCoords.getX(), localCoords.getY(), orgLocalCoords.getX(), orgLocalCoords.getY());
         }
+
+        //冗余设计，防止错误
+        SystemStore.getAuxiliaryNode().hide();
+
 
         SettingStore.getLayoutService().layout();
         CanvasService.getInstance().resize();
