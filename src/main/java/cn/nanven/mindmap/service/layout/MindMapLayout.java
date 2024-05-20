@@ -142,26 +142,26 @@ public class MindMapLayout extends LayoutParent {
 
         if (right > node.getActualWidth() / 2 && node.getParam() == Direction.RIGHT) {
             //右吸附
-            showIndicator(node,Direction.RIGHT);
+            showIndicator(node, Direction.RIGHT);
 
             parent = node;
             brother = null;
         } else if (right < 0 && node.getParam() == Direction.LEFT) {
             //左吸附
-            showIndicator(node,Direction.LEFT);
+            showIndicator(node, Direction.LEFT);
 
             parent = node;
             brother = null;
         } else if (bottom > 0) {
             //下吸附
-            showIndicator(node,Direction.BOTTOM);
+            showIndicator(node, Direction.BOTTOM);
 
             parent = node.getParent();
             brother = node;
             nodeDirection = Direction.BOTTOM;
         } else if (bottom < 0) {
             //上吸附
-            showIndicator(node,Direction.TOP);
+            showIndicator(node, Direction.TOP);
 
             parent = node.getParent();
             brother = node;
@@ -174,7 +174,7 @@ public class MindMapLayout extends LayoutParent {
     @Override
     public void snap(NodeEntity node, double x, double y, double prevX, double prevY) {
         //节点不吸附直接移动
-        if (parent == null || parent == node || brother == node || node.getParent() == null) {
+        if (parent == null || parent == node || brother == node || node.getParent() == null && parent == null) {
             node.setX(x - prevX + node.getX());
             node.setY(y - prevY + node.getY());
         }

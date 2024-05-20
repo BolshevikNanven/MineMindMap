@@ -66,10 +66,6 @@ public class NodeService {
 
     }
 
-    public void showContext(NodeView nodeView, double x, double y) {
-        SystemStore.getNodeContext().render(nodeView, x, y);
-    }
-
     public void addSubNode() {
         NodeEntity selectedNode = SystemStore.getSelectedNode();
         if (selectedNode == null) {
@@ -88,6 +84,10 @@ public class NodeService {
         }
     }
 
+    public void showContext(NodeView nodeView, double x, double y) {
+        SystemStore.getNodeContext().render(nodeView, x, y);
+    }
+
     public void renderNodeTree() {
         this.canvas.getChildren().clear();
         final NodeEntity[] last = {null};
@@ -103,13 +103,13 @@ public class NodeService {
 
             });
         }
+        SidebarController.getInstance().sync();
         if (last[0] == null) return;
 
         //等待节点渲染完成再进行布局
         last[0].actualHeightProperty().addListener(new ChangeListener<>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number number, Number t1) {
-                SidebarController.getInstance().sync();
                 CanvasService.getInstance().resize();
                 SettingStore.getLayoutService().layout();
 

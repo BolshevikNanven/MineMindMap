@@ -133,7 +133,7 @@ public class HorizonTreeLayout extends LayoutParent {
     @Override
     public void snap(NodeEntity node, double x, double y, double prevX, double prevY) {
         //节点不吸附直接移动
-        if (parent == null || parent == node || brother == node || node.getParent() == null) {
+        if (parent == null || parent == node || brother == node || node.getParent() == null && parent == null) {
             node.setX(x - prevX + node.getX());
             node.setY(y - prevY + node.getY());
         }

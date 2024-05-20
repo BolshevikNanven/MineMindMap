@@ -83,8 +83,13 @@ public class WindowService {
                     String fullName = SystemStore.getFile().getName();
                     this.title.setText(fullName.substring(0, fullName.lastIndexOf('.')));
                 });
+            }else {
+                Platform.runLater(()->{
+                    this.title.setText("空白思维导图");
+                });
             }
         });
+
         this.scaleBtn.setOnAction(e -> {
             if (isMax) {
                 stage.setX(windowX);

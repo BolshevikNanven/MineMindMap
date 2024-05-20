@@ -178,9 +178,7 @@ public class FileService {
                 objectMapper.writer().writeValue(fileWriter, SystemStore.getRootNodeList());
 
                 fileWriter.close();
-                if (SystemStore.getFile() == null) {
-                    SystemStore.setFile(file);
-                }
+                SystemStore.setFile(file);
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -189,12 +187,14 @@ public class FileService {
     }
 
     public void writeFile(File file) {
-        try {
-            FileWriter fileWriter = new FileWriter(file);
-            objectMapper.writer().writeValue(fileWriter, SystemStore.getRootNodeList());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        ThreadsPool.run(()->{
+            try {
+                FileWriter fileWriter = new FileWriter(file);
+                objectMapper.writer().writeValue(fileWriter, SystemStore.getRootNodeList());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     public void readFile() {
@@ -232,6 +232,11 @@ public class FileService {
     }
 
     public void newFile() {
+        handleSave();
 
+        SystemStore.setFile(null);
+        SystemStore.setSelectedNode(null);
+        SystemStore.getRootNodeList().clear();
+        NodeService.getInstance().renderNodeTree();
     }
 }

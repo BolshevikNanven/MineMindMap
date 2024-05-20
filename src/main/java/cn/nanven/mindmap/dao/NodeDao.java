@@ -20,23 +20,40 @@ import java.util.List;
 public class NodeDao {
 
     public static void moveNode(NodeEntity node, NodeEntity parent, int index) {
-        NodeEntity oldParent;
-        int oldIndex;
+        WeakReference<NodeEntity> weakNode = new WeakReference<>(node);
+        WeakReference<NodeEntity> weakNewParent = new WeakReference<>(parent);
+        WeakReference<NodeEntity> weakOldParent = new WeakReference<>(node.getParent());
 
-        oldParent = node.getParent();
-        oldIndex = (oldParent != null) ? oldParent.getChildren().indexOf(node) : SystemStore.getRootNodeList().indexOf(node);
+        int oldIndex;
+        double oldX = node.getX();
+        double oldY = node.getY();
+
+        oldIndex = (node.getParent() != null) ? node.getParent().getChildren().indexOf(node) : SystemStore.getRootNodeList().indexOf(node);
 
         UndoAndRedoService.getInstance().execute(new Command() {
             @Override
             public void execute() {
-                doMoveNode(node, parent, index);
-                NodeService.getInstance().renderNodeTree();
+                NodeEntity node = weakNode.get();
+                NodeEntity parent = weakNewParent.get();
+                if (node != null) {
+                    node.setX(oldX);
+                    node.setY(oldY);
+                    doMoveNode(node, parent, index);
+                    NodeService.getInstance().renderNodeTree();
+                }
+
             }
 
             @Override
             public void undo() {
-                doMoveNode(node, oldParent, oldIndex);
-                NodeService.getInstance().renderNodeTree();
+                NodeEntity node = weakNode.get();
+                NodeEntity parent = weakOldParent.get();
+                if (node != null) {
+                    node.setX(oldX);
+                    node.setY(oldY);
+                    doMoveNode(node, parent, oldIndex);
+                    NodeService.getInstance().renderNodeTree();
+                }
             }
         });
 
