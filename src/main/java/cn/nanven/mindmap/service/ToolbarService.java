@@ -219,6 +219,7 @@ public class ToolbarService {
         this.deleteBtn.setOnAction(e -> {
             NodeEntity node = SystemStore.getSelectedNode();
             NodeDao.deleteNode(node);
+            syncState();
         });
         this.undoBtn.setOnAction(e -> {
             UndoAndRedoService.getInstance().undo();

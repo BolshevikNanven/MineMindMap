@@ -92,6 +92,7 @@ public class NodeDao {
         }
     }
 
+    //TODO：加入撤回操作
     public static void treeApplyStyle(NodeEntity node) {
         AlgorithmUtil.headMapNode(node, ((parent, node1) -> {
             if (parent != null) {
@@ -105,17 +106,29 @@ public class NodeDao {
                 node1.setWidth(parent.getWidth());
             }
         }));
-
     }
 
     public static void deleteNode(NodeEntity node) {
+        WeakReference<NodeEntity> weakNode = new WeakReference<>(node);
+
+        UndoAndRedoService.getInstance().execute(new Command() {
+            @Override
+            public void execute() {
+
+            }
+
+            @Override
+            public void undo() {
+
+            }
+        });
+
         if (node.getParent() == null) {
             SystemStore.getRootNodeList().remove(node);
         } else {
             node.getParent().getChildren().remove(node);
         }
-        SystemStore.setSelectedNode(null);
-        ToolbarService.getInstance().syncState();
+        
         doDeleteNode(node);
     }
 

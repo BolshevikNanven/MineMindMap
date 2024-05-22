@@ -248,7 +248,9 @@ public class NodeService {
     }
 
     public void deleteNode(NodeEntity node) {
+        selectNode(null);
         NodeDao.deleteNode(node);
+        ToolbarService.getInstance().syncState();
     }
 
     public void removeNode(NodeView node) {
